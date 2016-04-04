@@ -24,6 +24,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=300)),
                 ('abstract', models.TextField()),
                 ('pub_date', models.DateField()),
+                ('link', models.CharField(max_length=200)),
                 ('affiliations', models.ManyToManyField(to='papers.Affiliation')),
             ],
         ),

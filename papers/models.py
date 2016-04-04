@@ -28,5 +28,6 @@ class Article(models.Model):
     authors=models.ManyToManyField(Author)
     tags=models.ManyToManyField(Tag)
     affiliations=models.ManyToManyField(Affiliation)
+    link=models.CharField(max_length=200)
     def __unicode__(self):
-        return self.abstract
+        return self.title

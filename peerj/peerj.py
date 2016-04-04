@@ -10,9 +10,8 @@ links=[]
 tags=[]
 author_aff=[]
 
-for index in range(129):
+for index in range(78,79):
     print index
-    temp_links=[]
     if index==0:
         r=requests.get("https://peerj.com/search/?q=&t=&type=preprints&subject=&topic=&uid=&sort=&journal=")
     else:
@@ -35,30 +34,35 @@ for index in range(129):
 
 
 
-f=open('titles.txt','w')
+f=open('titles3.txt','w')
 f.write(str(titles))
 f.close()
-f=open('tags.txt','w')
+f=open('tags3.txt','w')
 for i in tags:
     f.write(str(i))
     f.write('\n')
 f.close()
-f=open('links.txt','w')
+f=open('links3.txt','w')
 f.write(str(links))
 f.close()
-f=open('authors.txt','w')
+f=open('authors3.txt','w')
 for i in authors:
     f.write(str(i))
     f.write('\n')
 f.close()
 
+f=open('links3.txt')
+links=eval(f.read())
+
+
 for i in links:
     print i
     r=requests.get(i)
     soup=BeautifulSoup(r.content)
-    
-    dates.append(soup.find("time", {"data-itemprop":"dateAccepted"}).text.strip())
-    
+    try:
+        dates.append(soup.find("time", {"data-itemprop":"dateAccepted"}).text.strip())
+    except:
+        dates.append(soup.find("time", {"itemprop":"datePublished"}).text.strip())
     abstracts.append(soup.find("div", {"class":"abstract"}).text.strip())
     
     temp=[]
@@ -71,15 +75,15 @@ for i in links:
 
 
 
-f=open('dates.txt','w')
+f=open('dates3.txt','w')
 f.write(str(dates))
 f.close()
-f=open('author_aff.txt','w')
+f=open('author_aff3.txt','w')
 for i in author_aff:
     f.write(str(i))
     f.write('\n')
 f.close()
-f=open('abstracts.txt','w')
+f=open('abstracts3.txt','w')
 f.write(str(abstracts))
 f.close()
     
