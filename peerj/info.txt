@@ -1,0 +1,4 @@
+get a list of unicode symbols that are causing problems and make a dictionary
+
+unicode seems to be fine, everything will be stored as unicode except author names
+

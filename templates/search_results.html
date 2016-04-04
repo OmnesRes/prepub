@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title> {% block title %}PrePubMed{% endblock %} </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vollkorn">
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <style>
+     body{
+        font-family:"Arial",sans-serif;
+    }
+    a {
+    font-family: "Vollkorn", serif;
+    margin: 0px;
+    padding: 0px;
+    }
+    a:hover{
+        text-decoration: none;
+    }
+    div form {
+        position:relative;
+        top:5px;
+
+    }
+    img {
+        position:relative;
+        left:10px;
+    }
+    .btn{
+        font-size:24px;
+    }
+    .btn-primary{
+        background-color:#369;
+        font-color:white;
+    }
+
+    .entry{
+        position:relative;
+        left:30px;
+    }
+    button{
+        clear:all;
+        position:relative;
+        left:10px;
+    }
+    .form-control{
+        font-size:32px;
+    }
+    .form-inline .form-group{
+        width:90%;
+    }
+    .form-inline .form-group input{
+        width:80%;
+        height:48px;
+    }
+    #help {
+        position:relative;
+        left:75%;
+    }
+    #grad {
+  background: #369; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(left, #369,#19334d, #141927); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(right, #369,#19334d, #141927); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(right, #369,#19334d, #141927); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to right, #369,#19334d, #141927); /* Standard syntax */
+} 
+
+    #search_area{
+        background-color: #d5d5d5; 
+        min-height: 100px;
+        box-shadow: 0px -1px 3px  #999999 inset;
+
+    }
+
+    </style>
+</head>
+<body>
+    <div class="col-sm-12" style="background-color: #369">
+        <a href="http://www.omnesres.com/" style="color: white; font-size: 24px;padding-left:20px">Omnes Res</a>        
+    </div>
+    <div id="search_area" class="col-sm-12">
+        <div class="col-sm-1" style="margin-top:5px">
+            <img src="/static/first_logo.png/" style="height:90px">
+        </div>
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-10" style="vertical-align:middle;margin-top:15px">
+            <form action="/search_results/" method="get" class="form-inline entry">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="q" maxlength=50>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            <form>
+            <div style="margin-top:2px;font-size:20px">
+                <span style="margin-left:2px">Advanced</span>
+                <span id='help'>Help</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="col-sm-3">
+        </div>
+        <div class="col-sm-6">
+            {% if abstract %}
+                {% for block in abstract %}
+                    {{block}}
+                    <br>
+                    <br>
+                {% endfor %}
+            {% else %}
+                No items found.
+            {% endif %}
+        </div>
+        <div class="col-sm-3">
+        </div>
+    </div>
+</body>
+</html>
