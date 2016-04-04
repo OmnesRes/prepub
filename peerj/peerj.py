@@ -10,49 +10,40 @@ links=[]
 tags=[]
 author_aff=[]
 
-for index in range(78,79):
+for index in range(1,128):
     print index
-    if index==0:
-        r=requests.get("https://peerj.com/search/?q=&t=&type=preprints&subject=&topic=&uid=&sort=&journal=")
-    else:
-        r=requests.get("https://peerj.com/search/?q=&t=&type=preprints&subject=&topic=&uid=&sort=&journal=&page="+str(index))
+    r=requests.get("https://peerj.com/search/?q=&t=&type=preprints&subject=&topic=&uid=&sort=&journal=&page="+str(index))
     soup=BeautifulSoup(r.content)
     for i in soup.find_all("div", {"class":"search-item-title"}):
         titles.append(i.text.strip())
-
     for i in soup.find_all("div", {"class":"main-search-authors-target"}):
         temp=[]    
         for j in i.find_all("a"):
             temp.append(unicodedata.normalize('NFKD',j.text.strip()).encode('ascii','ignore'))
         authors.append(temp)
-
     for i in soup.find_all("div",{"class":"span7 main-search-item-subjects"}):
         tags.append(eval(i.text))
-
     for i in soup.find_all("div", {"class":"search-item-title"}):
         links.append('https://peerj.com'+i.find('a').get('href'))
 
 
 
-f=open('titles3.txt','w')
+f=open('titles.txt','w')
 f.write(str(titles))
 f.close()
-f=open('tags3.txt','w')
+f=open('tags.txt','w')
 for i in tags:
     f.write(str(i))
     f.write('\n')
 f.close()
-f=open('links3.txt','w')
+f=open('links.txt','w')
 f.write(str(links))
 f.close()
-f=open('authors3.txt','w')
+f=open('authors.txt','w')
 for i in authors:
     f.write(str(i))
     f.write('\n')
 f.close()
-
-f=open('links3.txt')
-links=eval(f.read())
 
 
 for i in links:
@@ -74,16 +65,15 @@ for i in links:
     author_aff.append(temp)
 
 
-
-f=open('dates3.txt','w')
+f=open('dates.txt','w')
 f.write(str(dates))
 f.close()
-f=open('author_aff3.txt','w')
+f=open('author_aff.txt','w')
 for i in author_aff:
     f.write(str(i))
     f.write('\n')
 f.close()
-f=open('abstracts3.txt','w')
+f=open('abstracts.txt','w')
 f.write(str(abstracts))
 f.close()
     
