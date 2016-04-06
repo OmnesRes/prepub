@@ -11,9 +11,26 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vollkorn">
     <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <script>
+    $(document).ready(function(){
+        $("#mytoggle .show_abstracts").click(function(){
+            $(this).next("p").toggle();
+            $(this).text(function () {
+            var current_value = $.trim($(this).text());
+            var return_value  = "";
+            if (current_value == 'Show Abstract') {
+                return_value = 'Hide Abstract';
+            }else{
+                return_value = 'Show Abstract';
+            }
+            return return_value;
+            });
+        });
+    });
+</script>
     <style>
      body{
-        font-family:"Arial",sans-serif;
+        font-family:"Arial","helvetica","clean","sans-serif";
     }
     a {
     font-family: "Vollkorn", serif;
@@ -63,20 +80,44 @@
         position:relative;
         left:75%;
     }
+    .title a {
+        font-family:"Arial","helvetica","clean","sans-serif";
+        font-size:20px;
+        text-decoration: underline;
+        color:#2222cc;
+    }
+    .title a:hover{
+        color:#2222cc;
+        text-decoration: underline;
+    }
+    .title {
+        padding-top:5px;
+        margin-bottom:0px;
+    }
+    .supp p {
+        margin-bottom:0px;
+    }
     #grad {
-  background: #369; /* For browsers that do not support gradients */
-  background: -webkit-linear-gradient(left, #369,#19334d, #141927); /* For Safari 5.1 to 6.0 */
-  background: -o-linear-gradient(right, #369,#19334d, #141927); /* For Opera 11.1 to 12.0 */
-  background: -moz-linear-gradient(right, #369,#19334d, #141927); /* For Firefox 3.6 to 15 */
-  background: linear-gradient(to right, #369,#19334d, #141927); /* Standard syntax */
-} 
-
+        background: #369; /* For browsers that do not support gradients */
+        background: -webkit-linear-gradient(left, #369,#19334d, #141927); /* For Safari 5.1 to 6.0 */
+        background: -o-linear-gradient(right, #369,#19334d, #141927); /* For Opera 11.1 to 12.0 */
+        background: -moz-linear-gradient(right, #369,#19334d, #141927); /* For Firefox 3.6 to 15 */
+        background: linear-gradient(to right, #369,#19334d, #141927); /* Standard syntax */
+    } 
     #search_area{
         background-color: #d5d5d5; 
         min-height: 100px;
         box-shadow: 0px -1px 3px  #999999 inset;
-
     }
+    #number{
+        margin-top:5px;
+        padding-left:30px;
+        font-size:20px;
+    }
+    #info {
+        padding-left:0px;
+    }
+
 
     </style>
 </head>
@@ -104,14 +145,47 @@
         </div>
     </div>
     <div class="col-sm-12">
-        <div class="col-sm-3">
+        <div class="col-sm-2">
         </div>
-        <div class="col-sm-6">
-            {% if abstract %}
-                {% for block in abstract %}
-                    {{block}}
-                    <br>
-                    <br>
+        <div class="col-sm-7">
+            {% if articles %}
+                {% for entry in articles %}
+                <div class="col-sm-1" id="number">
+                    {{forloop.counter}}.
+                </div>
+                <div class="col-sm-11" id="info">
+                    <p class="title">
+                        <a href={{entry.link}}>{{entry.title}}</a>
+                    </p>
+                    <div id="mytoggle">
+                        <p class="show_abstracts">
+                        Show Abstract
+                        </p>
+                        <p class="abstract" style="display:none">
+                        {{entry.abstract}}
+                        </p>
+                    </div>
+                    <div class="supp">
+                        <p>
+                            {% for auth in entry.authors.all %}
+                                {% if forloop.last %}
+                                    {{auth.first}} {{auth.middle}} {{auth.last}}
+                                {% else %}
+                                    {{auth.first}} {{auth.middle}} {{auth.last}},
+                                {% endif %}
+                            {% endfor %}
+                        </p>
+                        <p style="color:#777777">
+                            {% for tag in entry.tags.all %}
+                                    {% if forloop.last %}
+                                        {{tag.name}}
+                                    {% else %}
+                                        {{tag.name}},
+                                    {% endif %}
+                            {% endfor %}
+                        </p>
+                    </div>
+                </div>
                 {% endfor %}
             {% else %}
                 No items found.
