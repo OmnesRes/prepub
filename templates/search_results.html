@@ -32,7 +32,7 @@
      body{
         font-family:"Arial","helvetica","clean","sans-serif";
     }
-    a {
+    #mysite {
     font-family: "Vollkorn", serif;
     margin: 0px;
     padding: 0px;
@@ -81,7 +81,6 @@
         left:75%;
     }
     .title a {
-        font-family:"Arial","helvetica","clean","sans-serif";
         font-size:24px;
         text-decoration: underline;
         color:#2222cc;
@@ -140,15 +139,23 @@
     }
     h2 {
         color:#985735;
+        font-weight: 600;
+        margin-bottom:0px;
+        margin-left:0px;
     }
     h3 {
         color:#724128;
+        font-weight: 600;
+        margin-top:8px;
+    }
+    .pagination {
+        font-size:20px;
     }
     </style>
 </head>
 <body>
     <div class="col-sm-12" style="background-color: #369">
-        <a href="http://www.omnesres.com/" style="color: white; font-size: 24px;padding-left:20px">Omnes Res</a>        
+        <a id="mysite" href="http://www.omnesres.com/" style="color: white; font-size: 24px;padding-left:20px">Omnes Res</a>        
     </div>
     <div id="search_area" class="col-sm-12">
         <div class="col-sm-1" style="margin-top:5px">
@@ -169,78 +176,88 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-12">
+    <div class="col-sm-12" style="margin-top:20px">
         <div class="col-sm-1">
         </div>
         <div class="col-sm-10">
             {% if articles %}
-            <h2>Search Results</h2>
             <div class="col-sm-12">
-                <div class="col-sm-3">
-                    <h3>Items</h3>
+                <div class="col-sm-4" style="padding-left:0px">
+                    <h2>Search Results</h2>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-8">
                 </div>
-                <div class="col-sm-3 pagination">
+            </div>
+            <div class="col-sm-12" style="margin-bottom:30px">
+                <div class="col-sm-4" style="padding-left:0px">
+                    <h3>Items: {{articles.start_index}} to {{articles.end_index}} of {{articles.paginator.count}}</h3>
+                </div>
+                <div class="col-sm-4">
+                </div>
+                <div class="col-sm-4 pagination">
                     <span class="step-links">
                         {% if articles.has_previous %}
-                            <a href="?q={{raw}}&page={{ articles.previous_page_number }}">previous</a>
+                            <a href="?q={{raw}}&page={{ articles.previous_page_number }}">&#60 Prev</a>
+                        {% else %}
+                            <span style="color:#777777">&#60 Prev</span>
                         {% endif %}
-
-                        <span class="current">
+                        <span class="current" style="padding-left:4px;padding-right:4px">
                             Page {{ articles.number }} of {{ articles.paginator.num_pages }}
                         </span>
                         {% if articles.has_next %}
-                            <a href="?q={{raw}}&page={{ articles.next_page_number }}">next</a>
+                            <a href="?q={{raw}}&page={{ articles.next_page_number }}">Next &#62</a>
+                        {% else %}
+                            <span style="color:#777777">Next &#62</span>
                         {% endif %}
                     </span>
                 </div>
             </div>
-                {% for entry in articles %}
-                <div class="col-sm-1" id="number">
-                    {{forloop.counter}}.
-                </div>
-                <div class="col-sm-11" id="info">
-                    <div class="col-sm-12" style="padding:0px">
-                        <div class="col-sm-10" style="padding:0px">
-                            <p class="title">
-                                <a href={{entry.link}}>{{entry.title}}</a>
+            {% for entry in articles %}
+                <div class="col-sm-12" style="margin-bottom:20px">
+                    <div class="col-sm-1" id="number">
+                        {{forloop.counter0|add:articles.start_index}}.
+                    </div>
+                    <div class="col-sm-11" id="info">
+                        <div class="col-sm-12" style="padding:0px">
+                            <div class="col-sm-10" style="padding:0px">
+                                <p class="title">
+                                    <a href={{entry.link}}>{{entry.title}}</a>
+                                </p>
+                                <div class="supp">
+                                    <p style="font-size:16px">
+                                        {% for auth in entry.authors.all %}
+                                            {% if forloop.last %}
+                                               {{auth.first}} {{auth.middle}} {{auth.last}}
+                                            {% else %}
+                                                {{auth.first}} {{auth.middle}} {{auth.last}},
+                                            {% endif %}
+                                        {% endfor %}
+                                    </p>
+                                    <p>
+                                        {% for tag in entry.tags.all %}
+                                            {% if forloop.last %}
+                                                <a href="/search_tag/?q={{tag.name}}">{{tag.name}}</a>
+                                            {% else %}
+                                                <a href="/search_tag/?q={{tag.name}}">{{tag.name}},</a>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </p>
+                                </div>
+                                <div class="col-sm-2" style="padding:0px">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="mytoggle">
+                            <p class="show_abstracts btn">
+                            Abstract
                             </p>
-                            <div class="supp">
-                                <p style="font-size:16px">
-                                    {% for auth in entry.authors.all %}
-                                        {% if forloop.last %}
-                                           {{auth.first}} {{auth.middle}} {{auth.last}}
-                                        {% else %}
-                                            {{auth.first}} {{auth.middle}} {{auth.last}},
-                                        {% endif %}
-                                    {% endfor %}
-                                </p>
-                                <p>
-                                    {% for tag in entry.tags.all %}
-                                        {% if forloop.last %}
-                                            <a href="/search_tag/?q={{tag.name}}">{{tag.name}}</a>
-                                        {% else %}
-                                            <a href="/search_tag/?q={{tag.name}}">{{tag.name}},</a>
-                                        {% endif %}
-                                    {% endfor %}
-                                </p>
-                            </div>
-                            <div class="col-sm-2" style="padding:0px">
-                            </div>
-
+                            <p class="abstract">
+                            {{entry.abstract}}
+                            </p>
                         </div>
                     </div>
-                    <div id="mytoggle">
-                        <p class="show_abstracts btn">
-                        Abstract
-                        </p>
-                        <p class="abstract">
-                        {{entry.abstract}}
-                        </p>
-                    </div>
                 </div>
-                {% endfor %}
+            {% endfor %}
             {% else %}
                 No items found.
             {% endif %}
@@ -248,7 +265,6 @@
         <div class="col-sm-1">
         </div>
     </div>
-
     <div class="col-sm-12 empty" style="margin-bottom:400px">
     </div>
 </body>

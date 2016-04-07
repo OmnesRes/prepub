@@ -7,7 +7,6 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 
 
-
 from papers.models import Article
 from papers.models import Author
 from papers.models import Affiliation
