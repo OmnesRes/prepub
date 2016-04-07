@@ -27,7 +27,15 @@ def search_results(request):
             if raw!='':
                 articles=Article.objects.filter(abstract__contains=raw).prefetch_related('authors')
                 if articles.exists():
-                    return render(request, 'search_results.html', {'articles':articles})
+                    paginator = Paginator(articles, 20)
+                    page = request.GET.get('page')
+                    try:
+                        Articles = paginator.page(page)
+                    except PageNotAnInteger:
+                        Articles = paginator.page(1)
+                    except EmptyPage:
+                        Articles = paginator.page(paginator.num_pages)
+                    return render_to_response('search_results.html', {"articles": Articles,"raw":raw})
                 else:
                     return render(request, 'search_results.html', {'articles':False})
             else:
@@ -39,12 +47,20 @@ def search_results(request):
 
 def search_tag(request):
     if request.META.get('HTTP_REFERER',False):
-        if 'tag' in request.GET:
-            raw=request.GET['tag']
+        if 'q' in request.GET:
+            raw=request.GET['q']
             if raw!='':
                 articles=Article.objects.filter(tags__name=raw).prefetch_related('authors')
                 if articles.exists():
-                    return render(request, 'search_results.html', {'articles':articles})
+                    paginator=Paginator(articles, 20)
+                    page=request.GET.get('page')
+                    try:
+                        Articles = paginator.page(page)
+                    except PageNotAnInteger:
+                        Articles = paginator.page(1)
+                    except EmptyPage:
+                        Articles = paginator.page(paginator.num_pages)
+                    return render_to_response('search_results.html', {'articles':Articles,'raw':raw})
                 else:
                     return render(request, 'search_results.html', {'articles':False})
             else:
@@ -60,3 +76,4 @@ def handler500(request):
                                   context_instance=RequestContext(request))
     response.status_code = 500
     return response
+

@@ -138,7 +138,12 @@
         text-align:justify;
         color:#404040;
     }
-
+    h2 {
+        color:#985735;
+    }
+    h3 {
+        color:#724128;
+    }
     </style>
 </head>
 <body>
@@ -169,6 +174,28 @@
         </div>
         <div class="col-sm-10">
             {% if articles %}
+            <h2>Search Results</h2>
+            <div class="col-sm-12">
+                <div class="col-sm-3">
+                    <h3>Items</h3>
+                </div>
+                <div class="col-sm-6">
+                </div>
+                <div class="col-sm-3 pagination">
+                    <span class="step-links">
+                        {% if articles.has_previous %}
+                            <a href="?q={{raw}}&page={{ articles.previous_page_number }}">previous</a>
+                        {% endif %}
+
+                        <span class="current">
+                            Page {{ articles.number }} of {{ articles.paginator.num_pages }}
+                        </span>
+                        {% if articles.has_next %}
+                            <a href="?q={{raw}}&page={{ articles.next_page_number }}">next</a>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
                 {% for entry in articles %}
                 <div class="col-sm-1" id="number">
                     {{forloop.counter}}.
@@ -192,9 +219,9 @@
                                 <p>
                                     {% for tag in entry.tags.all %}
                                         {% if forloop.last %}
-                                            <a href="/search_tag/?tag={{tag.name}}">{{tag.name}}</a>
+                                            <a href="/search_tag/?q={{tag.name}}">{{tag.name}}</a>
                                         {% else %}
-                                            <a href="/search_tag/?tag={{tag.name}}">{{tag.name}},</a>
+                                            <a href="/search_tag/?q={{tag.name}}">{{tag.name}},</a>
                                         {% endif %}
                                     {% endfor %}
                                 </p>
@@ -220,6 +247,9 @@
         </div>
         <div class="col-sm-1">
         </div>
+    </div>
+
+    <div class="col-sm-12 empty" style="margin-bottom:400px">
     </div>
 </body>
 </html>
