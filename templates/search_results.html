@@ -18,10 +18,10 @@
             $(this).text(function () {
             var current_value = $.trim($(this).text());
             var return_value  = "";
-            if (current_value == 'Show Abstract') {
+            if (current_value == 'Abstract') {
                 return_value = 'Hide Abstract';
             }else{
-                return_value = 'Show Abstract';
+                return_value = 'Abstract';
             }
             return return_value;
             });
@@ -49,7 +49,7 @@
         position:relative;
         left:10px;
     }
-    .btn{
+    button .btn{
         font-size:24px;
     }
     .btn-primary{
@@ -82,7 +82,7 @@
     }
     .title a {
         font-family:"Arial","helvetica","clean","sans-serif";
-        font-size:20px;
+        font-size:24px;
         text-decoration: underline;
         color:#2222cc;
     }
@@ -97,6 +97,14 @@
     .supp p {
         margin-bottom:0px;
     }
+
+    .supp a {
+        color:#666666
+    }
+    .supp a:hover {
+        color:#222222;
+    }
+
     #grad {
         background: #369; /* For browsers that do not support gradients */
         background: -webkit-linear-gradient(left, #369,#19334d, #141927); /* For Safari 5.1 to 6.0 */
@@ -111,13 +119,25 @@
     }
     #number{
         margin-top:5px;
-        padding-left:30px;
-        font-size:20px;
+        padding-right:10px;
+        font-size:24px;
+        margin-right:0px;
+        text-align:right;
     }
     #info {
         padding-left:0px;
     }
 
+    .show_abstracts {
+        color:#777777;
+        padding:0;
+    }
+    .abstract {
+        display:none;
+        font-size:20px;
+        text-align:justify;
+        color:#404040;
+    }
 
     </style>
 </head>
@@ -145,44 +165,51 @@
         </div>
     </div>
     <div class="col-sm-12">
-        <div class="col-sm-2">
+        <div class="col-sm-1">
         </div>
-        <div class="col-sm-7">
+        <div class="col-sm-10">
             {% if articles %}
                 {% for entry in articles %}
                 <div class="col-sm-1" id="number">
                     {{forloop.counter}}.
                 </div>
                 <div class="col-sm-11" id="info">
-                    <p class="title">
-                        <a href={{entry.link}}>{{entry.title}}</a>
-                    </p>
-                    <div id="mytoggle">
-                        <p class="show_abstracts">
-                        Show Abstract
-                        </p>
-                        <p class="abstract" style="display:none">
-                        {{entry.abstract}}
-                        </p>
+                    <div class="col-sm-12" style="padding:0px">
+                        <div class="col-sm-10" style="padding:0px">
+                            <p class="title">
+                                <a href={{entry.link}}>{{entry.title}}</a>
+                            </p>
+                            <div class="supp">
+                                <p style="font-size:16px">
+                                    {% for auth in entry.authors.all %}
+                                        {% if forloop.last %}
+                                           {{auth.first}} {{auth.middle}} {{auth.last}}
+                                        {% else %}
+                                            {{auth.first}} {{auth.middle}} {{auth.last}},
+                                        {% endif %}
+                                    {% endfor %}
+                                </p>
+                                <p>
+                                    {% for tag in entry.tags.all %}
+                                        {% if forloop.last %}
+                                            <a href="/search_tag/?tag={{tag.name}}">{{tag.name}}</a>
+                                        {% else %}
+                                            <a href="/search_tag/?tag={{tag.name}}">{{tag.name}},</a>
+                                        {% endif %}
+                                    {% endfor %}
+                                </p>
+                            </div>
+                            <div class="col-sm-2" style="padding:0px">
+                            </div>
+
+                        </div>
                     </div>
-                    <div class="supp">
-                        <p>
-                            {% for auth in entry.authors.all %}
-                                {% if forloop.last %}
-                                    {{auth.first}} {{auth.middle}} {{auth.last}}
-                                {% else %}
-                                    {{auth.first}} {{auth.middle}} {{auth.last}},
-                                {% endif %}
-                            {% endfor %}
+                    <div id="mytoggle">
+                        <p class="show_abstracts btn">
+                        Abstract
                         </p>
-                        <p style="color:#777777">
-                            {% for tag in entry.tags.all %}
-                                    {% if forloop.last %}
-                                        {{tag.name}}
-                                    {% else %}
-                                        {{tag.name}},
-                                    {% endif %}
-                            {% endfor %}
+                        <p class="abstract">
+                        {{entry.abstract}}
                         </p>
                     </div>
                 </div>
@@ -191,7 +218,7 @@
                 No items found.
             {% endif %}
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-1">
         </div>
     </div>
 </body>

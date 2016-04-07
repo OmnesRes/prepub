@@ -40,10 +40,15 @@ def get_query(query_string, search_fields):
 
 
 start=time.time()
-qs=Article.objects.filter(abstract__contains="Presbyopia")
+qs1=Article.objects.filter(tags__name="Animal Behavior").prefetch_related('authors')
 end=time.time()
 print end-start
 
+
+start=time.time()
+qs2=Tag.objects.get(name="Animal Behavior").article_set.all()
+end=time.time()
+print end-start
 
 
 
