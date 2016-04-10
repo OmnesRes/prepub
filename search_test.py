@@ -133,11 +133,6 @@ for i in pub_authors:
 
 
 
-raw="this is a test".lower()
-
-
-mystring=normalize_query(raw)
-
 
 ##for each author create a list that contains as much info as possible
 ##[the name (first),],[full or abb]]
@@ -148,17 +143,82 @@ mystring=normalize_query(raw)
 
 ##need a function which will group authors together, and other names together
 
+raw="Lori a Kindler test a by".lower()
 
-##def parsing_query(mystring):
-##    while mystring:
-##        for i in mystring:
-##            if len(i.split())==1:
-##                query=i.translate(identity,mypunctuation)
-##                if query not in stopwords and query!='':
-##                    if query in name_first:
-##    return results
-##                
-##            
+mystring=normalize_query(raw)
+
+
+all_terms={'names':[],'terms':[]}
+
+def parsing_query(mystring,all_terms):
+    while mystring:
+        for i in mystring:
+            if len(i.split())==1:
+                print all_terms
+                query=i.translate(identity,mypunctuation)
+                if query not in stopwords and query!='':
+                    if query in name_last:
+                        pass
+                    elif query in name_first:
+                        if len(mystring)!=1:
+                            query_plus_1=mystring[1].translate(identity,mypunctuation)
+                            if len(query_plus_1.split())==1:
+                                if query_plus_1!='':
+                                    if query_plus_1 in name_last:
+                                        if query[0] in name_last[query_plus_1][0]:
+                                            all_terms['names']=all_terms.get('names',[])+[[query,query_plus_1],[['first','full'],['last','full']]]
+                                            return parsing_query(mystring[2:],all_terms)
+                                        else:
+                                            all_terms['names']=all_terms.get('names',[])+[[query],[['first','full']]]
+                                            return parsing_query(mystring[1:],all_terms)
+                                    else:
+                                        if len(query_plus_1)<=2 and len(mystring)!=2:
+                                            query_plus_2=mystring[2].translate(identity,mypunctuation)
+                                            if len(query_plus_2.split())==1:
+                                                if query_plus_2!='':
+                                                    if query_plus_2 in name_last:
+                                                        if query[0] in name_last[query_plus_2][0]:
+                                                            if query_plus_1[0] in name_last[query_plus_2][1]:
+                                                                all_terms['names']=all_terms.get('names',[])+[[query,query_plus_1,query_plus_2],[['first','full'],['middle',''],['last','full']]]
+                                                                return parsing_query(mystring[3:],all_terms)
+                                                            else:
+                                                                all_terms['names']=all_terms.get('names',[])+[[query,query_plus_2],[['first','full'],['last','full']]]
+                                                                all_terms['unknown']=all_terms.get('unknown',[])+[query_plus_1]
+                                                                return parsing_query(mystring[3:],all_terms)
+                                                        else:
+                                                            all_terms['names']=all_terms.get('names',[])+[[query],[['first','full']]]
+                                                            return parsing_query(mystring[1:],all_terms)        
+                                                    else:
+                                                        all_terms['names']=all_terms.get('names',[])+[[query],[['first','full']]]
+                                                        return parsing_query(mystring[1:],all_terms)
+                                                else:
+                                                    all_terms['names']=all_terms.get('names',[])+[[query],[['first','full']]]
+                                                    return parsing_query(mystring[1:],all_terms)
+                                            all_terms['names']=all_terms.get('names',[])+[[query],[['first','full']]]
+                                            return parsing_query(mystring[1:],all_terms)
+                                        else:
+                                            all_terms['names']=all_terms.get('names',[])+[[query],[['first','full']]]
+                                            return parsing_query(mystring[1:],all_terms)           
+                                else:
+                                    all_terms['names']=all_terms.get('names',[])+[[query],[['first','full']]]
+                                    return parsing_query(mystring[2:],all_terms)
+                            else:
+                                all_terms['names']=all_terms.get('names',[])+[[query],[['first','full']]]
+                                return parsing_query(mystring[1:],all_terms)
+                        else:
+                            all_terms['names']=all_terms.get('names',[])+[[query],[['first','full']]]
+                            return parsing_query(mystring[1:],all_terms)
+                    else:
+                        all_terms['terms']=all_terms.get('terms',[])+[query]
+                        return parsing_query(mystring[1:],all_terms)
+                else:
+                    return parsing_query(mystring[1:],all_terms)
+            else:
+                #handle quoted strings here
+                pass
+    return all_terms
+                
+            
 
 
 
