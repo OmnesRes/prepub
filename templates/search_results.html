@@ -151,6 +151,19 @@
     .pagination {
         font-size:20px;
     }
+
+    textarea {
+    font-family:monospace;
+    margin:0 auto;
+    font-size:16px;
+    }
+
+
+    #search_details {
+    color:#985735;
+    font-weight: 600;
+    font-size:20px;
+    }
     </style>
 </head>
 <body>
@@ -159,7 +172,7 @@
     </div>
     <div id="search_area" class="col-sm-12">
         <div class="col-sm-1" style="margin-top:5px">
-            <img src="/static/first_logo.png/" style="height:90px">
+            <img src="/static/first_logo.png" style="height:90px">
         </div>
         <div class="col-sm-1">
         </div>
@@ -179,9 +192,9 @@
     <div class="col-sm-12" style="margin-top:20px">
         <div class="col-sm-1">
         </div>
-        <div class="col-sm-10">
+        <div class="col-sm-9">
             {% if articles %}
-            <div class="col-sm-12">
+            <div class="col-sm-12" style="margin-bottom:5px">
                 <div class="col-sm-4" style="padding-left:0px">
                     <h2>Search Results</h2>
                 </div>
@@ -190,11 +203,11 @@
             </div>
             <div class="col-sm-12" style="margin-bottom:30px">
                 <div class="col-sm-4" style="padding-left:0px">
-                    <h3>Items: {{articles.start_index}} to {{articles.end_index}} of {{articles.paginator.count}}</h3>
+                    <h3 style="margin-top:0px">Items: {{articles.start_index}} to {{articles.end_index}} of {{articles.paginator.count}}</h3>
                 </div>
                 <div class="col-sm-4">
                 </div>
-                <div class="col-sm-4 pagination">
+                <div class="col-sm-4 pagination" style="margin:0px">
                     <span class="step-links">
                         {% if articles.has_previous %}
                             <a href="?q={{raw}}&page={{ articles.previous_page_number }}">&#60 Prev</a>
@@ -213,41 +226,42 @@
                 </div>
             </div>
             {% for entry in articles %}
-                <div class="col-sm-12" style="margin-bottom:20px">
-                    <div class="col-sm-1" id="number">
-                        {{forloop.counter0|add:articles.start_index}}.
-                    </div>
-                    <div class="col-sm-11" id="info">
-                        <div class="col-sm-12" style="padding:0px">
-                            <div class="col-sm-10" style="padding:0px">
-                                <p class="title">
-                                    <a href={{entry.link}}>{{entry.title}}</a>
+            <div class="col-sm-12" style="margin-bottom:20px">
+                <div class="col-sm-1" id="number">
+                    {{forloop.counter0|add:articles.start_index}}.
+                </div>
+                <div class="col-sm-11" id="info">
+                    <div class="col-sm-12" style="padding:0px">
+                        <div class="col-sm-10" style="padding:0px">
+                            <p class="title">
+                                <a href={{entry.link}}>{{entry.title}}</a>
+                            </p>
+                            <div class="supp">
+                                <p style="font-size:16px">
+                                    {% for auth in entry.authors.all %}
+                                        {% if forloop.last %}
+                                           {{auth.first}} {{auth.middle}} {{auth.last}}
+                                        {% else %}
+                                            {{auth.first}} {{auth.middle}} {{auth.last}},
+                                        {% endif %}
+                                    {% endfor %}
                                 </p>
-                                <div class="supp">
-                                    <p style="font-size:16px">
-                                        {% for auth in entry.authors.all %}
-                                            {% if forloop.last %}
-                                               {{auth.first}} {{auth.middle}} {{auth.last}}
-                                            {% else %}
-                                                {{auth.first}} {{auth.middle}} {{auth.last}},
-                                            {% endif %}
-                                        {% endfor %}
-                                    </p>
-                                    <p>
-                                        {% for tag in entry.tags.all %}
-                                            {% if forloop.last %}
-                                                <a href="/search_tag/?q={{tag.name}}">{{tag.name}}</a>
-                                            {% else %}
-                                                <a href="/search_tag/?q={{tag.name}}">{{tag.name}},</a>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </p>
-                                </div>
-                                <div class="col-sm-2" style="padding:0px">
-                                </div>
+                                <p>
+                                    {% for tag in entry.tags.all %}
+                                        {% if forloop.last %}
+                                            <a href="/search_tag/?q={{tag.name}}">{{tag.name}}</a>
+                                        {% else %}
+                                            <a href="/search_tag/?q={{tag.name}}">{{tag.name}},</a>
+                                        {% endif %}
+                                    {% endfor %}
+                                </p>
+                            </div>
+                            <div class="col-sm-2" style="padding:0px">
                             </div>
                         </div>
-                        <div id="mytoggle">
+                    </div>
+                    <div class="col-sm-12" id="mytoggle" style="padding:0px">
+                        <div class="col-sm-10" style="padding:0px">
                             <p class="show_abstracts btn">
                             Abstract
                             </p>
@@ -255,14 +269,20 @@
                             {{entry.abstract}}
                             </p>
                         </div>
+                        <div class="col-sm-2" style="padding:0px">
+                        </div>
                     </div>
                 </div>
+            </div>
             {% endfor %}
             {% else %}
                 No items found.
             {% endif %}
         </div>
-        <div class="col-sm-1">
+        <div class="col-sm-2" style="margin-top:100px;position:relative;right:100px">
+            <h3 id="search_details">Search details</h3>
+            <textarea rows='5' cols="30">{{ search }}
+            </textarea>
         </div>
     </div>
     <div class="col-sm-12 empty" style="margin-bottom:400px">
