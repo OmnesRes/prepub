@@ -13,8 +13,6 @@ from papers.models import Affiliation
 from papers.models import Tag
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-import unicodedata
-
 
 
 
@@ -26,9 +24,17 @@ def home(request):
 def search_results(request):
     if request.META.get('HTTP_REFERER',False):
         if 'q' in request.GET:
-            raw=request.GET['q'].strip().lower()
+            try:
+                raw=str(request.GET['q'].strip().lower())
+            except:
+                ##put in a message about unicode
+                search=unicodedata.normalize('NFKD',raw).encode('ascii','ignore')
+                return render(request, 'search_results.html', {'articles':False,'search':search})
             if raw!='':
-                articles=Article.objects.filter(abstract__contains=raw).prefetch_related('authors')
+                from papers.views import *
+                all_terms={'names':[],'terms':[]}
+                myQ=super_query(parsing_query(get_mystring(raw),all_terms))
+                articles=Article.objects.filter(myQ).prefetch_related('authors')
                 if articles.exists():
                     paginator = Paginator(articles, 20)
                     page = request.GET.get('page')
@@ -38,9 +44,9 @@ def search_results(request):
                         Articles = paginator.page(1)
                     except EmptyPage:
                         Articles = paginator.page(paginator.num_pages)
-                    return render_to_response('search_results.html', {"articles": Articles,"raw":raw})
+                    return render_to_response('search_results.html', {"articles": Articles,"raw":raw,"search":all_terms})
                 else:
-                    search=unicodedata.normalize('NFKD',raw).encode('ascii','ignore')
+                    search=all_terms
                     return render(request, 'search_results.html', {'articles':False,'search':search})
             else:
                 return redirect(home)
