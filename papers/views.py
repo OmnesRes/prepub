@@ -188,14 +188,10 @@ def parsing_query(mystring,all_terms):
                 if len(mystring)!=1:
                     query_plus_1=mystring[1]
                     if len(query_plus_1.split())==1:
-                        if query_plus_1 in name_first:
+                        if query_plus_1 in name_first[query][0]:
                             ##check if query is e.g. julia wong, if so return name
-                            if query_plus_1 in name_first[query][0]:
-                                all_terms['names']=all_terms.get('names',[])+[[[query,query_plus_1],[['first','full'],['last','full']]]]
-                                return parsing_query(mystring[2:],all_terms)
-                            else:
-                                all_terms['names']=all_terms.get('names',[])+[[[query],[['first','full']]]]
-                                return parsing_query(mystring[1:],all_terms)
+                            all_terms['names']=all_terms.get('names',[])+[[[query,query_plus_1],[['first','full'],['last','full']]]]
+                            return parsing_query(mystring[2:],all_terms)
                         else:
                             ##check for initial, e.g. julia s wong
                             if len(query_plus_1)<=2 and len(mystring)!=2:
