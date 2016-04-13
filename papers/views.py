@@ -3,6 +3,7 @@ import re
 from django.db.models import Q
 from name_last import name_last
 from name_first import name_first
+from papers.models import Article
 
 stopwords='''a, about, again, all, almost, also, although, always, among, an, and, another, any, are, as, at,
 be, because, been, before, being, between, both, but, by,
@@ -71,21 +72,21 @@ def au_query(names):
     return and_query
 
 
-def super_query(all_terms):
-    query=None
-    for i in all_terms['names']:
-        q=au_query(i)
-        if query is None:
-            query=q
-        else:
-            query=query & q
+
+
+def perform_query(all_terms):
+    qs=[]
     if all_terms['terms']!=[]:
         q=tiab_query(all_terms['terms'])
-        if query is None:
-            query=q
-        else:
-            query=query & q
-    return query
+        qs=Article.objects.filter(q)
+        for i in all_terms['names']:
+            qs=qs.filter(au_query(i))
+    else:
+        if all_terms['names']!=[]:
+            qs=Article.objects.filter(au_query(all_terms['names'][0]))
+            for i in all_terms['names'][1:]:
+                qs=qs.filter(au_query(i))
+    return qs
 
 
 
@@ -238,6 +239,25 @@ def parsing_query(mystring,all_terms):
 
 ##need a function for converting all_terms to a visual friendly list
 def pretty_terms(all_terms):
-    pass
-##    for i in all_terms
+    finalstring=''
+    for i in all_terms:
+        if all_terms[i]!=[]:
+            if i=='terms':
+                for j in all_terms[i]:
+                    finalstring+="Title/Abstract:\n"+j+'\n\n'
+            elif i=='names':
+                for j in all_terms[i]:
+                    finalstring+="Author:\n"
+                    for name,desc in zip(j[0],j[1]):
+                        if desc[1]=='full':
+                            finalstring+=name+' ('+desc[0]+', '+desc[1]+')\n'
+                        else:
+                            finalstring+=name+' ('+desc[0]+', abb)\n'
+                    finalstring+='\n'
+            else:
+                for j in all_terms[i]:
+                    finalstring+='Not searched:\n'+j+'\n\n'
+    return finalstring
+                    
+            
             

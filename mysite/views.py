@@ -28,13 +28,12 @@ def search_results(request):
                 raw=str(request.GET['q'].strip().lower())
             except:
                 ##put in a message about unicode
-                search=unicodedata.normalize('NFKD',raw).encode('ascii','ignore')
-                return render(request, 'search_results.html', {'articles':False,'search':search})
+                return render(request, 'search_results.html', {'articles':False,'search':None,'unicode':True})
             if raw!='':
                 from papers.views import *
                 all_terms={'names':[],'terms':[]}
-                myQ=super_query(parsing_query(get_mystring(raw),all_terms))
-                articles=Article.objects.filter(myQ).prefetch_related('authors')
+                all_terms=parsing_query(get_mystring(raw),all_terms)
+                articles=perform_query(all_terms)
                 if articles.exists():
                     paginator = Paginator(articles, 20)
                     page = request.GET.get('page')
@@ -44,10 +43,9 @@ def search_results(request):
                         Articles = paginator.page(1)
                     except EmptyPage:
                         Articles = paginator.page(paginator.num_pages)
-                    return render_to_response('search_results.html', {"articles": Articles,"raw":raw,"search":all_terms})
+                    return render_to_response('search_results.html', {'articles': Articles,'raw':raw,'search':pretty_terms(all_terms)})
                 else:
-                    search=all_terms
-                    return render(request, 'search_results.html', {'articles':False,'search':search})
+                    return render(request, 'search_results.html', {'articles':False,'search':pretty_terms(all_terms)})
             else:
                 return redirect(home)
         else:
@@ -60,7 +58,7 @@ def search_tag(request):
         if 'q' in request.GET:
             raw=request.GET['q']
             if raw!='':
-                articles=Article.objects.filter(tags__name=raw).prefetch_related('authors')
+                articles=Article.objects.filter(tags__name=raw)
                 if articles.exists():
                     paginator=Paginator(articles, 20)
                     page=request.GET.get('page')
@@ -79,6 +77,44 @@ def search_tag(request):
             return redirect(home)
     else:
         return redirect(home)
+
+
+def search_author(request):
+    if request.META.get('HTTP_REFERER',False):
+        if 'q' in request.GET:
+            raw=request.GET['q']
+            if raw!='':
+                author=raw
+                first_name=author.split()[0]
+                last_name=author.split()[-1]
+                middle_name=author.strip(first_name).strip(last_name).strip()
+                ##lenient on middle due to punctuation differences
+                if middle_name:
+                    articles=Article.objects.filter(authors__first=first_name,authors__last=last_name,authors__middle__startswith=middle_name[0])
+                else:
+                    articles=Article.objects.filter(authors__first=first_name,authors__last=last_name)
+                if articles.exists():
+                    paginator=Paginator(articles, 20)
+                    page=request.GET.get('page')
+                    try:
+                        Articles = paginator.page(page)
+                    except PageNotAnInteger:
+                        Articles = paginator.page(1)
+                    except EmptyPage:
+                        Articles = paginator.page(paginator.num_pages)
+                    return render_to_response('search_results.html', {'articles':Articles,'raw':raw})
+                else:
+                    return render(request, 'search_results.html', {'articles':False})
+            else:
+                return redirect(home)
+        else:
+            return redirect(home)
+    else:
+        return redirect(home)
+
+
+
+
 
 
 def handler500(request):

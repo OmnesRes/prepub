@@ -49,9 +49,6 @@
         position:relative;
         left:10px;
     }
-    button .btn{
-        font-size:24px;
-    }
     .btn-primary{
         background-color:#369;
         font-color:white;
@@ -180,7 +177,7 @@
             <form action="/search_results/" method="get" class="form-inline entry">
                 <div class="form-group">
                     <input type="text" class="form-control" name="q" maxlength=50>
-                    <button type="submit" class="btn btn-primary">Search</button>
+                    <button style="font-size:24px" type="submit" class="btn btn-primary">Search</button>
                 </div>
             <form>
             <div style="margin-top:2px;font-size:20px">
@@ -240,9 +237,11 @@
                                 <p style="font-size:16px">
                                     {% for auth in entry.authors.all %}
                                         {% if forloop.last %}
-                                           {{auth.first}} {{auth.middle}} {{auth.last}}
+                                           <a href="/search_author/?q={{auth.first}} {{auth.middle}} {{auth.last}}">
+                                            {{auth.first}} {{auth.middle}} {{auth.last}}</a>
                                         {% else %}
-                                            {{auth.first}} {{auth.middle}} {{auth.last}},
+                                            <a href="/search_author/?q={{auth.first}} {{auth.middle}} {{auth.last}}">
+                                            {{auth.first}} {{auth.middle}} {{auth.last}},</a>
                                         {% endif %}
                                     {% endfor %}
                                 </p>
@@ -276,17 +275,42 @@
             </div>
             {% endfor %}
             {% else %}
-                No items found.
+            <div class="col-sm-12">
+                <div class="col-sm-11" style="font-size:24px">
+                    {% if not unicode %}
+                        No items were found for your query.
+                        <br>
+                        <br>
+                        Please use the search details box to see what was searched.
+                        Keep in mind that terms are combined with an AND relationship.
+                        <br>
+                        <br>
+                        If you are searching for an author
+                        it is possible that the author's name is not indexed properly.  Try using only the last or first name.
+                        <br>
+                        <br>
+                        See help for more details on how I parse your query and perform searches.
+                    {% else %}
+                        It appears you entered a unicode character which could not be converted to ASCII.
+                        <br>
+                        <br>
+                        Some of my functions are not able to handle these characters, so I can't allow them to be searched.
+                        <br>
+                        <br>
+                        If you copied and pasted your search text from somewhere please type it in by hand and search again.
+                    {% endif %}
+                </div>
+                <div class="col-sm-1">
+                </div>
+            </div>
             {% endif %}
         </div>
         <div class="col-sm-2" style="margin-top:100px;position:relative;right:100px">
             <h3 id="search_details">Search details</h3>
-            <textarea style="white-space:normal" rows='5' cols="30">
-                none
-            </textarea>
+            <textarea rows='15' cols="30">{{search}}</textarea>
         </div>
     </div>
-    <div class="col-sm-12 empty" style="margin-bottom:400px">
+    <div class="col-sm-12 empty" style="margin-bottom:100px">
     </div>
 </body>
 </html>

@@ -103,6 +103,21 @@ def super_query(all_terms):
             query=query & q
     return query
 
+def perform_query(all_terms):
+    qs=[]
+    if all_terms['terms']!=[]:
+        q=tiab_query(all_terms['terms'])
+        qs=Article.objects.filter(q)
+        for i in all_terms['names']:
+            qs=qs.filter(au_query(i))
+    else:
+        if all_terms['names']!=[]:
+            qs=Article.objects.filter(au_query(all_terms['names'][0]))
+            for i in all_terms['names'][1:]:
+                qs=qs.filter(au_query(i))
+    return qs
+
+
 
 ##create author dictionary
 
@@ -167,7 +182,7 @@ for i in pub_authors:
 
 ##need a function which will group authors together, and other names together
 
-raw='eisen b'.lower()
+raw='eisen coil'.lower()
 
 rawstring=normalize_query(raw)
 
@@ -321,9 +336,9 @@ def parsing_query(mystring,all_terms):
 
 
 
-my_Q=super_query(parsing_query(finalstring,all_terms))
-
-print my_Q
+##my_Q=super_query(parsing_query(finalstring,all_terms))
+##
+##print my_Q
 
 ##start=time.time()
 ##qs1=Article.objects.filter(tags__name="Animal Behavior").prefetch_related('authors')
@@ -332,7 +347,8 @@ print my_Q
 
 
 start=time.time()
-qs2=Article.objects.filter(my_Q)
+qs=perform_query(parsing_query(finalstring,all_terms))
+len(qs)
 end=time.time()
 print end-start
 
