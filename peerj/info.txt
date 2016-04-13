@@ -1,1 +1,2 @@
 check if author name contains unicode, if so, follow author link to get ascii name
+need to remove jr or sr from names

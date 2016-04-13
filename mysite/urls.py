@@ -21,5 +21,6 @@ urlpatterns = [
     url(r'^$', views.home),
     url(r'^search_results/',views.search_results),
     url(r'^search_tag/',views.search_tag),
-    url(r'^search_author/',views.search_author)
+    url(r'^search_author/',views.search_author),
+    url(r'^help/',views.my_help)
 ]

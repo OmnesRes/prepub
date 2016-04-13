@@ -40,7 +40,7 @@ was, we, were, what, when, which, while, with, within, without, would'''
 
 stopwords=[i.strip() for i in stopwords.split(',')]
 
-mypunctuation='!#"$%&()*+,-./:;<=>?@\\^_`{|}~'
+mypunctuation='!#"$%&()*+,./:;<=>?@\\^_`{|}~'
 
 mytable = string.maketrans(mypunctuation,' '*len(mypunctuation))
 

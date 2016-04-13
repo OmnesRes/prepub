@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title> {% block title %}PrePubMed{% endblock %} </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vollkorn">
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <style>
+     body{
+        font-family:"Arial",sans-serif;
+    }
+    #mysite {
+    font-family: "Vollkorn", serif;
+    margin: 0px;
+    padding: 0px;
+    }
+    a:hover{
+        text-decoration: none;
+    }
+    div form {
+        position:relative;
+        top:5px;
+
+    }
+    h3 {
+        color:#724128
+    }
+    img {
+        position:relative;
+        left:10px;
+    }
+    p {
+        font-size:20px
+    }
+    .btn{
+        font-size:24px;
+    }
+    .btn-primary{
+        background-color:#369;
+        font-color:white;
+    }
+
+    .entry{
+        position:relative;
+        left:30px;
+    }
+    button{
+        clear:all;
+        position:relative;
+        left:10px;
+    }
+    .form-control{
+        font-size:32px;
+    }
+    .form-inline .form-group{
+        width:90%;
+    }
+    .form-inline .form-group input{
+        width:80%;
+        height:48px;
+    }
+    #help {
+        position:relative;
+        left:75%;
+    }
+    #grad {
+  background: #369; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(left, #369,#19334d, #141927); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(right, #369,#19334d, #141927); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(right, #369,#19334d, #141927); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to right, #369,#19334d, #141927); /* Standard syntax */
+} 
+
+    #search_area{
+        background-color: #d5d5d5; 
+        min-height: 100px;
+        box-shadow: 0px -1px 3px  #999999 inset;
+
+    }
+
+    </style>
+</head>
+<body>
+    <div class="col-sm-12" style="background-color: #369">
+        <a id="mysite" href="http://www.omnesres.com/" style="color: white; font-size: 24px;padding-left:20px">Omnes Res</a>        
+    </div>
+    <div id="search_area" class="col-sm-12">
+        <div class="col-sm-1" style="margin-top:5px">
+            <img src="/static/first_logo.png" style="height:90px">
+        </div>
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-10" style="vertical-align:middle;margin-top:15px">
+            <form action="/search_results/" method="get" class="form-inline entry">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="q" maxlength=50>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            <form>
+            <div style="margin-top:2px;font-size:20px">
+                <span style="margin-left:2px">Advanced</span>
+                <span id='help'><a href="/help/">Help</a></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-9" style="margin-top:10px;text-align:justify">
+            <h1>PrePubMed Help</h1>
+            <p>PrePubMed currently indexes several thousand articles from the preprint servers Figshare, PeerJ, and bioRxiv, and articles at F1000Research that are undergoing post-publication peer review.  New articles are automatically indexed daily. The goal of PrePubMed is to provide a means to search for articles that are not indexed by PubMed, which could be due to the article being "unpublished", or due to the delay between "publication" and indexing by PubMed.  With that said, PrePubMed does not remove articles once they are indexed by PubMed in order to give preprinted articles as much exposure as possible.</p>
+            <h2>Some terminology and overview</h2>
+            <p>I will be using the word "phrase" when it comes to queries enclosed by double quotes.  To be a phrase you must have terms with a space. For example, "highly significant" would be a phrase, "highly-significant" would not.  Double quotes have no effect when you use them on a query without a space separator.</p>
+            <p>I attempted to make searching PrePubMed similar to PubMed.  First your query is broken up into substrings based on whether or not you have any quoted phrases.  Punctuation is removed from unquoted phrases by converting it to spaces, and then I check if the unquoted phrases contain any author names in the database.  Note that a single quoted word is treated the same as an unquoted word. Any terms which do not match an author then get screened against PubMed's <a href="http://www.ncbi.nlm.nih.gov/books/NBK3827/table/pubmedhelp.T.stopwords/?report=objectonly" target='blank'>stopwords</a>.  If they pass this screen they will be searched against article Titles/Abstracts, along with any identified author names using AND logic.  Phrases in double quotes will not have punctuation or stopwords removed and will be searched against Titles/Abstracts. I decided against allowing search tags such as [AU] since your query is automatically checked for authors, and PrePubMed only indexes a small amount of information for each article.</p>
+            <h3>How to search for authors</h3>
+            <p>You can search for authors almost exactly like in PubMed.  You can search by entering the last name followed by a space and up to two initials.  Trailing commas and periods do not matter since they are converted to spaces and ultimately removed. Internal punctuation will cause your term to be broken up. Suffixes such as jr are not allowed.  If you are searching for an author do not put the name plus abbreviation in quotes, as it will only be searched against the Titles/Abstracts in that case.</p>
+            <p>You can also perform a Full Name search exactly like in PubMed.  For example, Julia s Wong and Wong Julia s will both work (unless someone has the last name Julia and first name s). Because author names are not indexed manually, it is impossible to distinguish a multi-part first or last name from a middle name.  For example, if someone's name is first name: Ricky Bobby and last name: Ferrell, then PrePubMed will index that as first:Ricky, middle:Bobby, last:Ferrell.  As a result, when searching a complicated name you should search using the very first first name and very last last name.</p>
+            <h3>How to search for journals</h3>
+            <p>You can't.  PrePubMed is journal agnostic and I believe that where your article is published should not impact viewership. However, there does appear to be differences in the quality of the preprint servers with regards to indexing information such as author names or ensuring that an article isn't duplicated.  I want the information in PrePubMed to approach the accuracy of PubMed and will be contacting the preprint servers to work towards this goal.  If one preprint server is clearly the best I will consider endorsing its use.</p>     
+            <h3>How to search for subject areas</h3>
+            <p>You kind of can.  The search results provides a list of the subject areas associated with each article, and you can click on them to perform a search for that exact subject area.  The problem is that there is not a consistent subject area system among the four journals that PrePubMed indexes.  As a result, clicking on a tag for Bioinformatics may not return all articles related to bioinformatics.  Because of this, I do not provide the ability to perform a custom search with subject areas.</p>
+            <h3>How to search for affiliation</h3>
+            <p>You can search for affiliation with the advanced search option.  See <a href="#advanced">using advanced search</a> for more details.</p>
+            <h3>What do I do about duplicated or questionable articles?</h3>
+            <p>Nothing. It is the responsibility of the preprint server to not publish duplicated articles (they should be different versions of the same article instead).  Also, how am I supposed to know which version of the article the authors want indexed in PrePubMed.  I also do not believe I should have the authority to prevent articles from being indexed.  If your article passes the screening process at the preprint servers it will be indexed (even if it uses the word God).  It is the job of post-publication peer review to determine whether or not your article is useful, and PrePubMed facilitates that process by providing a means to find your article.</p>
+            <h3>How to search by dates</h3>
+            <p>You can't.  I do index dates, however the problem with dates is that they change for preprints. When someone submits a revised version of an article, it then gets a more recent date.  As a result, an article can be originally published years ago but have a recent date, which is misleading. If articles were sorted by date someone could submit a minimally revised article to get it to appear at the top of the search results.</p>
+            <h3>What punctuation gets removed?</h3>
+            <p>All of these will be converted to spaces if you do not enclose your phrase in double quotes:<br>
+                ! # " $ % & ( ) * + , . / : ; &#60 = &#62 ? @ \ ^ _ ` { | } ~
+            </p>
+            <h3 id="advanced">Using advanced search</h3>
+        </div>
+        <div class="col-sm-2">
+        </div>
+    </div>
+</body>
+</html>

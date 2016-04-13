@@ -19,7 +19,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 def home(request):
     return render(request, 'home.html')
 
-
+def my_help(request):
+    return render (request, 'help.html')
 
 def search_results(request):
     if request.META.get('HTTP_REFERER',False):

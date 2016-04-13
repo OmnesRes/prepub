@@ -31,7 +31,7 @@ stopwords=[i.strip() for i in stopwords.split(',')]
 
 
 
-mypunctuation='!#"$%&()*+,-./:;<=>?@\\^_`{|}~'
+mypunctuation='!#"$%&()*+,./:;<=>?@\\^_`{|}~'
 
 mytable = string.maketrans(mypunctuation,' '*len(mypunctuation))
 
@@ -145,8 +145,17 @@ def parsing_query(mystring,all_terms):
                                     all_terms['names']=all_terms.get('names',[])+[[[query],[['last','full']]]]
                                     return parsing_query(mystring[1:],all_terms)
                             else:
-                                all_terms['names']=all_terms.get('names',[])+[[[query],[['last','full']]]]
-                                return parsing_query(mystring[1:],all_terms)
+                                ##check if it is actually first last
+                                if query_plus_1 in name_last and query in name_first:
+                                    if query_plus_1 in name_first[query][0]:
+                                        all_terms['names']=all_terms.get('names',[])+[[[query,query_plus_1],[['first','full'],['last','full']]]]
+                                        return parsing_query(mystring[2:],all_terms)
+                                    else:
+                                        all_terms['names']=all_terms.get('names',[])+[[[query],[['last','full']]]]
+                                        return parsing_query(mystring[1:],all_terms)
+                                else:
+                                    all_terms['names']=all_terms.get('names',[])+[[[query],[['last','full']]]]
+                                    return parsing_query(mystring[1:],all_terms)
                         else:
                             #could still be wong j or wong js
                             if len(query_plus_1)==1:
@@ -179,7 +188,7 @@ def parsing_query(mystring,all_terms):
                 if len(mystring)!=1:
                     query_plus_1=mystring[1]
                     if len(query_plus_1.split())==1:
-                        if query_plus_1 in name_first[query][0]:
+                        if query_plus_1 in name_first:
                             ##check if query is e.g. julia wong, if so return name
                             if query_plus_1 in name_first[query][0]:
                                 all_terms['names']=all_terms.get('names',[])+[[[query,query_plus_1],[['first','full'],['last','full']]]]
