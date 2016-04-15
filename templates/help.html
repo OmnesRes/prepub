@@ -30,6 +30,10 @@
     h1, h2, h3 {
         color:#724128
     }
+    span.tab{
+    padding: 0 30px;
+    position:relative;
+    }
     img {
         position:relative;
         left:10px;
@@ -91,7 +95,9 @@
     </div>
     <div id="search_area" class="col-sm-12">
         <div class="col-sm-1" style="margin-top:5px">
-            <img src="/static/first_logo.png" style="height:90px">
+            <a href="/">
+                <img src="/static/first_logo.png" style="height:90px">
+            </a>
         </div>
         <div class="col-sm-1">
         </div>
@@ -108,7 +114,7 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-12">
+    <div class="col-sm-12" style="margin-bottom:200px">
         <div class="col-sm-1">
         </div>
         <div class="col-sm-9" style="margin-top:10px;text-align:justify">
@@ -118,8 +124,22 @@
             <p>I will be using the word "phrase" when it comes to queries enclosed by double quotes.  To be a phrase you must have terms with a space. For example, "highly significant" would be a phrase, "highly-significant" would not.  Double quotes have no effect when you use them on a query without a space separator.</p>
             <p>I attempted to make searching PrePubMed similar to PubMed.  First your query is broken up into substrings based on whether or not you have any quoted phrases.  Punctuation is removed from unquoted phrases by converting it to spaces, and then I check if the unquoted phrases contain any author names in the database. Any terms which do not match an author then get screened against PubMed's <a href="http://www.ncbi.nlm.nih.gov/books/NBK3827/table/pubmedhelp.T.stopwords/?report=objectonly" target='blank'>stopwords</a>.  If they pass this screen they will be searched against article Titles/Abstracts, along with any identified author names using AND logic.  Phrases in double quotes will not have punctuation or stopwords removed and will be searched against Titles/Abstracts. I decided against allowing search tags such as [AU] since your query is automatically checked for authors, and PrePubMed only indexes a small amount of information for each article.</p>
             <h3>How to search for authors</h3>
-            <p>You can search for authors almost exactly like in PubMed.  You can search by entering the last name followed by a space and up to two initials.  Trailing commas and periods do not matter since they are converted to spaces and ultimately removed. Internal punctuation will cause your term to be broken up. Suffixes such as jr are not allowed.  If you are searching for an author do not put the name plus abbreviation in quotes, as it will only be searched against the Titles/Abstracts in that case.</p>
-            <p>You can also perform a Full Name search exactly like in PubMed.  For example, Julia s Wong and Wong Julia s will both work (unless someone has the last name Julia and first name s). Because author names are not indexed manually, it is impossible to distinguish a multi-part first or last name from a middle name.  For example, if someone's name is first name: Ricky Bobby and last name: Ferrell, then PrePubMed will index that as first:Ricky, middle:Bobby, last:Ferrell.  As a result, when searching a complicated name you should search using the very first first name and very last last name.</p>
+            <p>You can search for authors almost exactly like in PubMed.  You can search by entering the last name followed by a space and up to two initials.  Trailing commas and periods do not matter since they are converted to spaces and ultimately removed. Internal punctuation will cause your term to be broken up, hyphens excluded. Suffixes such as jr are not allowed.  If you are searching for an author do not put the name plus abbreviation in quotes, as it will only be searched against the Titles/Abstracts in that case.</p>
+            <p>You can also perform a Full Name search exactly like in PubMed.  For example, Julia s Wong and Wong Julia s will both work (unless someone has the last name Julia and first name s). Because author names are not indexed manually, it is impossible to distinguish a multi-part first or last name from a middle name.
+            <br>
+            <br>
+            For example, if someone's name is<br>
+            <b>first name: Ricky Bobby<br>
+            last name: Ferrell</b>
+            <br>
+            <br>
+            Then PrePubMed will index that as<br>
+            <b>first: Ricky<br>
+            middle: Bobby<br>
+            last: Ferrell</b>
+            <br>
+            <br>
+            As a result, when searching a complicated name you should search using the very first first name and very last last name.</p>
             <h3>How to search by journal</h3>
             <p>You can't.  PrePubMed is journal agnostic and I believe that where your article is published should not impact viewership. However, there does appear to be differences in the quality of the preprint servers with regards to indexing information such as author names or ensuring that an article isn't duplicated.  I want the information in PrePubMed to approach the accuracy of PubMed and will be contacting the preprint servers to work towards this goal.  If one preprint server is clearly the best I will consider endorsing its use.</p>     
             <h3>How to search by subject area</h3>
@@ -131,10 +151,38 @@
             <h3>How to search by dates</h3>
             <p>You can't.  I do index dates, however the problem with dates is that they change for preprints. When someone submits a revised version of an article, it then gets a more recent date.  As a result, an article can be originally published years ago but have a recent date, which is misleading. If articles were sorted by date someone could submit a minimally revised article to get it to appear at the top of the search results.</p>
             <h3>What punctuation gets removed?</h3>
-            <p>All of these will be converted to spaces if you do not enclose your phrase in double quotes:<br>
-                ! # " $ % & ( ) * + , . / : ; &#60 = &#62 ? @ \ ^ _ ` { | } ~
+            <p>All of these will be converted to spaces if you do not enclose your phrase in double quotes:
+                <br>
+                <b>! # " $ % & ( ) * + , . / : ; &#60 = &#62 ? @ \ ^ _ ` { | } ~</b>
             </p>
             <h3 id="advanced">Using advanced search</h3>
+            <p>Advanced search allows you to specify exactly what you want searched, which may not be possible with the default search since it auto identifies authors, and removes whitespace, stopwords, and punctuation.
+                <br>
+                <br>
+                Anything you enter will be treated as if it were a quoted phrase, even single words.  For example, this search:
+                <br>
+                <b>Abstract Query 1: highly significant</b>
+                <br>
+                will search for the exact phrase "highly signficant"
+                <br>
+                <br>
+                If you want an abstract that contains both words but don't care about the order, then you need to perform this search:
+                <br>
+                <b>Abstract Query 1: highly<br>
+                Abstract Query 2: significant</b>
+                <br>
+                <br>
+                Advanced Search is the only way that you can search for affiliation. Advanced search is also the only method for searching for a non-ASCII character.  For example, you can search for β with Advanced Search, but not with the default search.
+                <br>
+                <br>
+                You should keep in mind that all Author names are stored with only ASCII characters, so if you search for a name like Łaszcz, you will not receive any results.  You must write the name as Laszcz.
+                <br>
+                <br>
+                Titles, Abstracts, and Affiliations are stored with UTF-8 encoding, so you should be able to search for non-ASCII characters in those searh fields.
+                <br>
+                <br>
+                Note that all fields in Advanced Search will be searched together using AND logic.
+            </p>
         </div>
         <div class="col-sm-2">
         </div>

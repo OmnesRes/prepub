@@ -167,7 +167,9 @@
     </div>
     <div id="search_area" class="col-sm-12">
         <div class="col-sm-1" style="margin-top:5px">
-            <img src="/static/first_logo.png" style="height:90px">
+            <a href="/">
+                <img src="/static/first_logo.png" style="height:90px">
+            </a>
         </div>
         <div class="col-sm-1">
         </div>
@@ -205,7 +207,11 @@
                 <div class="col-sm-4 pagination" style="margin:0px">
                     <span class="step-links">
                         {% if articles.has_previous %}
-                            <a href="?q={{raw}}&page={{ articles.previous_page_number }}">&#60 Prev</a>
+                            {% if raw %}
+                                <a href="?q={{raw}}&page={{ articles.previous_page_number }}">&#60 Prev</a>
+                            {% else %}
+                                <a href="{{query_string}}&page={{ articles.previous_page_number }}">&#60 Prev</a>
+                            {% endif %}
                         {% else %}
                             <span style="color:#777777">&#60 Prev</span>
                         {% endif %}
@@ -213,7 +219,11 @@
                             Page {{ articles.number }} of {{ articles.paginator.num_pages }}
                         </span>
                         {% if articles.has_next %}
-                            <a href="?q={{raw}}&page={{ articles.next_page_number }}">Next &#62</a>
+                            {% if raw %}
+                                <a href="?q={{raw}}&page={{ articles.next_page_number }}">Next &#62</a>
+                            {% else %}
+                                <a href="{{query_string}}&page={{ articles.next_page_number }}">Next &#62</a>
+                            {% endif %}
                         {% else %}
                             <span style="color:#777777">Next &#62</span>
                         {% endif %}

@@ -162,6 +162,12 @@ def search_author(request):
 def advanced_search_results(request):
     if request.META.get('HTTP_REFERER',False):
         if 'au1f' in request.GET:
+            query_string='?au1f=%s&au1m=%s&au1l=%s&au2f=%s&au2m=%s&au2l=%s&ti1=%s&ti2=%s&ab1=%s&ab2=%s&tiab1=%s&tiab2=%s&aff1=%s&aff2=%s'\
+                          % (request.GET['au1f'],request.GET['au1m'],request.GET['au1l'],\
+                             request.GET['au2f'],request.GET['au2m'],request.GET['au2l'],\
+                             request.GET['ti1'],request.GET['ti2'],request.GET['ab1'],request.GET['ab2'],\
+                             request.GET['tiab1'],request.GET['tiab2'],\
+                             request.GET['aff1'], request.GET['aff2'])
             if request.GET['au1f'] or request.GET['au1m'] or request.GET['au1l'] or\
                request.GET['au2f'] or request.GET['au2m'] or request.GET['au2l'] or\
                request.GET['ti1'] or request.GET['ti2'] or\
@@ -231,7 +237,7 @@ def advanced_search_results(request):
                         Articles = paginator.page(1)
                     except EmptyPage:
                         Articles = paginator.page(paginator.num_pages)
-                    return render_to_response('search_results.html', {'articles':Articles})
+                    return render_to_response('search_results.html', {'articles':Articles,'query_string':query_string})
                 else:
                     return render(request, 'search_results.html', {'articles':False})
             else:
@@ -240,12 +246,6 @@ def advanced_search_results(request):
             return redirect(advanced_search)
     else:
         return redirect(advanced_search)
-
-
-
-
-    
-    return render(request, 'search_results.html')
 
 
 
