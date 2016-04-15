@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title> {% block title %}PrePubMed{% endblock %} </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vollkorn">
+    <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <style>
+     body{
+        font-family:"Arial",sans-serif;
+    }
+    #mysite {
+    font-family: "Vollkorn", serif;
+    margin: 0px;
+    padding: 0px;
+    color: white;
+    font-size: 24px;
+    }
+    a:hover{
+        text-decoration: none;
+    }
+
+    #help {
+        position:relative;
+        left:75%;
+    }
+    h2 {
+        color:#985735;
+        font-weight: 600;
+        margin:0px;
+        padding:0px;
+    }
+    h4 {
+        color:#369;
+        font-weight: 600;
+    }
+
+    input[type=text] {
+        border: 2px solid #ca8a68;
+    }
+    
+    input[type=text]:focus {
+        border: 2px solid #985735;
+    }
+
+
+    .btn-primary{
+        background-color:#369;
+        font-color:white;
+        width:300px;
+    }
+    .btn-default {
+        background-color:#985735;
+        font-color:white;
+    }
+    .btn-default:hover {
+        background-color:#985735;
+        font-color:white;
+    }
+    .form-group {
+        margin-top:10px;
+    }
+
+
+    </style>
+</head>
+<body>
+    <div class="col-sm-12" style="background-color: #369; text-align:center">
+        <a id="mysite" href="http://www.omnesres.com/">Omnes Res</a>        
+    </div>
+    <div class="col-sm-12" style="text-align:center">
+        <h2>Advanced Search</h2>
+        <div class="col-sm-12">
+            <div class="col-sm-5">
+            </div>
+            <div class="col-sm-2">
+                <a href="/">
+                    <img src="/static/first_logo.png" style="height:90px;margin-top:10px" class="img-responsive center-block"   >
+                </a>
+            </div>
+            <div class="col-sm-5">
+            </div>
+        </div>
+        <div class="col-sm-12" style="text-align:justify">
+            <div class="col-sm-2">
+            </div>
+            <div class="col-sm-8">
+                <h3>Fill out as many of the forms below as you would like.  All searches will be performed with your exact query. No punctuation, white-space, stopwords, or non-ASCII characters will be removed. See <a href="/help/#advanced">help</a> for more details.</h3>
+            </div>
+            <div class="col-sm-2">
+            </div>
+        </div>
+        <div class="col-sm-12" style="margin-top:20px">
+            <form action="/ad_search_results/" method="get" class="form-inline entry" style="text-align:center">
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#author" style="margin:0px;font-size:24px;align:center">Add Authors</button>
+                    <div id="author" class="collapse" style="font-size:20px;margin-top:10px">
+                        <div class="col-sm-12" style="padding=0px">
+                            <div class="form-group">
+                                <label for="au1f">Author 1 First</label>
+                                <input type="text" class="form-control" name="au1f" maxlength=30 id="au1f">
+                            </div>
+                            <div class="form-group">
+                                <label for="au1m">Middle</label>
+                                <input type="text" class="form-control" name="au1m" maxlength=30 id="au1m">
+                            </div>
+                            <div class="form-group">
+                                <label for="au1l">Last</label>
+                                <input type="text" class="form-control" name="au1l" maxlength=30 id="au1l">
+                            </div>
+                        </div>
+                        <div class="col-sm-12" style="padding=0px">
+                            <div class="form-group">
+                                <label for="au2f">Author 2 First</label>
+                                <input type="text" class="form-control" name="au2f" maxlength=30 id="au2f">
+                            </div>
+                            <div class="form-group">
+                                <label for="au2m">Middle</label>
+                                <input type="text" class="form-control" name="au2m" maxlength=30 id="au2m">
+                            </div>
+                            <div class="form-group">
+                                <label for="au2l">Last</label>
+                                <input type="text" class="form-control" name="au2l" maxlength=30 id="au2l">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12" style="margin-top:10px">
+                    <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#title" style="margin:0px;font-size:24px;align:center">Add Title</button>
+                    <div id="title" class="collapse" style="font-size:20px;margin-top:10px">
+                        <div class="col-sm-12" style="padding=0px">
+                            <div class="form-group">
+                                <label for="ti1">Title Query 1</label>
+                                <input type="text" class="form-control" name="ti1" maxlength=30 id="ti1">
+                            </div>
+                        </div>
+                        <div class="col-sm-12" style="padding=0px">
+                            <div class="form-group">
+                                <label for="ti2">Title Query 2</label>
+                                <input type="text" class="form-control" name="ti2" maxlength=30 id="ti2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12" style="margin-top:10px">
+                    <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#abstract" style="margin:0px;font-size:24px;align:center">Add Abstract</button>
+                    <div id="abstract" class="collapse" style="font-size:20px;margin-top:10px">
+                        <div class="col-sm-12" style="padding=0px">
+                            <div class="form-group">
+                                <label for="ab1">Abstract Query 1</label>
+                                <input type="text" class="form-control" name="ab1" maxlength=30 id="ab1">
+                            </div>
+                        </div>
+                        <div class="col-sm-12" style="padding=0px">
+                            <div class="form-group">
+                                <label for="ab2">Abstract Query 2</label>
+                                <input type="text" class="form-control" name="ab2" maxlength=30 id="ab2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12" style="margin-top:10px">
+                    <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#tiab" style="margin:0px;font-size:24px;align:center">Add Title/Abstract</button>
+                    <div id="tiab" class="collapse" style="font-size:20px;margin-top:10px">
+                        <div class="col-sm-12" style="padding=0px">
+                            <div class="form-group">
+                                <label for="tiab1">Title/Abstract Query 1</label>
+                                <input type="text" class="form-control" name="tiab1" maxlength=30 id="tiab1">
+                            </div>
+                        </div>
+                        <div class="col-sm-12" style="padding=0px">
+                            <div class="form-group">
+                                <label for="tiab2">Title/Abstract Query 2</label>
+                                <input type="text" class="form-control" name="tiab2" maxlength=30 id="tiab2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12" style="margin-top:10px">
+                    <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#aff" style="margin:0px;font-size:24px;align:center">Add Affiliation</button>
+                    <div id="aff" class="collapse" style="font-size:20px;margin-top:10px">
+                        <div class="col-sm-12" style="padding=0px">
+                            <div class="form-group">
+                                <label for="aff1">Affiliation Query 1</label>
+                                <input type="text" class="form-control" name="aff1" maxlength=30 id="aff1">
+                            </div>
+                        </div>
+                        <div class="col-sm-12" style="padding=0px">
+                            <div class="form-group">
+                                <label for="aff2">Affiliation Query 2</label>
+                                <input type="text" class="form-control" name="aff2" maxlength=30 id="aff2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="col-sm-12" style="margin-top:20px;margin-bottom:100px">
+                <button type="submit" class="btn btn-default" style="font-size:36px;color:white">Search!</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

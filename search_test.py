@@ -348,6 +348,7 @@ def parsing_query(mystring,all_terms):
 
 start=time.time()
 qs=perform_query(parsing_query(finalstring,all_terms))
+##qs=Article.objects.filter(abstract__icontains="a")
 len(qs)
 end=time.time()
 print end-start

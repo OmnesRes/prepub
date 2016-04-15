@@ -22,5 +22,7 @@ urlpatterns = [
     url(r'^search_results/',views.search_results),
     url(r'^search_tag/',views.search_tag),
     url(r'^search_author/',views.search_author),
-    url(r'^help/',views.my_help)
+    url(r'^help/',views.my_help),
+    url(r'^advanced_search/',views.advanced_search),
+    url(r'^ad_search_results/',views.advanced_search_results)
 ]

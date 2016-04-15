@@ -12,15 +12,57 @@ from papers.models import Author
 from papers.models import Affiliation
 from papers.models import Tag
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 
 
+def ad_au_query(first,middle,last):
+    and_query = None
+    if first:
+        q = Q(**{"authors__%s__iexact" % "first": first})
+        if and_query is None:
+            and_query = q
+        else:
+            and_query = and_query & q
+    if middle:
+        q = Q(**{"authors__%s__iexact" % "middle": middle})
+        if and_query is None:
+            and_query = q
+        else:
+            and_query = and_query & q
+    if last:
+        q = Q(**{"authors__%s__iexact" % "last": last})
+        if and_query is None:
+            and_query = q
+        else:
+            and_query = and_query & q
+    return and_query
 
+def tiab_query(query_string):
+    query = None        
+    terms = query_string
+    for term in terms:
+        or_query = None
+        for field_name in ['title','abstract']:
+            q = Q(**{"%s__icontains" % field_name: term})
+            if or_query is None:
+                or_query = q
+            else:
+                or_query = or_query | q
+        if query is None:
+            query = or_query
+        else:
+            query = query & or_query
+    return query
 
 def home(request):
     return render(request, 'home.html')
 
 def my_help(request):
-    return render (request, 'help.html')
+    return render(request, 'help.html')
+
+def advanced_search(request):
+    return render(request, 'advanced_search.html')
+
 
 def search_results(request):
     if request.META.get('HTTP_REFERER',False):
@@ -35,16 +77,19 @@ def search_results(request):
                 all_terms={'names':[],'terms':[]}
                 all_terms=parsing_query(get_mystring(raw),all_terms)
                 articles=perform_query(all_terms)
-                if articles.exists():
-                    paginator = Paginator(articles, 20)
-                    page = request.GET.get('page')
-                    try:
-                        Articles = paginator.page(page)
-                    except PageNotAnInteger:
-                        Articles = paginator.page(1)
-                    except EmptyPage:
-                        Articles = paginator.page(paginator.num_pages)
-                    return render_to_response('search_results.html', {'articles': Articles,'raw':raw,'search':pretty_terms(all_terms)})
+                if articles!=[]:
+                    if articles.exists():
+                        paginator = Paginator(articles, 20)
+                        page = request.GET.get('page')
+                        try:
+                            Articles = paginator.page(page)
+                        except PageNotAnInteger:
+                            Articles = paginator.page(1)
+                        except EmptyPage:
+                            Articles = paginator.page(paginator.num_pages)
+                        return render_to_response('search_results.html', {'articles': Articles,'raw':raw,'search':pretty_terms(all_terms)})
+                    else:
+                        return render(request, 'search_results.html', {'articles':False,'search':pretty_terms(all_terms)})
                 else:
                     return render(request, 'search_results.html', {'articles':False,'search':pretty_terms(all_terms)})
             else:
@@ -114,7 +159,93 @@ def search_author(request):
         return redirect(home)
 
 
+def advanced_search_results(request):
+    if request.META.get('HTTP_REFERER',False):
+        if 'au1f' in request.GET:
+            if request.GET['au1f'] or request.GET['au1m'] or request.GET['au1l'] or\
+               request.GET['au2f'] or request.GET['au2m'] or request.GET['au2l'] or\
+               request.GET['ti1'] or request.GET['ti2'] or\
+               request.GET['ab1'] or request.GET['ab2'] or\
+               request.GET['tiab1'] or request.GET['tiab2'] or\
+               request.GET['aff1'] or request.GET['aff2']:
+                qs=None
+                if request.GET['au1f'] or request.GET['au1m'] or request.GET['au1l']:
+                    first=request.GET['au1f']
+                    middle=request.GET['au1m']
+                    last=request.GET['au1l']
+                    qs=Article.objects.filter(ad_au_query(first,middle,last))
+                if request.GET['au2f'] or request.GET['au2m'] or request.GET['au2l']:
+                    first=request.GET['au2f']
+                    middle=request.GET['au2m']
+                    last=request.GET['au2l']
+                    if qs==None:
+                        qs=Article.objects.filter(ad_au_query(first,middle,last))
+                    else:
+                        qs=qs.filter(ad_au_query(first,middle,last))
+                if request.GET['ti1']:
+                    if qs==None:
+                        qs=Article.objects.filter(title__icontains=request.GET['ti1'])
+                    else:
+                        qs=qs.filter(title__icontains=request.GET['ti1'])
+                if request.GET['ti2']:
+                    if qs==None:
+                        qs=Article.objects.filter(title__icontains=request.GET['ti2'])
+                    else:
+                        qs=qs.filter(title__icontains=request.GET['ti2'])
+                if request.GET['ab1']:
+                    if qs==None:
+                        qs=Article.objects.filter(abstract__icontains=request.GET['ab1'])
+                    else:
+                        qs=qs.filter(abstract__icontains=request.GET['ab1'])
+                if request.GET['ab2']:
+                    if qs==None:
+                        qs=Article.objects.filter(abstract__icontains=request.GET['ab2'])
+                    else:
+                        qs=qs.filter(abstract__icontains=request.GET['ab2'])
+                if request.GET['tiab1']:
+                    if qs==None:
+                        qs=Article.objects.filter(tiab_query(request.GET['tiab1']))
+                    else:
+                        qs=qs.filter(tiab_query(request.GET['tiab1']))
+                if request.GET['tiab2']:
+                    if qs==None:
+                        qs=Article.objects.filter(tiab_query(request.GET['tiab2']))
+                    else:
+                        qs=qs.filter(tiab_query(request.GET['tiab2']))
+                if request.GET['aff1']:
+                    if qs==None:
+                        qs=Article.objects.filter(affiliations__name__icontains=request.GET['aff1'])
+                    else:
+                        qs=qs.filter(affiliations__name__icontains=request.GET['aff1'])
+                if request.GET['aff2']:
+                    if qs==None:
+                        qs=Article.objects.filter(affiliations__name__icontains=request.GET['aff2'])
+                    else:
+                        qs=qs.filter(affiliations__name__icontains=request.GET['aff2'])
+                if qs.exists():
+                    paginator=Paginator(qs, 20)
+                    page=request.GET.get('page')
+                    try:
+                        Articles = paginator.page(page)
+                    except PageNotAnInteger:
+                        Articles = paginator.page(1)
+                    except EmptyPage:
+                        Articles = paginator.page(paginator.num_pages)
+                    return render_to_response('search_results.html', {'articles':Articles})
+                else:
+                    return render(request, 'search_results.html', {'articles':False})
+            else:
+                return redirect(advanced_search)
+        else:
+            return redirect(advanced_search)
+    else:
+        return redirect(advanced_search)
 
+
+
+
+    
+    return render(request, 'search_results.html')
 
 
 
