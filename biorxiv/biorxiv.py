@@ -10,7 +10,7 @@ links=[]
 tags=[]
 author_aff=[]
 
-for index in range(2):
+for index in range(380):
     print index
     if index==0:
         r=requests.get("http://biorxiv.org/content/early/recent")
@@ -28,12 +28,12 @@ for index in range(2):
             sur=unicodedata.normalize('NFKD',k.text.strip()).encode('ascii','ignore')
             temp.append(given+' '+sur)
         authors.append(temp)
-    for i in soup.find_all('span',{'class':'highwire-cite-metadata-doi highwire-cite-metadata'}):
-        links.append(i.text.strip().split()[-1])
+    for i in soup.find_all('a',{'class':'highwire-cite-linked-title'}):
+        links.append(i.get('href').strip())
 
 for index,i in enumerate(links):
     print index
-    r=requests.get(i)
+    r=requests.get('http://biorxiv.org'+i)
     if not r.ok:
         print r
     soup=BeautifulSoup(r.content)
@@ -47,8 +47,8 @@ for index,i in enumerate(links):
             temp.append(j.text.strip())
     author_aff.append(temp)
     temp=[]
-    for i in soup.find_all('span',{'class':'highwire-article-collection-term'}):
-        temp.append(i.text.strip())
+    for j in soup.find_all('span',{'class':'highwire-article-collection-term'}):
+        temp.append(j.text.strip())
     tags.append(temp)
 
 
