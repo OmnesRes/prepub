@@ -44,7 +44,7 @@ mypunctuation='!#"$%&()*+,./:;<=>?@\\^_`{|}~'
 
 mytable = string.maketrans(mypunctuation,' '*len(mypunctuation))
 
-##instead of deleting the characters convert to spaces unlease double quoted, merge afterwards
+##instead of deleting the characters convert to spaces unless double quoted, merge afterwards
 	
 
 def normalize_query(query_string):
@@ -134,6 +134,8 @@ def middle_function(name):
     else:
         return name[0]
 
+
+##this is for abb, needed
 def first_function(name):
     if '-' in name:
         name_split=name.split('-')
@@ -142,15 +144,20 @@ def first_function(name):
         return name[0]
 
 
+##i'm changing unique to include full first name 2016 04 19
+##actually, need two unique lists, one for first name and one for last name
 name_first={}
 name_last={}
 unique={}
 for i in pub_authors:
     for author in i:
-        author=author.lower()
+        author=author.lower().replace(',','').replace('.','').replace(' Jr','').replace('Jr ','').replace(' Sr','').replace('Sr ','')
         first_name=author.split()[0]
         last_name=author.split()[-1]
-        middle_name=author.strip(first_name).strip(last_name).strip()
+        if len(name.split())==2:
+            middle_name=''
+        else:
+            middle_name=author.replace(first_name+' ','').replace(' '+last_name,'').strip()
         myauthor=(last_name,first_function(first_name),middle_function(middle_name))
         if myauthor not in unique:
             unique[(last_name,first_function(first_name),middle_function(middle_name))]=''
