@@ -62,13 +62,21 @@ for i in peerj:
     paper.pub_date=date(int(temp[0]),int(temp[1]),int(temp[2]))
     paper.save()
     for author in i[1]:
-        name=author.replace(',','').replace('.','').replace(' Jr','').replace('Jr ','').replace(' Sr','').replace('Sr ','')
+        name=author.replace(',','').replace('.','')
+        if name[:3].lower()=='jr ':
+            name=name[3:]
+        if name[-3:].lower()==' jr':
+            name=name[:-3]
+        if name[:3].lower()=='sr ':
+            name=name[3:]
+        if name[-3:].lower()==' sr':
+            name=name[:-3]
         first_name=name.split()[0]
         last_name=name.split()[-1]
         if len(name.split())==2:
             middle_name=''
         else:
-            middle_name=author.replace(first_name+' ','').replace(' '+last_name,'').strip()
+            middle_name=name.replace(first_name+' ','').replace(' '+last_name,'').strip()
         try:
             auth=Author.objects.get(first=first_name,middle=middle_name,last=last_name)
             paper.authors.add(auth)
@@ -98,13 +106,21 @@ for i in f1000research:
     paper.pub_date=date(int(temp[2]),date_dict[temp[1]],int(temp[0]))
     paper.save()
     for author in i[1]:
-        name=author.replace(',','').replace('.','').replace(' Jr','').replace('Jr ','').replace(' Sr','').replace('Sr ','')
+        name=author.replace(',','').replace('.','')
+        if name[:3].lower()=='jr ':
+            name=name[3:]
+        if name[-3:].lower()==' jr':
+            name=name[:-3]
+        if name[:3].lower()=='sr ':
+            name=name[3:]
+        if name[-3:].lower()==' sr':
+            name=name[:-3]
         first_name=name.split()[0]
         last_name=name.split()[-1]
         if len(name.split())==2:
             middle_name=''
         else:
-            middle_name=author.replace(first_name+' ','').replace(' '+last_name,'').strip()
+            middle_name=name.replace(first_name+' ','').replace(' '+last_name,'').strip()
         try:
             auth=Author.objects.get(first=first_name,middle=middle_name,last=last_name)
             paper.authors.add(auth)
@@ -134,13 +150,21 @@ for i in biorxiv:
     paper.pub_date=date(int(temp[2]),date_dict[temp[0]],int(temp[1]))
     paper.save()
     for author in i[1]:
-        name=author.replace(',','').replace('.','').replace(' Jr','').replace('Jr ','').replace(' Sr','').replace('Sr ','')
+        name=author.replace(',','').replace('.','')
+        if name[:3].lower()=='jr ':
+            name=name[3:]
+        if name[-3:].lower()==' jr':
+            name=name[:-3]
+        if name[:3].lower()=='sr ':
+            name=name[3:]
+        if name[-3:].lower()==' sr':
+            name=name[:-3]
         first_name=name.split()[0]
         last_name=name.split()[-1]
         if len(name.split())==2:
             middle_name=''
         else:
-            middle_name=author.replace(first_name+' ','').replace(' '+last_name,'').strip()
+            middle_name=name.replace(first_name+' ','').replace(' '+last_name,'').strip()
         try:
             auth=Author.objects.get(first=first_name,middle=middle_name,last=last_name)
             paper.authors.add(auth)
@@ -170,13 +194,21 @@ for i in figshare:
     paper.pub_date=date(int(temp[0]),int(temp[1]),int(temp[2]))
     paper.save()
     for author in i[1]:
-        name=author.replace(',','').replace('.','').replace(' Jr','').replace('Jr ','').replace(' Sr','').replace('Sr ','')
+        name=author.replace(',','').replace('.','')
+        if name[:3].lower()=='jr ':
+            name=name[3:]
+        if name[-3:].lower()==' jr':
+            name=name[:-3]
+        if name[:3].lower()=='sr ':
+            name=name[3:]
+        if name[-3:].lower()==' sr':
+            name=name[:-3]
         first_name=name.split()[0]
         last_name=name.split()[-1]
         if len(name.split())==2:
             middle_name=''
         else:
-            middle_name=author.replace(first_name+' ','').replace(' '+last_name,'').strip()
+            middle_name=name.replace(first_name+' ','').replace(' '+last_name,'').strip()
         try:
             auth=Author.objects.get(first=first_name,middle=middle_name,last=last_name)
             paper.authors.add(auth)

@@ -133,6 +133,10 @@ def search_author(request):
                 author=raw
                 first_name=author.split()[0]
                 last_name=author.split()[-1]
+                if len(author.split())==2:
+                    middle_name=''
+                else:
+                    middle_name=author.replace(first_name+' ','').replace(' '+last_name,'').strip()
                 middle_name=author.strip(first_name).strip(last_name).strip()
                 ##lenient on middle due to punctuation differences
                 if middle_name:
