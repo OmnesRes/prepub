@@ -27,8 +27,7 @@ f=open(r'C:\Users\Jordan Anaya\Desktop\prepub\f1000research\f1000research.txt')
 f1000research=[eval(i.strip()) for i in f]
 
 
-##first remove commas and periods, then remove leading and trailing jr
-##use this j.replace(',','').replace('.','').replace(' Jr','').replace('Jr ','').replace(' Sr','').replace('Sr ','')
+
             
 
 ##work on dates

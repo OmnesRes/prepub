@@ -76,7 +76,7 @@ def search_results(request):
                 from papers.views import *
                 all_terms={'names':[],'terms':[]}
                 all_terms=parsing_query(get_mystring(raw),all_terms)
-                articles=perform_query(all_terms)
+                articles=perform_query(all_terms).order_by('-pub_date')
                 if articles!=[]:
                     if articles.exists():
                         paginator = Paginator(articles, 20)
@@ -108,7 +108,7 @@ def search_tag(request):
         if 'q' in request.GET:
             raw=request.GET['q']
             if raw!='':
-                articles=Article.objects.filter(tags__name=raw)
+                articles=Article.objects.filter(tags__name=raw).order_by('-pub_date')
                 if articles.exists():
                     paginator=Paginator(articles, 20)
                     page=request.GET.get('page')
@@ -147,9 +147,9 @@ def search_author(request):
                 middle_name=author.strip(first_name).strip(last_name).strip()
                 ##lenient on middle due to punctuation differences
                 if middle_name:
-                    articles=Article.objects.filter(authors__first=first_name,authors__last=last_name,authors__middle__startswith=middle_name[0])
+                    articles=Article.objects.filter(authors__first=first_name,authors__last=last_name,authors__middle__startswith=middle_name[0]).order_by('-pub_date')
                 else:
-                    articles=Article.objects.filter(authors__first=first_name,authors__last=last_name)
+                    articles=Article.objects.filter(authors__first=first_name,authors__last=last_name).order_by('-pub_date')
                 if articles.exists():
                     paginator=Paginator(articles, 20)
                     page=request.GET.get('page')
@@ -243,6 +243,7 @@ def advanced_search_results(request):
                     else:
                         qs=qs.filter(affiliations__name__icontains=request.GET['aff2'])
                 if qs.exists():
+                    qs=qs.order_by('-pub_date')
                     paginator=Paginator(qs, 20)
                     page=request.GET.get('page')
                     try:

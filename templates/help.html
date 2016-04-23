@@ -119,7 +119,7 @@
         </div>
         <div class="col-sm-9" style="margin-top:10px;text-align:justify">
             <h1>PrePubMed Help</h1>
-            <p>PrePubMed currently indexes several thousand articles from the preprint servers Figshare, PeerJ, and bioRxiv, along with articles at F1000Research that are undergoing post-publication peer review.  New articles are indexed daily. The goal of PrePubMed is to provide a means to search for articles that are not indexed by PubMed, which could be due to the article being "unpublished", or due to the delay between "publication" and indexing by PubMed.  With that said, PrePubMed does not remove articles once they are indexed by PubMed in order to give preprinted articles as much exposure as possible.</p>
+            <p>PrePubMed currently indexes over ten thousand articles from the preprint servers Figshare, PeerJ, and bioRxiv, along with articles at F1000Research that are undergoing post-publication peer review.  New articles are indexed daily. The goal of PrePubMed is to provide a means to search for articles that are not indexed by PubMed, which could be due to the article being "unpublished", or due to the delay between "publication" and indexing by PubMed.  With that said, PrePubMed does not remove articles once they are indexed by PubMed in order to give preprinted articles as much exposure as possible.</p>
             <h2>Some terminology and overview</h2>
             <p>I will be using the word "phrase" when it comes to queries enclosed by double quotes.  To be a phrase you must have terms with a space. For example, "highly significant" would be a phrase, "highly-significant" would not.  Double quotes have no effect when you use them on a query without a space separator.</p>
             <p>I attempted to make searching PrePubMed similar to PubMed.  First your query is broken up into substrings based on whether or not you have any quoted phrases.  Punctuation is removed from unquoted phrases by converting it to spaces, and then I check if the unquoted phrases contain any author names in the database. Any terms which do not match an author then get screened against PubMed's <a href="http://www.ncbi.nlm.nih.gov/books/NBK3827/table/pubmedhelp.T.stopwords/?report=objectonly" target='blank'>stopwords</a>.  If they pass this screen they will be searched against article Titles/Abstracts, along with any identified author names using AND logic.  Phrases in double quotes will not have punctuation or stopwords removed and will be searched against Titles/Abstracts. I decided against allowing search tags such as [AU] since your query is automatically checked for authors, and PrePubMed only indexes a small amount of information for each article.</p>
@@ -145,7 +145,7 @@
             <h3>How to search by subject area</h3>
             <p>You kind of can.  When you perform a search I provide the list of the subject areas associated with each article, and you can click on them to perform a search for that exact subject area.  The problem is that there is not a consistent subject area system among the four journals that PrePubMed indexes.  As a result, clicking on a tag for Bioinformatics may not return all articles related to bioinformatics.  Because of this, I do not provide the ability to perform a custom search with subject areas.</p>
             <h3>How to search by affiliation</h3>
-            <p>You can search for affiliation with the advanced search option.  See <a href="#advanced">using advanced search</a> for more details.</p>
+            <p>You can search for affiliation with the advanced search option.  Note that Figshare does not list affiliations for authors so a search for an affiliation will not return any Figshare preprints.  See <a href="#advanced">using advanced search</a> for more details.</p>
             <h3>What do I do about duplicated or questionable articles?</h3>
             <p>Nothing. It is the responsibility of the preprint server to not publish duplicated articles (they should be different versions of the same article instead).  Also, how am I supposed to know which version of the article the authors want indexed in PrePubMed.  I also do not believe I should have the authority to prevent articles from being indexed.  If your article passes the screening process at the preprint servers it will be indexed (even if it uses the word God).  It is the job of post-publication peer review to determine whether or not your article is useful, and PrePubMed facilitates that process by providing a means to find your article.</p>
             <h3>How to search by dates</h3>
@@ -178,10 +178,10 @@
                 You should keep in mind that all Author names are stored with only ASCII characters, so if you search for a name like Łaszcz, you will not receive any results.  You must write the name as Laszcz.
                 <br>
                 <br>
-                Titles, Abstracts, and Affiliations are stored with UTF-8 encoding, so you should be able to search for non-ASCII characters in those searh fields.
+                Titles, Abstracts, and Affiliations are stored with UTF-8 encoding, so you should be able to search for non-ASCII characters in those search fields.
                 <br>
                 <br>
-                Note that all fields in Advanced Search will be searched together using AND logic.
+                Note that all fields in Advanced Search will be searched together using AND logic. Also not that when using advanced search there will be no information in the "search details" box since you know what the search details are (or at least you should since you just typed them in).
             </p>
         </div>
         <div class="col-sm-2">
