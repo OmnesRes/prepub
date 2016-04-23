@@ -61,6 +61,7 @@ for i in peerj:
     temp=i[2].split('-')
     paper.pub_date=date(int(temp[0]),int(temp[1]),int(temp[2]))
     paper.save()
+    temp=[]
     for author in i[1]:
         name=author.replace(',','').replace('.','')
         if name[:3].lower()=='jr ':
@@ -77,12 +78,17 @@ for i in peerj:
             middle_name=''
         else:
             middle_name=name.replace(first_name+' ','').replace(' '+last_name,'').strip()
+        if middle_name!='':
+            temp.append(first_name+' '+middle_name+' '+last_name)
+        else:
+            temp.append(first_name+' '+last_name)
         try:
             auth=Author.objects.get(first=first_name,middle=middle_name,last=last_name)
             paper.authors.add(auth)
         except:
             auth=Author.objects.create(first=first_name,middle=middle_name,last=last_name)
             paper.authors.add(auth)
+    paper.author_list=str(temp)
     for affiliation in i[-1]:
         try:
             aff=Affiliation.objects.get(name=affiliation)
@@ -105,6 +111,7 @@ for i in f1000research:
     temp=i[2].split()
     paper.pub_date=date(int(temp[2]),date_dict[temp[1]],int(temp[0]))
     paper.save()
+    temp=[]
     for author in i[1]:
         name=author.replace(',','').replace('.','')
         if name[:3].lower()=='jr ':
@@ -121,12 +128,17 @@ for i in f1000research:
             middle_name=''
         else:
             middle_name=name.replace(first_name+' ','').replace(' '+last_name,'').strip()
+        if middle_name!='':
+            temp.append(first_name+' '+middle_name+' '+last_name)
+        else:
+            temp.append(first_name+' '+last_name)
         try:
             auth=Author.objects.get(first=first_name,middle=middle_name,last=last_name)
             paper.authors.add(auth)
         except:
             auth=Author.objects.create(first=first_name,middle=middle_name,last=last_name)
             paper.authors.add(auth)
+    paper.author_list=str(temp)
     for affiliation in i[-1]:
         try:
             aff=Affiliation.objects.get(name=affiliation)
@@ -149,6 +161,7 @@ for i in biorxiv:
     temp=i[2].replace(',','').replace('.','').split()
     paper.pub_date=date(int(temp[2]),date_dict[temp[0]],int(temp[1]))
     paper.save()
+    temp=[]
     for author in i[1]:
         name=author.replace(',','').replace('.','')
         if name[:3].lower()=='jr ':
@@ -165,12 +178,17 @@ for i in biorxiv:
             middle_name=''
         else:
             middle_name=name.replace(first_name+' ','').replace(' '+last_name,'').strip()
+        if middle_name!='':
+            temp.append(first_name+' '+middle_name+' '+last_name)
+        else:
+            temp.append(first_name+' '+last_name)
         try:
             auth=Author.objects.get(first=first_name,middle=middle_name,last=last_name)
             paper.authors.add(auth)
         except:
             auth=Author.objects.create(first=first_name,middle=middle_name,last=last_name)
             paper.authors.add(auth)
+    paper.author_list=str(temp)
     for affiliation in i[-1]:
         try:
             aff=Affiliation.objects.get(name=affiliation)
@@ -193,6 +211,7 @@ for i in figshare:
     temp=i[2].split('T')[0].split('-')
     paper.pub_date=date(int(temp[0]),int(temp[1]),int(temp[2]))
     paper.save()
+    temp=[]
     for author in i[1]:
         name=author.replace(',','').replace('.','')
         if name[:3].lower()=='jr ':
@@ -209,12 +228,17 @@ for i in figshare:
             middle_name=''
         else:
             middle_name=name.replace(first_name+' ','').replace(' '+last_name,'').strip()
+        if middle_name!='':
+            temp.append(first_name+' '+middle_name+' '+last_name)
+        else:
+            temp.append(first_name+' '+last_name)
         try:
             auth=Author.objects.get(first=first_name,middle=middle_name,last=last_name)
             paper.authors.add(auth)
         except:
             auth=Author.objects.create(first=first_name,middle=middle_name,last=last_name)
             paper.authors.add(auth)
+    paper.author_list=str(temp)
     for affiliation in i[-1]:
         try:
             aff=Affiliation.objects.get(name=affiliation)

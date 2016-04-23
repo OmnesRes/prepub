@@ -119,65 +119,6 @@ def perform_query(all_terms):
 
 
 
-##create author dictionary
-
-
-f=open(r'C:\Users\Jordan Anaya\Desktop\prepub\peerj\authors.txt')
-pub_authors=[]
-for i in f:
-    pub_authors.append(eval(i.strip()))
-
-
-def middle_function(name):
-    if name=='':
-        return ''
-    else:
-        return name[0]
-
-
-##this is for abb, needed
-def first_function(name):
-    if '-' in name:
-        name_split=name.split('-')
-        return name_split[0][0]+name_split[1][0]
-    else:
-        return name[0]
-
-
-##i'm changing unique to include full first name 2016 04 19
-##actually, need two unique lists, one for first name and one for last name
-name_first={}
-name_last={}
-unique={}
-for i in pub_authors:
-    for author in i:
-        author=author.lower().replace(',','').replace('.','').replace(' Jr','').replace('Jr ','').replace(' Sr','').replace('Sr ','')
-        first_name=author.split()[0]
-        last_name=author.split()[-1]
-        if len(name.split())==2:
-            middle_name=''
-        else:
-            middle_name=author.replace(first_name+' ','').replace(' '+last_name,'').strip()
-        myauthor=(last_name,first_function(first_name),middle_function(middle_name))
-        if myauthor not in unique:
-            unique[(last_name,first_function(first_name),middle_function(middle_name))]=''
-            name_first[first_name]=[name_first.get(first_name,[[],[]])[0]+[last_name], name_first.get(first_name,[[],[]])[1]+[middle_function(middle_name)]]
-            name_last[last_name]=[name_last.get(last_name,[[],[]])[0]+[first_function(first_name)],\
-                                  name_last.get(last_name,[[],[]])[1]+[middle_function(middle_name)]]
-
-
-##f=open(r'C:\Users\Jordan Anaya\Desktop\prepub\papers\unique.py','w')
-##f.write('unique='+str(unique))
-##f.close()
-
-##f=open(r'C:\Users\Jordan Anaya\Desktop\prepub\papers\name_last.py','w')
-##f.write('name_last='+str(name_last))
-##f.close()
-##
-##f=open(r'C:\Users\Jordan Anaya\Desktop\prepub\papers\name_first.py','w')
-##f.write('name_first='+str(name_first))
-##f.close()
-
 
 
 ##for each author create a list that contains as much info as possible
@@ -354,9 +295,10 @@ def parsing_query(mystring,all_terms):
 
 
 start=time.time()
-qs=perform_query(parsing_query(finalstring,all_terms))
+##qs=perform_query(parsing_query(finalstring,all_terms))
 ##qs=Article.objects.filter(abstract__icontains="a")
-len(qs)
+##len(qs)
+authors=[eval(i['author_list']) for i in Article.objects.all().values()]
 end=time.time()
 print end-start
 

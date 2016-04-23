@@ -1,0 +1,4 @@
+author order is fucked up
+
+save the authors as a one to one field as well,
+this will maintain order and reduce database calls

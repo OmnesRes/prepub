@@ -1,3 +1,4 @@
+{% load custom_filters %}
 <!DOCTYPE html>
 <html lang="en-US">
 <head>
@@ -243,13 +244,13 @@
                             </p>
                             <div class="supp">
                                 <p style="font-size:16px">
-                                    {% for auth in entry.authors.all %}
+                                    {% for auth in authors|return_item:forloop.counter0 %}
                                         {% if forloop.last %}
-                                           <a href="/search_author/?q={{auth.first}} {{auth.middle}} {{auth.last}}">
-                                            {{auth.first}} {{auth.middle}} {{auth.last}}</a>
+                                           <a href="/search_author/?q={{auth}}">
+                                            {{auth}}</a>
                                         {% else %}
-                                            <a href="/search_author/?q={{auth.first}} {{auth.middle}} {{auth.last}}">
-                                            {{auth.first}} {{auth.middle}} {{auth.last}},</a>
+                                            <a href="/search_author/?q={{auth}}">
+                                            {{auth}},</a>
                                         {% endif %}
                                     {% endfor %}
                                 </p>

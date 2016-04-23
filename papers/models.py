@@ -26,6 +26,7 @@ class Article(models.Model):
     abstract=models.TextField()
     pub_date=models.DateField()
     authors=models.ManyToManyField(Author)
+    author_list=models.TextField()
     tags=models.ManyToManyField(Tag)
     affiliations=models.ManyToManyField(Affiliation)
     link=models.CharField(max_length=200)

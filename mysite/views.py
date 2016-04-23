@@ -83,11 +83,15 @@ def search_results(request):
                         page = request.GET.get('page')
                         try:
                             Articles = paginator.page(page)
+                            authors = [eval(j.author_list) for j in Articles]
                         except PageNotAnInteger:
                             Articles = paginator.page(1)
+                            authors = [eval(j.author_list) for j in Articles]
                         except EmptyPage:
                             Articles = paginator.page(paginator.num_pages)
-                        return render_to_response('search_results.html', {'articles': Articles,'raw':raw,'search':pretty_terms(all_terms)})
+                            authors = [eval(j.author_list) for j in Articles]
+                        return render_to_response('search_results.html', {'articles': Articles,'raw':raw,\
+                                                                          'search':pretty_terms(all_terms),'authors':authors})
                     else:
                         return render(request, 'search_results.html', {'articles':False,'search':pretty_terms(all_terms)})
                 else:
@@ -110,11 +114,14 @@ def search_tag(request):
                     page=request.GET.get('page')
                     try:
                         Articles = paginator.page(page)
+                        authors = [eval(j.author_list) for j in Articles]
                     except PageNotAnInteger:
                         Articles = paginator.page(1)
+                        authors = [eval(j.author_list) for j in Articles]
                     except EmptyPage:
                         Articles = paginator.page(paginator.num_pages)
-                    return render_to_response('search_results.html', {'articles':Articles,'raw':raw})
+                        authors = [eval(j.author_list) for j in Articles]
+                    return render_to_response('search_results.html', {'articles':Articles,'raw':raw,'authors':authors})
                 else:
                     return render(request, 'search_results.html', {'articles':False})
             else:
@@ -148,11 +155,14 @@ def search_author(request):
                     page=request.GET.get('page')
                     try:
                         Articles = paginator.page(page)
+                        authors = [eval(j.author_list) for j in Articles]
                     except PageNotAnInteger:
                         Articles = paginator.page(1)
+                        authors = [eval(j.author_list) for j in Articles]
                     except EmptyPage:
                         Articles = paginator.page(paginator.num_pages)
-                    return render_to_response('search_results.html', {'articles':Articles,'raw':raw})
+                        authors = [eval(j.author_list) for j in Articles]
+                    return render_to_response('search_results.html', {'articles':Articles,'raw':raw,'authors':authors})
                 else:
                     return render(request, 'search_results.html', {'articles':False})
             else:
@@ -237,11 +247,15 @@ def advanced_search_results(request):
                     page=request.GET.get('page')
                     try:
                         Articles = paginator.page(page)
+                        authors = [eval(j.author_list) for j in Articles]
                     except PageNotAnInteger:
                         Articles = paginator.page(1)
+                        authors = [eval(j.author_list) for j in Articles]
                     except EmptyPage:
                         Articles = paginator.page(paginator.num_pages)
-                    return render_to_response('search_results.html', {'articles':Articles,'query_string':query_string})
+                        authors = [eval(j.author_list) for j in Articles]
+                    return render_to_response('search_results.html', {'articles':Articles,'query_string':query_string,\
+                                                                      'authors':authors})
                 else:
                     return render(request, 'search_results.html', {'articles':False})
             else:
