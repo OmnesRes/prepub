@@ -1,4 +1,7 @@
-author order is fucked up
+figshare is a clusterfuck
 
-save the authors as a one to one field as well,
-this will maintain order and reduce database calls
+remake the database limiting the publication year for figshare and the tags allowed.
+
+categories allowed: biological sciences, chemistry, health sciences
+
+and only accept articles with created date >=2014
