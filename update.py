@@ -520,72 +520,220 @@ BASE_DIR=os.path.dirname(os.path.abspath(__file__))
 ########################################################################################biorxiv
 
 
+titles=[]
+authors=[]
+dates=[]
+abstracts=[]
+links=[]
+tags=[]
+author_aff=[]
+
+
+
 f=open(os.path.join(BASE_DIR,'biorxiv','biorxiv.txt'))
+
 data=[eval(i.strip()) for i in f]
+newdata=[]
+
+unique={}
+all_links=[]
+for i in data:
+    unique[i[4].split('/')[-1].split('.')[0]]=''
+    all_links.append(i[4])
+
+error=False
+
+X=True
+try:
+    for index in range(380):
+        if X==False:
+            break
+        print 'index',index
+        if index==0:
+            r=requests.get("http://biorxiv.org/content/early/recent")
+        else:
+            r=requests.get("http://biorxiv.org/content/early/recent?page="+str(index))
+        soup=BeautifulSoup(r.content)
+        for i in soup.find_all("span", {"class":"highwire-cite-title"})[::2]:
+            titles.append(i.text.strip())
+        for i in soup.find_all('div',{'class':'highwire-cite-authors'}):
+            temp=[]    
+            for j,k in zip(i.find_all('span',{'class':'nlm-given-names'}),i.find_all('span',{'class':'nlm-surname'})):
+                given=unicodedata.normalize('NFKD',j.text.strip()).encode('ascii','ignore')
+                sur=unicodedata.normalize('NFKD',k.text.strip()).encode('ascii','ignore')
+                temp.append(given+' '+sur)
+            authors.append(temp)
+        for i in soup.find_all('a',{'class':'highwire-cite-linked-title'}):
+            if i.get('href').strip() not in all_links:
+                links.append(i.get('href').strip())
+            else:
+                X=False
+                break
+            
+
+    for index2,i in enumerate(links):
+        print index2
+        r=requests.get('http://biorxiv.org'+i)
+        soup=BeautifulSoup(r.content)
+        dates.append(soup.find('li',{'class':"published"}).text.strip('Posted').strip())
+        abstracts.append(soup.find('p',{'id':"p-2"}).text.strip())
+        temp=[]
+        unique_aff={}
+        for j in soup.find_all('span',{'class':'nlm-aff'}):
+            if j.text.strip() not in unique_aff:
+                unique_aff[j.text.strip()]=''
+                temp.append(j.text.strip())
+        author_aff.append(temp)
+        temp=[]
+        for j in soup.find_all('span',{'class':'highwire-article-collection-term'}):
+            temp.append(j.text.strip())
+        tags.append(temp)
+        
+except Exception as e:
+    error=True
+    f=open(os.path.join(BASE_DIR,'biorxiv','error_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
+    f.write(str(e))
+    f.close()
+
+
+print len(titles),len(authors),len(dates),len(abstracts),len(links),len(tags),len(author_aff)
+
+if error==False:
+    if len(titles)==len(set(titles)):
+        f=open(os.path.join(BASE_DIR,'biorxiv','update_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
+        for title,author,date,abstract,link,tag,author_af in zip(titles,authors,dates,abstracts,links,tags,author_aff):
+            if link.split('/')[-1].split('.')[0] not in unique:
+                f.write(str([title,author,date,abstract,link,tag,author_af]))
+                f.write('\n')
+                newdata.append([title,author,date,abstract,link,tag,author_af])
+        f.close()
+    else:
+        f=open(os.path.join(BASE_DIR,'biorxiv','error_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
+        f.write('duplicate error')
+        f.close()
+else:
+    pass
+
+
+f=open(os.path.join(BASE_DIR,'biorxiv','biorxiv.txt'),'a')
+for i in newdata:
+    f.write(str(i))
+    f.write('\n')
+f.close()
 
 
 
+####deal with updating author dictionaries
+from papers.name_last import name_last
+from papers.name_first import name_first
+from papers.unique_last import unique_last
+from papers.unique_first import unique_first
+
+
+pub_authors=[]
+for i in newdata:
+    for author in i[1]:
+        pub_authors.append(author)
 
 
 
+for i in pub_authors:
+    i=i.replace(',','').replace('.','').lower()
+    if i[:3]=='jr ':
+        i=i[3:]
+    if i[-3:]==' jr':
+        i=i[:-3]
+    if i[:3]=='sr ':
+        i=i[3:]
+    if i[-3:]==' sr':
+        i=i[:-3]
+    first_name=i.split()[0]
+    last_name=i.split()[-1]
+    if len(i.split())==2:
+        middle_name=''
+    else:
+        middle_name=i.replace(first_name+' ','').replace(' '+last_name,'').strip()
+    ##need separate unique dictionaries
+    myauthor_first=(last_name,first_name,middle_function(middle_name))
+    myauthor_last=(last_name,first_function(first_name),middle_function(middle_name))
+    
+    if myauthor_first not in unique_first:
+        unique_first[(last_name,first_name,middle_function(middle_name))]=''
+        name_first[first_name]=[name_first.get(first_name,[[],[]])[0]+[last_name],\
+                                name_first.get(first_name,[[],[]])[1]+[middle_function(middle_name)]]
 
-##for i in newdata:
-##    paper=Article(title=i[0],abstract=i[3],link='http://biorxiv.org'+i[4])
-##    temp=i[2].replace(',','').replace('.','').split()
-##    paper.pub_date=dt(int(temp[2]),date_dict[temp[0]],int(temp[1]))
-##    paper.save()
-##    temp=[]
-##    for author in i[1]:
-##        name=author.replace(',','').replace('.','')
-##        if name[:3].lower()=='jr ':
-##            name=name[3:]
-##        if name[-3:].lower()==' jr':
-##            name=name[:-3]
-##        if name[:3].lower()=='sr ':
-##            name=name[3:]
-##        if name[-3:].lower()==' sr':
-##            name=name[:-3]
-##        first_name=name.split()[0]
-##        last_name=name.split()[-1]
-##        if len(name.split())==2:
-##            middle_name=''
-##        else:
-##            middle_name=name.replace(first_name+' ','').replace(' '+last_name,'').strip()
-##        if middle_name!='':
-##            temp.append(first_name+' '+middle_name+' '+last_name)
-##        else:
-##            temp.append(first_name+' '+last_name)
-##        try:
-##            auth=Author.objects.get(first=first_name,middle=middle_name,last=last_name)
-##            paper.authors.add(auth)
-##        except:
-##            auth=Author.objects.create(first=first_name,middle=middle_name,last=last_name)
-##            paper.authors.add(auth)
-##    paper.author_list=str(temp)
-##    for affiliation in i[-1]:
-##        try:
-##            aff=Affiliation.objects.get(name=affiliation)
-##            paper.affiliations.add(aff)
-##        except:
-##            aff=Affiliation.objects.create(name=affiliation)
-##            paper.affiliations.add(aff)
-##    for t in i[-2]:
-##        try:
-##            tag=Tag.objects.get(name=t)
-##            paper.tags.add(tag)
-##        except:
-##            tag=Tag.objects.create(name=t)
-##            paper.tags.add(tag)
-##    paper.save()
+    if myauthor_last not in unique_last:
+        unique_last[(last_name,first_function(first_name),middle_function(middle_name))]=''
+        name_last[last_name]=[name_last.get(last_name,[[],[]])[0]+[first_function(first_name)],\
+                              name_last.get(last_name,[[],[]])[1]+[middle_function(middle_name)]]
 
 
 
+f=open(os.path.join(BASE_DIR,'papers','unique_last.py'),'w')
+f.write('unique_last='+str(unique_last))
+f.close()
+
+f=open(os.path.join(BASE_DIR,'papers','unique_first.py'),'w')
+f.write('unique_first='+str(unique_first))
+f.close()
+
+f=open(os.path.join(BASE_DIR,'papers','name_last.py'),'w')
+f.write('name_last='+str(name_last))
+f.close()
+
+f=open(os.path.join(BASE_DIR,'papers','name_first.py'),'w')
+f.write('name_first='+str(name_first))
+f.close()
 
 
-
-
-
-
+for i in newdata:
+    paper=Article(title=i[0],abstract=i[3],link='http://biorxiv.org'+i[4])
+    temp=i[2].replace(',','').replace('.','').split()
+    paper.pub_date=dt(int(temp[2]),date_dict[temp[0]],int(temp[1]))
+    paper.save()
+    temp=[]
+    for author in i[1]:
+        name=author.replace(',','').replace('.','')
+        if name[:3].lower()=='jr ':
+            name=name[3:]
+        if name[-3:].lower()==' jr':
+            name=name[:-3]
+        if name[:3].lower()=='sr ':
+            name=name[3:]
+        if name[-3:].lower()==' sr':
+            name=name[:-3]
+        first_name=name.split()[0]
+        last_name=name.split()[-1]
+        if len(name.split())==2:
+            middle_name=''
+        else:
+            middle_name=name.replace(first_name+' ','').replace(' '+last_name,'').strip()
+        if middle_name!='':
+            temp.append(first_name+' '+middle_name+' '+last_name)
+        else:
+            temp.append(first_name+' '+last_name)
+        try:
+            auth=Author.objects.get(first=first_name,middle=middle_name,last=last_name)
+            paper.authors.add(auth)
+        except:
+            auth=Author.objects.create(first=first_name,middle=middle_name,last=last_name)
+            paper.authors.add(auth)
+    paper.author_list=str(temp)
+    for affiliation in i[-1]:
+        try:
+            aff=Affiliation.objects.get(name=affiliation)
+            paper.affiliations.add(aff)
+        except:
+            aff=Affiliation.objects.create(name=affiliation)
+            paper.affiliations.add(aff)
+    for t in i[-2]:
+        try:
+            tag=Tag.objects.get(name=t)
+            paper.tags.add(tag)
+        except:
+            tag=Tag.objects.create(name=t)
+            paper.tags.add(tag)
+    paper.save()
 
 
 
