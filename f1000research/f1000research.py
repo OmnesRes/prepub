@@ -49,6 +49,7 @@ for subject in subject_areas:
 ##        for i in soup.find_all('div',{'class':'article-title-text'}):
 ##            links.append(i.find('a').get('href').strip())
 
+#######################this does not work!!!!!!
         for i in soup.find_all("div",{'class':"article-bottom-bar"}):
             dates.append(i.text.strip("PUBLISHED ").split("\n")[0].strip())
 
