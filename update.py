@@ -1,7 +1,5 @@
 import os
-##need this
-import subprocess
-subprocess.call(['workon','prepubmed'])
+##set virtual env on pythonanywhere with /home/yourusername/path/to/virtualenv/bin/python /home/yourusername/yourscript.py
 
 
 date_dict={"January":1,"February":2,"March":3,"April":4,"May":5,"June":6,\
@@ -84,7 +82,7 @@ try:
     X=True
     for index in range(1,131):
         if X==True:
-            print 'index',index
+##            print 'index',index
             r=requests.get("https://peerj.com/search/?q=&t=&type=preprints&subject=&topic=&uid=&sort=&journal=&page="+str(index))
             templinks=[]
             soup=BeautifulSoup(r.content,'html.parser')
@@ -110,7 +108,7 @@ try:
             for i in soup.find_all("div",{"class":"span7 main-search-item-subjects"}):
                 tags.append(eval(i.text))
             for index2,i in enumerate(templinks):
-                print index2
+##                print index2
                 r=requests.get(i)
                 soup=BeautifulSoup(r.content,'html.parser')
                 try:
@@ -339,7 +337,7 @@ try:
     for index, i in enumerate(templinks):
         r=requests.get(i)
         myjson=r.json()
-        print index, i
+##        print index, i
         try:
             if 'figshare' in myjson['citation'] and 'Taylor & Francis' not in myjson['citation']:
                 abstract=BeautifulSoup(myjson['description']).find('p').text.strip()
@@ -548,7 +546,7 @@ try:
     for index in range(380):
         if X==False:
             break
-        print 'index',index
+##        print 'index',index
         if index==0:
             r=requests.get("http://biorxiv.org/content/early/recent")
         else:
@@ -572,7 +570,7 @@ try:
             
 
     for index2,i in enumerate(links):
-        print index2
+##        print index2
         r=requests.get('http://biorxiv.org'+i)
         soup=BeautifulSoup(r.content)
         dates.append(soup.find('li',{'class':"published"}).text.strip('Posted').strip())
@@ -668,7 +666,7 @@ for i in pub_authors:
 
 
 
-if pub_authors!=[]
+if pub_authors!=[]:
     f=open(os.path.join(BASE_DIR,'papers','unique_last.py'),'w')
     f.write('unique_last='+str(unique_last))
     f.close()
@@ -773,11 +771,11 @@ subject_areas={'387':'Genomics, Computational & Systems Biology','394':'Immunolo
 try: 
     for subject in subject_areas:
         X=True
-        print subject
+##        print subject
         for index in range(1,10):
             if X==False:
                 break
-            print index
+##            print index
             templinks=[]
             r=requests.get("http://f1000research.com/subjects/"+subject+"?selectedDomain=articles&show=20&page="+str(index))
 
@@ -830,7 +828,7 @@ for i in temp_data:
 
 try:
     for index,i in enumerate(temp_newdata):
-        print index,i[3]
+##        print index,i[3]
         r=requests.get('http://f1000research.com'+i[3])
         soup=BeautifulSoup(r.content)
         abstract=soup.find('p',{'class':"article-abstract"}).text.strip()
@@ -859,8 +857,6 @@ if error==False:
         f.write('length error')
         f.close()
         error=True
-else:
-    print 'error'
 
 
 if error==True:
