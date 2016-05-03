@@ -32,6 +32,12 @@ for i in f1000research:
 
 
 
+f=open(r'C:\Users\Jordan Anaya\Desktop\prepub\arxiv\arxiv.txt')
+arxiv=[eval(i.strip()) for i in f]
+for i in arxiv:
+    for author in i[1]:
+        pub_authors.append(author)
+
 def middle_function(name):
     if name=='':
         return ''
@@ -59,33 +65,34 @@ unique_last={}
 unique_first={}
 for i in pub_authors:
     i=i.replace(',','').replace('.','').lower()
-    if i[:3]=='jr ':
-        i=i[3:]
-    if i[-3:]==' jr':
-        i=i[:-3]
-    if i[:3]=='sr ':
-        i=i[3:]
-    if i[-3:]==' sr':
-        i=i[:-3]
-    first_name=i.split()[0]
-    last_name=i.split()[-1]
-    if len(i.split())==2:
-        middle_name=''
-    else:
-        middle_name=i.replace(first_name+' ','').replace(' '+last_name,'').strip()
-    ##need separate unique dictionaries
-    myauthor_first=(last_name,first_name,middle_function(middle_name))
-    myauthor_last=(last_name,first_function(first_name),middle_function(middle_name))
-    
-    if myauthor_first not in unique_first:
-        unique_first[(last_name,first_name,middle_function(middle_name))]=''
-        name_first[first_name]=[name_first.get(first_name,[[],[]])[0]+[last_name],\
-                                name_first.get(first_name,[[],[]])[1]+[middle_function(middle_name)]]
+    if i!='':
+        if i[:3]=='jr ':
+            i=i[3:]
+        if i[-3:]==' jr':
+            i=i[:-3]
+        if i[:3]=='sr ':
+            i=i[3:]
+        if i[-3:]==' sr':
+            i=i[:-3]
+        first_name=i.split()[0]
+        last_name=i.split()[-1]
+        if len(i.split())==2:
+            middle_name=''
+        else:
+            middle_name=i.replace(first_name+' ','').replace(' '+last_name,'').strip()
+        ##need separate unique dictionaries
+        myauthor_first=(last_name,first_name,middle_function(middle_name))
+        myauthor_last=(last_name,first_function(first_name),middle_function(middle_name))
+        
+        if myauthor_first not in unique_first:
+            unique_first[(last_name,first_name,middle_function(middle_name))]=''
+            name_first[first_name]=[name_first.get(first_name,[[],[]])[0]+[last_name],\
+                                    name_first.get(first_name,[[],[]])[1]+[middle_function(middle_name)]]
 
-    if myauthor_last not in unique_last:
-        unique_last[(last_name,first_function(first_name),middle_function(middle_name))]=''
-        name_last[last_name]=[name_last.get(last_name,[[],[]])[0]+[first_function(first_name)],\
-                              name_last.get(last_name,[[],[]])[1]+[middle_function(middle_name)]]
+        if myauthor_last not in unique_last:
+            unique_last[(last_name,first_function(first_name),middle_function(middle_name))]=''
+            name_last[last_name]=[name_last.get(last_name,[[],[]])[0]+[first_function(first_name)],\
+                                  name_last.get(last_name,[[],[]])[1]+[middle_function(middle_name)]]
 
 
 
