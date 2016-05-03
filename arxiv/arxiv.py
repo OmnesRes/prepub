@@ -30,13 +30,20 @@ for cat in categories:
         for entry in soup.find_all('entry'):
             titles.append(entry.find('title').text.strip())
             temp=[]
+            unique={}
+            temp_aff=[]
             for author in entry.find_all('author'):
-                temp.append(unicodedata.normalize('NFKD',author.text.strip()).encode('ascii','ignore'))
+                temp.append(unicodedata.normalize('NFKD',author.find('name').text.strip()).encode('ascii','ignore'))
+                if author.find('arxiv:affiliation')!=None:
+                    if author.find('arxiv:affiliation').text.strip() not in unique:
+                        unique[author.find('arxiv:affiliation').text.strip()]=''
+                        temp_aff.append(author.find('arxiv:affiliation').text.strip())
+                        
             authors.append(temp)
             dates.append(entry.find('published').text.strip().split('T')[0])
             abstracts.append(entry.find('summary').text.strip())
             links.append(entry.find('link',{'type':'text/html'}).get('href').strip())
-            author_aff.append([])
+            author_aff.append(temp_aff)
             tags.append([categories[cat]])
         if len(soup.find_all('entry'))<1000:
             X=False
