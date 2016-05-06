@@ -1024,7 +1024,7 @@ try:
         X=True
         index=0
         while X==True:
-            print cat, index
+##            print cat, index
             r=requests.get("http://export.arxiv.org/api/query?search_query="\
                            +"cat:"+cat+"&max_results=20&sortBy=submittedDate&sortOrder=descending&start="+str(index))
             templinks=[]
@@ -1178,7 +1178,7 @@ if pub_authors!=[]:
 for i in newdata:
     paper=Article(title=i[0],abstract=i[3],link=i[4])
     temp=i[2].split('-')
-    paper.pub_date=date(int(temp[0]),int(temp[1]),int(temp[2]))
+    paper.pub_date=dt(int(temp[0]),int(temp[1]),int(temp[2]))
     paper.save()
     temp=[]
     for author in i[1]:
