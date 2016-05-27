@@ -13,7 +13,7 @@ from papers.models import Affiliation
 from papers.models import Tag
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
-
+import re
 
 def ad_au_query(first,middle,last):
     and_query = None
@@ -63,6 +63,40 @@ def my_help(request):
 def advanced_search(request):
     return render(request, 'advanced_search.html')
 
+def grim_test(request):
+    if request.META.get('HTTP_REFERER',False):
+        if 'size' in request.GET:
+            try:
+                mean=str(request.GET['mean'])
+                size=str(request.GET['size'])
+            except:
+                return render(request, 'grim_test.html', {'unicode':True})
+            if '.' in mean:
+                try:
+                    float(mean)
+                except:
+                    return render(request, 'grim_test.html', {'mean_number':True})
+                if len(mean.split('.')[-1])==2:
+                    mean=float(mean)
+                    if re.search('^[0-9]+$',size):
+                        size=int(size)
+                        if 1<=size<=100:
+                            if round(round(mean*size,0)/size,2)==mean:
+                                return render(request, 'grim_test.html', {'no_error':True,'consistent':True,'size':str(size),'mean':"%.2f" % round(mean,2)})
+                            else:
+                                return render(request, 'grim_test.html', {'no_error':True,'consistent':False,'size':str(size),'mean':"%.2f" % round(mean,2)})
+                        else:
+                            return render(request, 'grim_test.html', {'size_wrong':True})
+                    else:
+                        return render(request, 'grim_test.html', {'size_number':True})
+                else:
+                    return render(request, 'grim_test.html', {'two_places':True})
+            else:
+                return render(request, 'grim_test.html', {'decimal':True})
+        else:
+            return render(request, 'grim_test.html',{'home':True})
+    else:
+        return render(request, 'grim_test.html',{'home':True,})
 
 def search_results(request):
     if request.META.get('HTTP_REFERER',False):

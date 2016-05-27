@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title> {% block title %}PrePubMed{% endblock %} </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vollkorn">
+    <link rel="shortcut icon" href="https://s3.amazonaws.com/prepubmed/prepub_favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://s3.amazonaws.com/prepubmed/prepub_favicon.ico" type="image/x-icon">
+    <style>
+     body{
+        font-family:"Arial",sans-serif;
+    }
+    #mysite {
+    font-family: "Vollkorn", serif;
+    margin: 0px;
+    padding: 0px;
+    color: white;
+    font-size: 24px;
+    }
+    a:hover{
+        text-decoration: none;
+    }
+
+    #help {
+        position:relative;
+        left:75%;
+    }
+    p {
+        font-size:20px
+    }
+    h2 {
+        color:#985735;
+        font-weight: 600;
+        margin:0px;
+        padding:0px;
+    }
+    h4 {
+        color:#369;
+        font-weight: 600;
+    }
+
+    input[type=text] {
+        border: 2px solid #ca8a68;
+    }
+    
+    input[type=text]:focus {
+        border: 2px solid #985735;
+    }
+
+
+
+    .btn-primary{
+        background-color:#369;
+        font-color:white;
+        width:300px;
+    }
+    .btn-default {
+        background-color:#985735;
+        font-color:white;
+    }
+    .btn-default:hover {
+        background-color:#985735;
+        font-color:white;
+    }
+    button {
+        position:relative;
+        top:32px;
+        right:50px;
+    }
+    .form-group {
+        margin-top:10px;
+    }
+
+    #errors {
+        color:red;
+        margin-top:10px;
+        position:relative;
+        top:10px;
+        right:50px;
+        z-index:-100;
+    }
+
+    </style>
+</head>
+<body>
+    <div class="col-sm-12" style="background-color: #369; text-align:center">
+        <a id="mysite" href="http://www.omnesres.com/">Omnes Res</a>        
+    </div>
+    <div class="col-sm-12" style="text-align:center">
+        <h2>GRIM Test</h2>
+        <div class="col-sm-12">
+            <div class="col-sm-5">
+            </div>
+            <div class="col-sm-2">
+                <a href="/">
+                    <img src="https://s3.amazonaws.com/prepubmed/first_logo.png" style="height:90px;margin-top:10px" class="img-responsive center-block"   >
+                </a>
+            </div>
+            <div class="col-sm-5">
+            </div>
+        </div>
+    <div class="col-sm-12">
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-9" style="margin-top:10px;text-align:justify">
+            <p>The GRIM test was developed by James Heathers and Nicholas Brown.  An excellent overview of the test was written by James <a href="https://medium.com/@jamesheathers/the-grim-test-a-method-for-evaluating-published-research-9a4e5f05e870#.l4vbcsjwf">HERE</a> and their test has been published <a href="https://peerj.com/preprints/2064v1/">HERE</a>.  They have an excel calculator for their test <a href="https://osf.io/3fcbr">HERE</a>.  The GRIM test should be part of the standard screening process for new articles, and to simplify its use and help people understand the test I have implemented the GRIM test below.
+            <br>
+            <br>
+            Any errors in the version on this site are mine, and mine alone.
+            <br>
+            <br>
+            When calculating the average of whole numbers with small sample sizes only certain fractions are possible.  As a result, you can check for an error in a publication simply by using the reported mean of the data.  This error may be an honest mistake, or could indicate fraud.  The test below will check if a reported mean to two decimal places is mathematically possible for sample sizes of 100 or less.
+            </p>
+        </div>
+        <div class="col-sm-2">
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <form action="/grim_test/" method="get" class="form-inline entry" style="text-align:center">
+            <div class="col-sm-12">
+                <div style="font-size:20px;margin-top:10px">
+                    <div class="col-sm-12" style="padding=0px">
+                        <div class="col-sm-1">
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <label for="mean">Mean</label>
+                            <div>
+                                <input type="text" class="form-control" name="mean" maxlength=8 id="mean" value={{mean}}>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <label for="size">Sample Size</label>
+                            <div>
+                                <input type="text" class="form-control" name="size" maxlength=3 id="size" value={{size}}>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-default" style="font-size:24px;color:white;">Calculate</button>
+                        </div>
+                        <div class="col-sm-2">
+                        </div>
+                    </div>
+                    {% if unicode %}
+                    <p id="errors">
+                    Please no unicode values
+                    </p>
+                    {% elif mean_number %}
+                    <p id="errors">
+                    Please enter a number with two decimal places for mean
+                    </p>
+                    {% elif decimal %}
+                    <p id="errors">
+                    Please enter a number with two decimal places for mean
+                    </p>
+                    {% elif two_places %}
+                    <p id="errors">
+                    Please enter a number with two decimal places for mean
+                    </p>
+                    {% elif size_number %}
+                    <p id="errors">
+                    Please enter a whole number for size
+                    </p>
+                    {% elif size_wrong %}
+                    <p id="errors">
+                    Please enter a whole number for size between 1 and 100
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+    </div>
+    {% if not home %}
+    {% if no_error %}
+    <div class="col-sm-12" style="margin-top:20px;margin-bottom:100px">
+        <div class="container">
+            {% if consistent %}
+            <div class="alert alert-success" style="font-size:36px">
+                <strong>Consistent!</strong>
+            </div>
+            {% else %}
+            <div class="alert alert-danger" style="font-size:36px">
+                <strong>Inconsistent!</strong>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+    {% endif %}
+</body>
+</html>
