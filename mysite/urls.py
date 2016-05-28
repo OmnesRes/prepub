@@ -26,5 +26,6 @@ urlpatterns = [
     url(r'^grim_test/',views.grim_test),
     url(r'^make_plot/',views.make_plot),
     url(r'^grim_plot/',views.grim_plot),
+    url(r'^general_grim/',views.general_grim),
     
 ]

@@ -71,10 +71,9 @@
     }
 
     .form-inline .form-group input{
-        width:50%;
+        width:80%;
         height:36px;
     }
-
     #errors {
         color:red;
         margin-top:10px;
@@ -91,7 +90,7 @@
         <a id="mysite" href="http://www.omnesres.com/">Omnes Res</a>        
     </div>
     <div class="col-sm-12" style="text-align:center">
-        <h2>GRIM Test</h2>
+        <h2>General GRIM Test</h2>
         <div class="col-sm-12">
             <div class="col-sm-5">
             </div>
@@ -107,32 +106,39 @@
         <div class="col-sm-1">
         </div>
         <div class="col-sm-9" style="margin-top:10px;text-align:justify">
-            <p>The GRIM test was developed by James Heathers and Nicholas Brown.  An excellent overview of the test was written by James <a href="https://medium.com/@jamesheathers/the-grim-test-a-method-for-evaluating-published-research-9a4e5f05e870#.l4vbcsjwf">HERE</a> and their test has been preprinted <a href="https://peerj.com/preprints/2064v1/">HERE</a>.  They have an excel calculator for their test <a href="https://osf.io/3fcbr">HERE</a>.  The GRIM test should be part of the standard screening process for new articles, and to simplify its use and help people understand the test I have implemented the GRIM test below.
-            <br>
-            <br>
-            When calculating the average of whole numbers with small sample sizes only certain fractions are possible.  As a result, you can check for an error in a publication simply by using the reported mean of the data.  This error may be an honest mistake, or could indicate fraud.  The test below will check if a reported mean to two decimal places is mathematically possible for sample sizes less than 100. A more general GRIM test is available <a href="/general_grim/">HERE</a>. This test rounds a decimal like .125 up to .13.
+            <p>The test below will allow for any number of decimal places, samples, and Likert categories. If your value is a fraction convert it to a decimal.  Note that the sample size determines how many decimal places you can check.  With a sample size of 1-99 you can check two decimal places.  With a sample size of 100-999 you can check three decimal places.  This test rounds a decimal like .125 up to .13.
             </p>
         </div>
         <div class="col-sm-2">
         </div>
     </div>
     <div class="col-sm-12">
-        <form action="/grim_test/" method="get" class="form-inline entry" style="text-align:center">
+        <form action="/general_grim/" method="get" class="form-inline entry" style="text-align:center">
             <div class="col-sm-12">
                 <div style="font-size:20px;margin-top:10px">
                     <div class="col-sm-12" style="padding=0px">
                         <div class="col-sm-1">
                         </div>
-                        <div class="form-group col-sm-3">
+                        <div class="form-group col-sm-2">
                             <label for="mean">Mean</label>
                             <div>
-                                <input type="text" class="form-control" name="mean" maxlength=8 id="mean" value={{mean}}>
+                                <input type="text" class="form-control" name="mean" maxlength=12 id="mean" value={{mean}}>
                             </div>
                         </div>
-                        <div class="form-group col-sm-3">
+                        <div class="form-group col-sm-2">
                             <label for="size">Sample Size</label>
                             <div>
-                                <input type="text" class="form-control" name="size" maxlength=3 id="size" value={{size}}>
+                                <input type="text" class="form-control" name="size" maxlength=10 id="size" value={{size}}>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="size">Likert number</label>
+                            <div>
+                                {% if likert %}
+                                <input type="text" class="form-control" name="likert" maxlength=5 id="size" value={{likert}}>
+                                {% else %}
+                                <input type="text" class="form-control" name="likert" maxlength=5 id="size" value=1>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="col-sm-3">
@@ -153,17 +159,13 @@
                     <p id="errors">
                     Please enter a number with two decimal places for mean
                     </p>
-                    {% elif two_places %}
-                    <p id="errors">
-                    Please enter a number with two decimal places for mean
-                    </p>
                     {% elif size_number %}
                     <p id="errors">
                     Please enter a whole number for size
                     </p>
-                    {% elif size_wrong %}
+                    {% elif likert_number %}
                     <p id="errors">
-                    Please enter a whole number for size between 1 and 100
+                    Please enter a whole number for likert
                     </p>
                     {% endif %}
                 </div>
@@ -184,14 +186,6 @@
             </div>
             {% endif %}
         </div>
-        <p>If you would like to visualize where your value falls on a plot of all values click below</p>
-    </div>
-    <div class="col-sm-12" style="margin-bottom:100px">
-        <form action="/grim_plot/" method='get' target='_blank'>
-            <input type="hidden" name="size" value={{ size }}>
-            <input type="hidden" name="mean" value={{ mean }}>
-            <button type="submit" class="btn btn-default" style="font-size:24px;color:white">Plot</button>
-        </form>
     </div>
     {% endif %}
     {% endif %}

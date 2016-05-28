@@ -106,6 +106,57 @@ def grim_test(request):
         return render(request, 'grim_test.html',{'home':True,})
 
 
+
+
+def general_grim(request):
+    if request.META.get('HTTP_REFERER',False):
+        if 'size' in request.GET:
+            try:
+                mean=str(request.GET['mean']).strip()
+                size=str(request.GET['size']).strip()
+                likert=str(request.GET['likert']).strip()
+            except:
+                return render(request, 'general_grim.html', {'unicode':True})
+            if '.' in mean:
+                try:
+                    float(mean)
+                except:
+                    return render(request, 'general_grim.html', {'mean_number':True})
+                decimals=len(mean.split('.')[1])
+                mean=float(mean)
+                if re.search('^[0-9]+$',size):
+                    size=int(size)
+                    if re.search('^[0-9]+$',likert):
+                        likert=int(likert)
+                        if round(round(mean*size*likert,0)/(size*likert),decimals)==mean:
+                            return render(request, 'general_grim.html',\
+                                          {'no_error':True,'consistent':True,\
+                                           'size':size,\
+                                           'mean':("%."+str(decimals)+"f") % round(mean,decimals),\
+                                           'likert':likert})
+                        else:
+                            return render(request, 'general_grim.html',\
+                                          {'no_error':True,\
+                                           'consistent':False,\
+                                           'size':size,\
+                                           'mean':("%."+str(decimals)+"f") % round(mean,decimals),\
+                                           'likert':likert})
+                    else:
+                        return render(request, 'general_grim.html', {'likert_number':True})
+                else:
+                    return render(request, 'general_grim.html', {'size_number':True})
+            else:
+                return render(request, 'general_grim.html', {'decimal':True})
+        else:
+            return render(request, 'general_grim.html',{'home':True})
+    else:
+        return render(request, 'general_grim.html',{'home':True,})
+
+
+
+
+
+
 def make_plot(request):
     if 'size' in request.META['HTTP_REFERER'] and 'mean' in request.META['HTTP_REFERER']:
         from data import *
