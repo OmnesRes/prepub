@@ -63,12 +63,19 @@ def my_help(request):
 def advanced_search(request):
     return render(request, 'advanced_search.html')
 
+
+def grim_plot(request):
+    if request.META.get('HTTP_REFERER',False):
+        return render(request, 'grim_plot.html',{'mean':request.GET['mean'],'size':request.GET['size']})
+    else:
+        return redirect(grim_test)
+
 def grim_test(request):
     if request.META.get('HTTP_REFERER',False):
         if 'size' in request.GET:
             try:
-                mean=str(request.GET['mean'])
-                size=str(request.GET['size'])
+                mean=str(request.GET['mean']).strip()
+                size=str(request.GET['size']).strip()
             except:
                 return render(request, 'grim_test.html', {'unicode':True})
             if '.' in mean:
@@ -98,6 +105,52 @@ def grim_test(request):
     else:
         return render(request, 'grim_test.html',{'home':True,})
 
+
+def make_plot(request):
+    if 'size' in request.META['HTTP_REFERER'] and 'mean' in request.META['HTTP_REFERER']:
+        from data import *
+        from matplotlib.backends.backend_agg import FigureCanvasAgg
+        from matplotlib.figure import Figure
+        import matplotlib.pyplot as plt
+        from matplotlib.patches import Ellipse
+        import gc
+        import numpy as np
+        size=int(request.META['HTTP_REFERER'].split('size=')[1].split('&')[0])
+        decimal=int(request.META['HTTP_REFERER'].split('mean=')[1].strip().split('.')[1])
+        fig=Figure(figsize=(22.62372, 12),facecolor='white')
+        fig.subplots_adjust(bottom=0.15)
+        fig.subplots_adjust(left=0.06)
+        fig.subplots_adjust(right=.99)
+        fig.subplots_adjust(top=.99)
+        ax=fig.add_subplot(111,)
+        white_green = make_colormap({0:'#66ff66',1:'red'})
+        Z=np.rot90(np.array(eval(final_data)),k=1)
+        Z=Z[::-1]
+        ax.pcolor(Z,cmap=white_green)
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        ax.xaxis.set_ticks_position('bottom')
+        ax.yaxis.set_ticks_position('left')
+        ax.set_xticks([i+.5 for i in range(100)])
+        ax.set_xticklabels([str(i) for i in range(1,101)],rotation=270)
+        ax.set_yticks([i-.5 for i in range(100)][::-1][::2])
+        ax.set_yticklabels(["%02d" % i for i in range(-1,99)][::-1][::2])
+        ax.set_ylabel('Decimal Value',fontsize=40,labelpad=10)
+        ax.set_xlabel('Sample Size',fontsize=40,labelpad=0)
+        ax.tick_params(axis='x',length=15,width=2,direction='out',labelsize=12,pad=15)
+        ax.tick_params(axis='y',length=15,width=3,direction='out',labelsize=16,pad=20)
+        circle1=Ellipse((size-.5,decimal+.5),width=1.06,height=2,color='k',fill=False,lw=4,clip_on=False)
+        fig.gca().add_artist(circle1)
+        canvas=FigureCanvasAgg(fig)
+        response=HttpResponse(content_type='image/png')
+        canvas.print_png(response)
+        fig.clf()
+        plt.close(fig)
+        del canvas
+        gc.collect()
+        return response
+
+    
 def search_results(request):
     if request.META.get('HTTP_REFERER',False):
         if 'q' in request.GET:

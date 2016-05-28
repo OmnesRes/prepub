@@ -23,5 +23,8 @@ urlpatterns = [
     url(r'^help/',views.my_help),
     url(r'^advanced_search/',views.advanced_search),
     url(r'^ad_search_results/',views.advanced_search_results),
-    url(r'^grim_test/',views.grim_test)
+    url(r'^grim_test/',views.grim_test),
+    url(r'^make_plot/',views.make_plot),
+    url(r'^grim_plot/',views.grim_plot),
+    
 ]

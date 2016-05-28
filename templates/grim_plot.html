@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title> {% block title %}PrePubMed{% endblock %} </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vollkorn">
+    <link rel="shortcut icon" href="https://s3.amazonaws.com/prepubmed/prepub_favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://s3.amazonaws.com/prepubmed/prepub_favicon.ico" type="image/x-icon">
+    <style>
+     body{
+        font-family:"Arial",sans-serif;
+    }
+    #mysite {
+    font-family: "Vollkorn", serif;
+    margin: 0px;
+    padding: 0px;
+    color: white;
+    font-size: 24px;
+    }
+    p {
+        font-size:20px
+    }
+    h2 {
+        color:#985735;
+        font-weight: 600;
+        margin:0px;
+        padding:0px;
+    }
+    .container {
+      height: 637px;
+      width: 1200px;
+    }
+    
+    .container img {
+      max-height: 100%;
+      max-width: 100%;
+    }
+
+
+    </style>
+</head>
+<body>
+    <div class="col-sm-12" style="background-color: #369; text-align:center">
+        <a id="mysite" href="http://www.omnesres.com/">Omnes Res</a>        
+    </div>
+    <div class="col-sm-12" style="text-align:center">
+        <h2>GRIM Plot</h2>
+    <div class="col-sm-12" style="padding:0">
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-9" style="margin-top:10px;text-align:justify">
+            <p>Green values are mathematically possible while red values are impossible.  Your value is circled.
+            Mean:{{mean}} Size:{{size}}
+            </p>
+        </div>
+        <div class="col-sm-2">
+        </div>
+    </div>
+    <div class="col-sm-12" style="padding:0">
+        <div class="container">
+            <img class ="img-responsive center-block" src='/make_plot/' width=100% height=50%>
+        </div>
+    </div>
+    </div>
+</body>
+</html>
