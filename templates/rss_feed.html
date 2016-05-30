@@ -59,8 +59,8 @@
     }
     #calculate {
         position:relative;
-        top:36px;
-        right:50px;
+        top:40px;
+        right:70px;
     }
     .form-group {
         margin-top:10px;
@@ -71,9 +71,10 @@
     }
 
     .form-inline .form-group input{
-        width:80%;
-        height:36px;
+        width:70%;
+        height:48px;
     }
+
     #errors {
         color:red;
         margin-top:10px;
@@ -90,7 +91,7 @@
         <a id="mysite" href="http://www.omnesres.com/">Omnes Res</a>        
     </div>
     <div class="col-sm-12" style="text-align:center">
-        <h2>General GRIM Test</h2>
+        <h2>RSS Feed</h2>
         <div class="col-sm-12">
             <div class="col-sm-5">
             </div>
@@ -103,46 +104,45 @@
             </div>
         </div>
     <div class="col-sm-12">
-        <div class="col-sm-1">
+        <div class="col-sm-2">
         </div>
-        <div class="col-sm-9" style="margin-top:10px;text-align:justify">
-            <p>The test below will allow for any number of decimal places, samples, and Likert categories. If your value is a percent convert it to a decimal.  Note that the sample size determines how many decimal places you can check.  With a sample size of 1-99 you can check two decimal places.  With a sample size of 100-999 you can check three decimal places.  This test rounds a decimal like .125 up to .13.
+        <div class="col-sm-7" style="margin-top:10px;text-align:left">
+            <p>
+            To generate your RSS Feed type in your query below.
+            <br>
+            Your query will only be searched against titles and abstracts.
+            <br>
+            Use double quotes around multiple words for exact phrases.
+            <br>
+            <a href="http://www.ncbi.nlm.nih.gov/books/NBK3827/table/pubmedhelp.T.stopwords/?report=objectonly" target='blank'>Stopwords</a> will be removed if they aren't part of phrase.
+            <br>
+            Punctuation is also removed if it is not part of a phrase.
+            <br>
+            All terms will be combined using AND logic.
+            <br>
+            The feed will give you the 20 most recent items matching your search.
+            <br>
+            Non-ASCII characters are not allowed.
             </p>
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-4">
         </div>
     </div>
     <div class="col-sm-12">
-        <form action="/general_grim/" method="get" class="form-inline entry" style="text-align:center">
+        <form action="/rss_feed/" method="get" class="form-inline entry" style="text-align:center">
             <div class="col-sm-12">
                 <div style="font-size:20px;margin-top:10px">
                     <div class="col-sm-12" style="padding=0px">
                         <div class="col-sm-1">
                         </div>
-                        <div class="form-group col-sm-2">
-                            <label for="mean">Mean</label>
+                        <div class="form-group col-sm-6">
+                            <label for="q">Input your search terms here</label>
                             <div>
-                                <input type="text" class="form-control" name="mean" maxlength=12 id="mean" value={{mean}}>
-                            </div>
-                        </div>
-                        <div class="form-group col-sm-2">
-                            <label for="size">Sample Size</label>
-                            <div>
-                                <input type="text" class="form-control" name="size" maxlength=10 id="size" value={{size}}>
-                            </div>
-                        </div>
-                        <div class="form-group col-sm-2">
-                            <label for="size">Likert Number</label>
-                            <div>
-                                {% if likert %}
-                                <input type="text" class="form-control" name="likert" maxlength=5 id="size" value={{likert}}>
-                                {% else %}
-                                <input type="text" class="form-control" name="likert" maxlength=5 id="size" value=1>
-                                {% endif %}
+                                <input type="text" class="form-control" name="q" maxlength=50 id="q">
                             </div>
                         </div>
                         <div class="col-sm-3">
-                            <button id="calculate" type="submit" class="btn btn-default" style="font-size:24px;color:white">Calculate</button>
+                            <button id="calculate" type="submit" class="btn btn-default" style="font-size:28px;color:white">Generate RSS</button>
                         </div>
                         <div class="col-sm-2">
                         </div>
@@ -151,43 +151,10 @@
                     <p id="errors">
                     Please no unicode values
                     </p>
-                    {% elif mean_number %}
-                    <p id="errors">
-                    Please enter a number with two decimal places for mean
-                    </p>
-                    {% elif decimal %}
-                    <p id="errors">
-                    Please enter a number with two decimal places for mean
-                    </p>
-                    {% elif size_number %}
-                    <p id="errors">
-                    Please enter a whole number for size
-                    </p>
-                    {% elif likert_number %}
-                    <p id="errors">
-                    Please enter a whole number for likert
-                    </p>
                     {% endif %}
                 </div>
             </div>
         </form>
     </div>
-    {% if not home %}
-    {% if no_error %}
-    <div class="col-sm-12" style="margin-top:20px">
-        <div class="container">
-            {% if consistent %}
-            <div class="alert alert-success" style="font-size:36px">
-                <strong>Consistent!</strong>
-            </div>
-            {% else %}
-            <div class="alert alert-danger" style="font-size:36px">
-                <strong>Inconsistent!</strong>
-            </div>
-            {% endif %}
-        </div>
-    </div>
-    {% endif %}
-    {% endif %}
 </body>
 </html>

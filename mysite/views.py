@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.contrib.syndication.views import Feed
 
 
 from papers.models import Article
@@ -54,11 +55,54 @@ def tiab_query(query_string):
             query = query & or_query
     return query
 
+
+class RSSFeed(Feed):
+    def get_object(self, request, query):
+        return str(query)
+
+    def title(self, obj):
+        return "Custom RSS Feed for PrePubMed"
+
+    def link(self, obj):
+        return ('/rss/'+obj+'/')
+
+    def description(self, obj):
+        return "Twenty most recent articles for the search: " + obj
+    
+    def items(self,obj):
+        from papers.views import *
+        return Article.objects.filter(tiab_query(get_mystring(obj))).order_by('-pub_date')[:20]
+
+    def item_title(self, item):
+        return item.title
+
+    def item_description(self, item):
+        return item.abstract
+
+    def item_link(self, item):
+        return item.link
+        
+        
+
 def home(request):
     return render(request, 'home.html')
 
+
 def my_help(request):
     return render(request, 'help.html')
+
+def rss_feed(request):
+    if request.META.get('HTTP_REFERER',False):
+        if 'q' in request.GET:
+            try:
+                query=str(request.GET['q']).strip()
+                return redirect('/articles/'+query+'/rss/')
+            except:
+                return render(request, 'rss_feed.html', {'unicode':True})
+        else:
+            return render(request, 'rss_feed.html')
+    else:
+        return render(request, 'rss_feed.html')
 
 def advanced_search(request):
     return render(request, 'advanced_search.html')
@@ -365,14 +409,14 @@ def advanced_search_results(request):
                         qs=qs.filter(abstract__icontains=request.GET['ab2'])
                 if request.GET['tiab1']:
                     if qs==None:
-                        qs=Article.objects.filter(tiab_query(request.GET['tiab1']))
+                        qs=Article.objects.filter(tiab_query([request.GET['tiab1']]))
                     else:
-                        qs=qs.filter(tiab_query(request.GET['tiab1']))
+                        qs=qs.filter(tiab_query([request.GET['tiab1']]))
                 if request.GET['tiab2']:
                     if qs==None:
-                        qs=Article.objects.filter(tiab_query(request.GET['tiab2']))
+                        qs=Article.objects.filter(tiab_query([request.GET['tiab2']]))
                     else:
-                        qs=qs.filter(tiab_query(request.GET['tiab2']))
+                        qs=qs.filter(tiab_query([request.GET['tiab2']]))
                 if request.GET['aff1']:
                     if qs==None:
                         qs=Article.objects.filter(affiliations__name__icontains=request.GET['aff1'])
