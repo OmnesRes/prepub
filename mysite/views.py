@@ -58,7 +58,10 @@ def tiab_query(query_string):
 
 class RSSFeed(Feed):
     def get_object(self, request, query):
-        return str(query)
+        try:
+            return str(query).lower()
+        except:
+            return ''
 
     def title(self, obj):
         return "Custom RSS Feed for PrePubMed"
@@ -71,7 +74,17 @@ class RSSFeed(Feed):
     
     def items(self,obj):
         from papers.views import *
-        return Article.objects.filter(tiab_query(get_mystring(obj))).order_by('-pub_date')[:20]
+        mystring=get_mystring(obj)
+        final_query=[]
+        for i in mystring:
+            if i in stopwords:
+                pass
+            else:
+                final_query.append(i)
+        try:
+            return Article.objects.filter(tiab_query(final_query)).order_by('-pub_date')[:20]
+        except:
+            return Article.objects.none()
 
     def item_title(self, item):
         return item.title
@@ -95,8 +108,19 @@ def rss_feed(request):
     if request.META.get('HTTP_REFERER',False):
         if 'q' in request.GET:
             try:
-                query=str(request.GET['q']).strip()
-                return redirect('/articles/'+query+'/rss/')
+                query=str(request.GET['q']).strip().lower()
+                from papers.views import *
+                mystring=get_mystring(query)
+                all_terms=''
+                for i in mystring:
+                    if i in stopwords:
+                        pass
+                    else:
+                        all_terms+=i
+                if all_terms!='':
+                    return redirect('/articles/'+query+'/rss/')
+                else:
+                    return render(request, 'rss_feed.html', {'stopwords':True})
             except:
                 return render(request, 'rss_feed.html', {'unicode':True})
         else:
@@ -210,8 +234,8 @@ def make_plot(request):
         from matplotlib.patches import Ellipse
         import gc
         import numpy as np
-        size=int(request.META['HTTP_REFERER'].split('size=')[1].split('&')[0])
-        decimal=int(request.META['HTTP_REFERER'].split('mean=')[1].strip().split('.')[1])
+        decimal=int(request.META['HTTP_REFERER'].split('mean=')[1].split('&')[0].split('.')[1])
+        size=int(request.META['HTTP_REFERER'].split('size=')[1].strip())
         fig=Figure(figsize=(22.62372, 12),facecolor='white')
         fig.subplots_adjust(bottom=0.15)
         fig.subplots_adjust(left=0.06)

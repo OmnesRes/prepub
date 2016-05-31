@@ -149,7 +149,11 @@
                     </div>
                     {% if unicode %}
                     <p id="errors">
-                    Please no unicode values
+                        Please no unicode values
+                    </p>
+                    {% elif stopwords %}
+                    <p id="errors">
+                        You entered only stopwords or an empty string.
                     </p>
                     {% endif %}
                 </div>
