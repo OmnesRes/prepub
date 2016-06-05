@@ -121,9 +121,19 @@
     #number{
         margin-top:5px;
         padding-right:10px;
+        padding-left:0px;
         font-size:24px;
         margin-right:0px;
         text-align:right;
+    }
+    #date{
+        padding:0px;
+        margin-top:10px;
+        font-size:20px;
+        position:relative;
+        right:80px;
+        text-align:left;
+        color:#4d4d4d;
     }
     #info {
         padding-left:0px;
@@ -194,9 +204,7 @@
         </div>
     </div>
     <div class="col-sm-12" style="margin-top:20px">
-        <div class="col-sm-1">
-        </div>
-        <div class="col-sm-9">
+        <div class="col-sm-10">
             {% if articles %}
             <div class="col-sm-12" style="margin-bottom:5px">
                 <div class="col-sm-4" style="padding-left:0px">
@@ -237,14 +245,20 @@
                     </span>
                 </div>
             </div>
+        </div>
+        <div class="col-sm-2">
+        </div>
+    </div>
+    <div class="col-sm-12" style="margin-bottom:20px;position:relative">
+        <div class="col-sm-10">
             {% for entry in articles %}
             <div class="col-sm-12" style="margin-bottom:20px">
-                <div class="col-sm-1" id="number">
-                    {{forloop.counter0|add:articles.start_index}}.
-                </div>
-                <div class="col-sm-11" id="info">
-                    <div class="col-sm-12" style="padding:0px">
-                        <div class="col-sm-10" style="padding:0px">
+                <div class="col-sm-10" style="margin:0px;padding:0px;position:relative;right:40px">
+                    <div class="col-sm-1" id="number">
+                        {{forloop.counter0|add:articles.start_index}}.
+                    </div>
+                    <div class="col-sm-10" id="info">
+                        <div class="col-sm-12" style="padding:0px">
                             <p class="title">
                                 <a href={{entry.link}}>{{entry.title}}</a>
                             </p>
@@ -270,12 +284,8 @@
                                     {% endfor %}
                                 </p>
                             </div>
-                            <div class="col-sm-2" style="padding:0px">
-                            </div>
                         </div>
-                    </div>
-                    <div class="col-sm-12" id="mytoggle" style="padding:0px">
-                        <div class="col-sm-10" style="padding:0px">
+                        <div class="col-sm-12" id="mytoggle" style="padding:0px">
                             <p class="show_abstracts btn">
                             Abstract
                             </p>
@@ -283,9 +293,10 @@
                             {{entry.abstract}}
                             </p>
                         </div>
-                        <div class="col-sm-2" style="padding:0px">
-                        </div>
                     </div>
+                </div>
+                <div class="col-sm-2" id="date">
+                    {{entry.pub_date}}
                 </div>
             </div>
             {% endfor %}
@@ -320,7 +331,7 @@
             </div>
             {% endif %}
         </div>
-        <div class="col-sm-2" style="margin-top:100px;position:relative;right:100px">
+        <div class="col-sm-2" style="position:relative;right:80px">
             <h3 id="search_details">Search details</h3>
             <textarea rows='15' cols="30">{{search}}</textarea>
         </div>

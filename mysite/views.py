@@ -313,14 +313,14 @@ def search_tag(request):
     if request.META.get('HTTP_REFERER',False):
         if 'q' in request.GET:
             if '%20' in request.META.get('QUERY_STRING'):
-                raw=request.META.get('QUERY_STRING').replace('%20',' ').replace('q=','')
+                raw=request.META.get('QUERY_STRING').replace('%20',' ').replace('q=','').split('&page=')[0]
             else:
                 raw=request.GET['q']
             if raw!='':
                 articles=Article.objects.filter(tags__name=raw).order_by('-pub_date')
                 if articles.exists():
                     paginator=Paginator(articles, 20)
-                    page=request.GET.get('page')
+                    page = request.GET.get('page')
                     try:
                         Articles = paginator.page(page)
                         authors = [eval(j.author_list) for j in Articles]
