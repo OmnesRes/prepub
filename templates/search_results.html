@@ -303,7 +303,23 @@
             {% else %}
             <div class="col-sm-12">
                 <div class="col-sm-11" style="font-size:24px">
-                    {% if not unicode %}
+                    {% if unicode %}
+                        It appears you entered a unicode character which could not be converted to ASCII.
+                        <br>
+                        <br>
+                        Some of my functions are not able to handle these characters, so I can't allow them to be searched.
+                        <br>
+                        <br>
+                        If you copied and pasted your search text from somewhere please type it in by hand and search again.
+                    {% elif stopwords %}
+                        It appears you only entered stopwords.
+                        <br>
+                        <br>
+                        Stopwords that get removed are available at <a href="http://www.ncbi.nlm.nih.gov/books/NBK3827/table/pubmedhelp.T.stopwords/?report=objectonly">stopwords</a>
+                        <br>
+                        <br>
+                        Please enter a query that is more than just stopwords.
+                    {% else %}
                         No items were found for your query.
                         <br>
                         <br>
@@ -316,14 +332,6 @@
                         <br>
                         <br>
                         See <a href="/help/">Help</a> for more details on how I parse your query and perform searches.
-                    {% else %}
-                        It appears you entered a unicode character which could not be converted to ASCII.
-                        <br>
-                        <br>
-                        Some of my functions are not able to handle these characters, so I can't allow them to be searched.
-                        <br>
-                        <br>
-                        If you copied and pasted your search text from somewhere please type it in by hand and search again.
                     {% endif %}
                 </div>
                 <div class="col-sm-1">

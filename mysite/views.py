@@ -282,26 +282,29 @@ def search_results(request):
                 from papers.views import *
                 all_terms={'names':[],'terms':[]}
                 all_terms=parsing_query(get_mystring(raw),all_terms)
-                articles=perform_query(all_terms).order_by('-pub_date')
-                if articles!=[]:
-                    if articles.exists():
-                        paginator = Paginator(articles, 20)
-                        page = request.GET.get('page')
-                        try:
-                            Articles = paginator.page(page)
-                            authors = [eval(j.author_list) for j in Articles]
-                        except PageNotAnInteger:
-                            Articles = paginator.page(1)
-                            authors = [eval(j.author_list) for j in Articles]
-                        except EmptyPage:
-                            Articles = paginator.page(paginator.num_pages)
-                            authors = [eval(j.author_list) for j in Articles]
-                        return render_to_response('search_results.html', {'articles': Articles,'raw':raw,\
-                                                                          'search':pretty_terms(all_terms),'authors':authors})
+                if all_terms=={'names':[],'terms':[]}:
+                    return render(request, 'search_results.html', {'articles':False,'search':None,'stopwords':True})
+                else:
+                    articles=perform_query(all_terms).order_by('-pub_date')
+                    if articles!=[]:
+                        if articles.exists():
+                            paginator = Paginator(articles, 20)
+                            page = request.GET.get('page')
+                            try:
+                                Articles = paginator.page(page)
+                                authors = [eval(j.author_list) for j in Articles]
+                            except PageNotAnInteger:
+                                Articles = paginator.page(1)
+                                authors = [eval(j.author_list) for j in Articles]
+                            except EmptyPage:
+                                Articles = paginator.page(paginator.num_pages)
+                                authors = [eval(j.author_list) for j in Articles]
+                            return render_to_response('search_results.html', {'articles': Articles,'raw':raw,\
+                                                                              'search':pretty_terms(all_terms),'authors':authors})
+                        else:
+                            return render(request, 'search_results.html', {'articles':False,'search':pretty_terms(all_terms)})
                     else:
                         return render(request, 'search_results.html', {'articles':False,'search':pretty_terms(all_terms)})
-                else:
-                    return render(request, 'search_results.html', {'articles':False,'search':pretty_terms(all_terms)})
             else:
                 return redirect(home)
         else:
