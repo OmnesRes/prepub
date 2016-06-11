@@ -1,4 +1,6 @@
 ##This is the production code for www.prepubmed.org.
+An article discussing how PrePubMed works is available at http://www.omnesres.com/research/prepubmed/.
+
 PrePubMed runs on Django 1.8, and update.py needs BeautifulSoup and requests.
 
 The GRIM test plot function needs NumPy and Matplotlib.
