@@ -941,9 +941,6 @@ if error==False:
         error=True
 
 
-
-
-
 if error==True:
     newdata=[]
 else:
@@ -1019,5 +1016,169 @@ for i in newdata:
             paper.tags.add(tag)
     paper.save()
 
+###############################################################################winnower
+
+f=open(os.path.join(BASE_DIR,'winnower','winnower.txt'))
+data=[eval(i.strip()) for i in f]
+unique_links=[i[4] for i in data]
+titles=[]
+authors=[]
+dates=[]
+abstracts=[]
+links=[]
+tags=[]
+author_aff=[]
+error=False
 
 
+categories=['biological-sciences','engineering','medicine','chemistry','humanities','computer-sciences','earth-sciences',\
+            'mathematics','physics','reddit','science-and-society','social-sciences']
+
+base='https://thewinnower.com/topics/'
+
+try:
+    for cat in categories:
+        index=1
+        templinks=[]
+        X=True
+        while True:
+            r=requests.get(base+cat+'?page='+str(index))
+            soup=BeautifulSoup(r.content,'html.parser')
+            for i in soup.find_all("h3", {'class':'alt'}):
+                if i.find('a').get('href') in unique_links:
+                    X=False
+                else:
+                    templinks.append(i.find('a').get('href'))
+            if X==False:
+                break
+            if soup.find_all("a", {'class':'load_more green button'}):
+                index+=1
+            else:
+                break
+        for i in templinks:
+            r=requests.get('https://thewinnower.com'+i)
+            soup=BeautifulSoup(r.content,'html.parser')
+            if soup.find('ul',{'class','paper-meta'}).find_all('li')[-1].text.split('\n')[-2]=='Paper':
+                dates.append(soup.find('ul',{'class','paper-meta'}).find_all('li')[1].text.split('\n')[-2].strip())
+                titles.append(soup.find('div',{'class','paper'}).find('h1').text.strip())
+                abstracts.append('')
+                links.append(i)
+                temp_authors=[]
+                for j in soup.find('ul',{'class','authors'}).find_all('li'):
+                    temp_authors.append(unicodedata.normalize('NFKD',j.text.split('\n')[1].strip()).encode('ascii','ignore'))
+                authors.append(temp_authors)
+                temp_aff=[]
+                for j in soup.find('ol',{'class','affiliations'}).find_all('li'):
+                    temp_aff.append(j.text.split(u'\xa0')[-1].strip())
+                author_aff.append(temp_aff)
+                if cat=='computer-sciences':
+                    tags.append(['Computer Sciences'])
+                elif cat=='mathematics':
+                    tags.append(['Mathematics'])
+                elif cat=='physics':
+                    tags.append(['Physics'])
+                elif cat=='social-sciences':
+                    tags.append(['Social Sciences'])
+                else:
+                    temp_tags=[]
+                    for j in soup.find('ul',{'class',cat}).find_all('li')[1:]:
+                        temp_tags.append(j.text.strip())
+                    tags.append(temp_tags)
+            else:
+                pass
+except Exception as e:
+    error=True
+    f=open(os.path.join(BASE_DIR,'winnower','error_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
+    f.write(str(e))
+    f.close()
+
+
+if error==False: 
+    if len(titles)==len(authors)==len(dates)==len(abstracts)==len(links)==len(tags)==len(author_aff):
+        data=[]
+        for title,author,date,abstract,link,tag,author_af in zip(titles,authors,dates,abstracts,links,tags,author_aff):
+            data.append([title,author,date,abstract,link,tag,author_af])
+        f=open(os.path.join(BASE_DIR,'winnower','update_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
+        for i in data:
+            f.write(str(i))
+            f.write('\n')
+        f.close()
+    else:
+        f=open(os.path.join(BASE_DIR,'winnower','error_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
+        f.write('length error')
+        f.close()
+        error=True
+
+
+
+if error==True:
+    data=[]
+else:
+    f=open(os.path.join(BASE_DIR,'winnower','arxiv.txt'),'a')
+    for i in data:
+        f.write(str(i))
+        f.write('\n')
+    f.close()
+
+######deal with updating author dictionaries
+from papers.name_last import name_last
+from papers.name_first import name_first
+from papers.unique_last import unique_last
+from papers.unique_first import unique_first
+
+
+pub_authors=[]
+for i in data:
+    for author in i[1]:
+        pub_authors.append(author)
+
+update_authors(pub_authors)
+
+for i in data:
+    paper=Article(title=i[0],abstract=i[3],link='https://thewinnower.com'+i[4])
+    temp=i[2].split()
+    paper.pub_date=dt(int(temp[2]),date_dict[temp[0]],int(temp[1]))
+    paper.save()
+    temp=[]
+    for author in i[1]:
+        name=author.replace(',','').replace('.','')
+        if name[:3].lower()=='jr ':
+            name=name[3:]
+        if name[-3:].lower()==' jr':
+            name=name[:-3]
+        if name[:3].lower()=='sr ':
+            name=name[3:]
+        if name[-3:].lower()==' sr':
+            name=name[:-3]
+        first_name=name.split()[0]
+        last_name=name.split()[-1]
+        if len(name.split())==2:
+            middle_name=''
+        else:
+            middle_name=name.replace(first_name+' ','').replace(' '+last_name,'').strip()
+        if middle_name!='':
+            temp.append(first_name+' '+middle_name+' '+last_name)
+        else:
+            temp.append(first_name+' '+last_name)
+        try:
+            auth=Author.objects.get(first=first_name,middle=middle_name,last=last_name)
+            paper.authors.add(auth)
+        except:
+            auth=Author.objects.create(first=first_name,middle=middle_name,last=last_name)
+            paper.authors.add(auth)
+    paper.author_list=str(temp)
+    for affiliation in i[-1]:
+        try:
+            aff=Affiliation.objects.get(name=affiliation)
+            paper.affiliations.add(aff)
+        except:
+            aff=Affiliation.objects.create(name=affiliation)
+            paper.affiliations.add(aff)
+    for t in i[-2]:
+        try:
+            tag=Tag.objects.get(name=t)
+            paper.tags.add(tag)
+        except:
+            tag=Tag.objects.create(name=t)
+            paper.tags.add(tag)
+    paper.save()
