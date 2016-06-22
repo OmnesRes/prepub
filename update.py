@@ -2,9 +2,9 @@ import os
 ##set virtual env on pythonanywhere with /home/yourusername/path/to/virtualenv/bin/python /home/yourusername/yourscript.py
 
 
-date_dict={"January":1,"February":2,"March":3,"April":4,"May":5,"June":6,\
+date_dict={"January":1,"February":2,"March":3,"April":4,"May":5,"June":6,
            "July":7,"August":8,"September":9,"October":10,"November":11,"December":12,
-           "Jan":1,"Feb":2,"Mar":3,"Apr":4,"May":5,"Jun":6,\
+           "Jan":1,"Feb":2,"Mar":3,"Apr":4,"May":5,"Jun":6,
            "Jul":7,"Aug":8,"Sep":9,"Oct":10,"Nov":11,"Dec":12}
 
 
@@ -26,6 +26,54 @@ def first_function(name):
             return name[0]
     except:
         return ''
+
+def update_authors(pub_authors):
+    for i in pub_authors:
+        i=i.replace(',','').replace('.','').lower()
+        if i!='':
+            if i[:3]=='jr ':
+                i=i[3:]
+            if i[-3:]==' jr':
+                i=i[:-3]
+            if i[:3]=='sr ':
+                i=i[3:]
+            if i[-3:]==' sr':
+                i=i[:-3]
+            first_name=i.split()[0]
+            last_name=i.split()[-1]
+            if len(i.split())==2:
+                middle_name=''
+            else:
+                middle_name=i.replace(first_name+' ','').replace(' '+last_name,'').strip()
+            ##need separate unique dictionaries
+            myauthor_first=(last_name,first_name,middle_function(middle_name))
+            myauthor_last=(last_name,first_function(first_name),middle_function(middle_name))
+            
+            if myauthor_first not in unique_first:
+                unique_first[(last_name,first_name,middle_function(middle_name))]=''
+                name_first[first_name]=[name_first.get(first_name,[[],[]])[0]+[last_name],\
+                                        name_first.get(first_name,[[],[]])[1]+[middle_function(middle_name)]]
+
+            if myauthor_last not in unique_last:
+                unique_last[(last_name,first_function(first_name),middle_function(middle_name))]=''
+                name_last[last_name]=[name_last.get(last_name,[[],[]])[0]+[first_function(first_name)],\
+                                      name_last.get(last_name,[[],[]])[1]+[middle_function(middle_name)]]
+    if pub_authors!=[]:
+        f=open(os.path.join(BASE_DIR,'papers','unique_last.py'),'w')
+        f.write('unique_last='+str(unique_last))
+        f.close()
+
+        f=open(os.path.join(BASE_DIR,'papers','unique_first.py'),'w')
+        f.write('unique_first='+str(unique_first))
+        f.close()
+
+        f=open(os.path.join(BASE_DIR,'papers','name_last.py'),'w')
+        f.write('name_last='+str(name_last))
+        f.close()
+
+        f=open(os.path.join(BASE_DIR,'papers','name_first.py'),'w')
+        f.write('name_first='+str(name_first))
+        f.close()
 
 
 
@@ -193,59 +241,7 @@ for i in newdata:
     for author in i[1]:
         pub_authors.append(author)
 
-
-
-for i in pub_authors:
-    i=i.replace(',','').replace('.','').lower()
-    if i!='':
-        if i[:3]=='jr ':
-            i=i[3:]
-        if i[-3:]==' jr':
-            i=i[:-3]
-        if i[:3]=='sr ':
-            i=i[3:]
-        if i[-3:]==' sr':
-            i=i[:-3]
-        first_name=i.split()[0]
-        last_name=i.split()[-1]
-        if len(i.split())==2:
-            middle_name=''
-        else:
-            middle_name=i.replace(first_name+' ','').replace(' '+last_name,'').strip()
-        ##need separate unique dictionaries
-        myauthor_first=(last_name,first_name,middle_function(middle_name))
-        myauthor_last=(last_name,first_function(first_name),middle_function(middle_name))
-        
-        if myauthor_first not in unique_first:
-            unique_first[(last_name,first_name,middle_function(middle_name))]=''
-            name_first[first_name]=[name_first.get(first_name,[[],[]])[0]+[last_name],\
-                                    name_first.get(first_name,[[],[]])[1]+[middle_function(middle_name)]]
-
-        if myauthor_last not in unique_last:
-            unique_last[(last_name,first_function(first_name),middle_function(middle_name))]=''
-            name_last[last_name]=[name_last.get(last_name,[[],[]])[0]+[first_function(first_name)],\
-                                  name_last.get(last_name,[[],[]])[1]+[middle_function(middle_name)]]
-
-
-
-if pub_authors!=[]:
-    f=open(os.path.join(BASE_DIR,'papers','unique_last.py'),'w')
-    f.write('unique_last='+str(unique_last))
-    f.close()
-
-    f=open(os.path.join(BASE_DIR,'papers','unique_first.py'),'w')
-    f.write('unique_first='+str(unique_first))
-    f.close()
-
-    f=open(os.path.join(BASE_DIR,'papers','name_last.py'),'w')
-    f.write('name_last='+str(name_last))
-    f.close()
-
-    f=open(os.path.join(BASE_DIR,'papers','name_first.py'),'w')
-    f.write('name_first='+str(name_first))
-    f.close()
-
-
+update_authors(pub_authors)
 
 
 ##update the database
@@ -415,56 +411,7 @@ for i in newdata:
     for author in i[1]:
         pub_authors.append(author)
 
-for i in pub_authors:
-    i=i.replace(',','').replace('.','').lower()
-    if i!='':
-        if i[:3]=='jr ':
-            i=i[3:]
-        if i[-3:]==' jr':
-            i=i[:-3]
-        if i[:3]=='sr ':
-            i=i[3:]
-        if i[-3:]==' sr':
-            i=i[:-3]
-        first_name=i.split()[0]
-        last_name=i.split()[-1]
-        if len(i.split())==2:
-            middle_name=''
-        else:
-            middle_name=i.replace(first_name+' ','').replace(' '+last_name,'').strip()
-        ##need separate unique dictionaries
-        myauthor_first=(last_name,first_name,middle_function(middle_name))
-        myauthor_last=(last_name,first_function(first_name),middle_function(middle_name))
-        
-        if myauthor_first not in unique_first:
-            unique_first[(last_name,first_name,middle_function(middle_name))]=''
-            name_first[first_name]=[name_first.get(first_name,[[],[]])[0]+[last_name],\
-                                    name_first.get(first_name,[[],[]])[1]+[middle_function(middle_name)]]
-
-        if myauthor_last not in unique_last:
-            unique_last[(last_name,first_function(first_name),middle_function(middle_name))]=''
-            name_last[last_name]=[name_last.get(last_name,[[],[]])[0]+[first_function(first_name)],\
-                                  name_last.get(last_name,[[],[]])[1]+[middle_function(middle_name)]]
-
-
-if pub_authors!=[]:
-    f=open(os.path.join(BASE_DIR,'papers','unique_last.py'),'w')
-    f.write('unique_last='+str(unique_last))
-    f.close()
-
-    f=open(os.path.join(BASE_DIR,'papers','unique_first.py'),'w')
-    f.write('unique_first='+str(unique_first))
-    f.close()
-
-    f=open(os.path.join(BASE_DIR,'papers','name_last.py'),'w')
-    f.write('name_last='+str(name_last))
-    f.close()
-
-    f=open(os.path.join(BASE_DIR,'papers','name_first.py'),'w')
-    f.write('name_first='+str(name_first))
-    f.close()
-
-
+update_authors(pub_authors)
 
 for i in newdata:
     paper=Article(title=i[0],abstract=i[3],link=i[4])
@@ -636,57 +583,7 @@ for i in newdata:
     for author in i[1]:
         pub_authors.append(author)
 
-
-
-for i in pub_authors:
-    i=i.replace(',','').replace('.','').lower()
-    if i!='':
-        if i[:3]=='jr ':
-            i=i[3:]
-        if i[-3:]==' jr':
-            i=i[:-3]
-        if i[:3]=='sr ':
-            i=i[3:]
-        if i[-3:]==' sr':
-            i=i[:-3]
-        first_name=i.split()[0]
-        last_name=i.split()[-1]
-        if len(i.split())==2:
-            middle_name=''
-        else:
-            middle_name=i.replace(first_name+' ','').replace(' '+last_name,'').strip()
-        ##need separate unique dictionaries
-        myauthor_first=(last_name,first_name,middle_function(middle_name))
-        myauthor_last=(last_name,first_function(first_name),middle_function(middle_name))
-        
-        if myauthor_first not in unique_first:
-            unique_first[(last_name,first_name,middle_function(middle_name))]=''
-            name_first[first_name]=[name_first.get(first_name,[[],[]])[0]+[last_name],\
-                                    name_first.get(first_name,[[],[]])[1]+[middle_function(middle_name)]]
-
-        if myauthor_last not in unique_last:
-            unique_last[(last_name,first_function(first_name),middle_function(middle_name))]=''
-            name_last[last_name]=[name_last.get(last_name,[[],[]])[0]+[first_function(first_name)],\
-                                  name_last.get(last_name,[[],[]])[1]+[middle_function(middle_name)]]
-
-
-
-if pub_authors!=[]:
-    f=open(os.path.join(BASE_DIR,'papers','unique_last.py'),'w')
-    f.write('unique_last='+str(unique_last))
-    f.close()
-
-    f=open(os.path.join(BASE_DIR,'papers','unique_first.py'),'w')
-    f.write('unique_first='+str(unique_first))
-    f.close()
-
-    f=open(os.path.join(BASE_DIR,'papers','name_last.py'),'w')
-    f.write('name_last='+str(name_last))
-    f.close()
-
-    f=open(os.path.join(BASE_DIR,'papers','name_first.py'),'w')
-    f.write('name_first='+str(name_first))
-    f.close()
+update_authors(pub_authors)
 
 
 for i in newdata:
@@ -888,58 +785,7 @@ for i in newdata:
     for author in i[1]:
         pub_authors.append(author)
 
-
-
-
-for i in pub_authors:
-    i=i.replace(',','').replace('.','').lower()
-    if i!='':
-        if i[:3]=='jr ':
-            i=i[3:]
-        if i[-3:]==' jr':
-            i=i[:-3]
-        if i[:3]=='sr ':
-            i=i[3:]
-        if i[-3:]==' sr':
-            i=i[:-3]
-        first_name=i.split()[0]
-        last_name=i.split()[-1]
-        if len(i.split())==2:
-            middle_name=''
-        else:
-            middle_name=i.replace(first_name+' ','').replace(' '+last_name,'').strip()
-        ##need separate unique dictionaries
-        myauthor_first=(last_name,first_name,middle_function(middle_name))
-        myauthor_last=(last_name,first_function(first_name),middle_function(middle_name))
-        
-        if myauthor_first not in unique_first:
-            unique_first[(last_name,first_name,middle_function(middle_name))]=''
-            name_first[first_name]=[name_first.get(first_name,[[],[]])[0]+[last_name],\
-                                    name_first.get(first_name,[[],[]])[1]+[middle_function(middle_name)]]
-
-        if myauthor_last not in unique_last:
-            unique_last[(last_name,first_function(first_name),middle_function(middle_name))]=''
-            name_last[last_name]=[name_last.get(last_name,[[],[]])[0]+[first_function(first_name)],\
-                                  name_last.get(last_name,[[],[]])[1]+[middle_function(middle_name)]]
-
-
-if pub_authors!=[]:
-    f=open(os.path.join(BASE_DIR,'papers','unique_last.py'),'w')
-    f.write('unique_last='+str(unique_last))
-    f.close()
-
-    f=open(os.path.join(BASE_DIR,'papers','unique_first.py'),'w')
-    f.write('unique_first='+str(unique_first))
-    f.close()
-
-    f=open(os.path.join(BASE_DIR,'papers','name_last.py'),'w')
-    f.write('name_last='+str(name_last))
-    f.close()
-
-    f=open(os.path.join(BASE_DIR,'papers','name_first.py'),'w')
-    f.write('name_first='+str(name_first))
-    f.close()
-
+update_authors(pub_authors)
 
 
 for i in newdata:
@@ -1121,59 +967,7 @@ for i in newdata:
     for author in i[1]:
         pub_authors.append(author)
 
-
-
-
-for i in pub_authors:
-    i=i.replace(',','').replace('.','').lower()
-    if i!='':
-        if i[:3]=='jr ':
-            i=i[3:]
-        if i[-3:]==' jr':
-            i=i[:-3]
-        if i[:3]=='sr ':
-            i=i[3:]
-        if i[-3:]==' sr':
-            i=i[:-3]
-        first_name=i.split()[0]
-        last_name=i.split()[-1]
-        if len(i.split())==2:
-            middle_name=''
-        else:
-            middle_name=i.replace(first_name+' ','').replace(' '+last_name,'').strip()
-        ##need separate unique dictionaries
-        myauthor_first=(last_name,first_name,middle_function(middle_name))
-        myauthor_last=(last_name,first_function(first_name),middle_function(middle_name))
-        
-        if myauthor_first not in unique_first:
-            unique_first[(last_name,first_name,middle_function(middle_name))]=''
-            name_first[first_name]=[name_first.get(first_name,[[],[]])[0]+[last_name],\
-                                    name_first.get(first_name,[[],[]])[1]+[middle_function(middle_name)]]
-
-        if myauthor_last not in unique_last:
-            unique_last[(last_name,first_function(first_name),middle_function(middle_name))]=''
-            name_last[last_name]=[name_last.get(last_name,[[],[]])[0]+[first_function(first_name)],\
-                                  name_last.get(last_name,[[],[]])[1]+[middle_function(middle_name)]]
-
-
-if pub_authors!=[]:
-    f=open(os.path.join(BASE_DIR,'papers','unique_last.py'),'w')
-    f.write('unique_last='+str(unique_last))
-    f.close()
-
-    f=open(os.path.join(BASE_DIR,'papers','unique_first.py'),'w')
-    f.write('unique_first='+str(unique_first))
-    f.close()
-
-    f=open(os.path.join(BASE_DIR,'papers','name_last.py'),'w')
-    f.write('name_last='+str(name_last))
-    f.close()
-
-    f=open(os.path.join(BASE_DIR,'papers','name_first.py'),'w')
-    f.write('name_first='+str(name_first))
-    f.close()
-
-
+update_authors(pub_authors)
 
 for i in newdata:
     paper=Article(title=i[0],abstract=i[3],link=i[4])

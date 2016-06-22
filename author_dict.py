@@ -38,6 +38,15 @@ for i in arxiv:
     for author in i[1]:
         pub_authors.append(author)
 
+f=open(r'C:\Users\Jordan Anaya\Desktop\prepub\winnower\winnower.txt')
+winnower=[eval(i.strip()) for i in f]
+for i in winnower:
+    for author in i[1]:
+        pub_authors.append(author)
+
+
+
+
 def middle_function(name):
     if name=='':
         return ''
