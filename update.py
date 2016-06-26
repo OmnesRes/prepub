@@ -1114,7 +1114,7 @@ if error==False:
 if error==True:
     data=[]
 else:
-    f=open(os.path.join(BASE_DIR,'winnower','arxiv.txt'),'a')
+    f=open(os.path.join(BASE_DIR,'winnower','winnower.txt'),'a')
     for i in data:
         f.write(str(i))
         f.write('\n')
