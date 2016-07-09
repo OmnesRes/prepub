@@ -1,0 +1,2 @@
+[u'Advice to a young (real) biologist: a ten point program', ['Bruce Charlton'], u'July 05 2016', '', u'/papers/4926-advice-to-a-young-real-biologist-a-ten-point-program', [], [u'School of Psychology, Newcastle University, Newcastle upon Tyne, NE2 2ES, England']]
+[u'Universal human rights: Assessing practicality in the absence of a global state', ['Tim Pfefferle'], u'July 04 2016', '', u'/papers/4924-universal-human-rights-assessing-practicality-in-the-absence-of-a-global-state', [u'Law', u'Philosophy'], []]
