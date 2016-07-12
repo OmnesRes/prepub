@@ -104,6 +104,9 @@ def home(request):
 def my_help(request):
     return render(request, 'help.html')
 
+def grim_help(request):
+    return render(request, 'grim_help.html')
+
 def rss_feed(request):
     if request.META.get('HTTP_REFERER',False):
         if 'q' in request.GET:
@@ -132,6 +135,30 @@ def advanced_search(request):
     return render(request, 'advanced_search.html')
 
 
+def round_up(number,places):
+    number=str(number)
+    if number[-1]=='5':
+        decimals=len(number.split('.')[-1])
+        if places<decimals:
+            return round(float(number[:-1]+'6'),places)
+        else:
+            return round(float(number),places)
+    else:
+        return round(float(number),places)
+
+
+def round_down(number,places):
+    number=str(number)
+    if number[-1]=='5':
+        decimals=len(number.split('.')[-1])
+        if places<decimals:
+            return round(float(number[:-1]+'4'),places)
+        else:
+            return round(float(number),places)
+    else:
+        return round(float(number),places)
+
+
 def grim_plot(request):
     if request.META.get('HTTP_REFERER',False):
         return render(request, 'grim_plot.html',{'mean':request.GET['mean'],'size':request.GET['size']})
@@ -156,7 +183,7 @@ def grim_test(request):
                     if re.search('^[0-9]+$',size):
                         size=int(size)
                         if 1<=size<=100:
-                            if round(round(mean*size,0)/size,2)==mean:
+                            if round_up(round(mean*size,0)/size,2)==mean:
                                 return render(request, 'grim_test.html', {'no_error':True,'consistent':True,'size':str(size),'mean':"%.2f" % round(mean,2)})
                             else:
                                 return render(request, 'grim_test.html', {'no_error':True,'consistent':False,'size':str(size),'mean':"%.2f" % round(mean,2)})
@@ -174,6 +201,42 @@ def grim_test(request):
         return render(request, 'grim_test.html',{'home':True,})
 
 
+
+
+def grim_test_down(request):
+    if request.META.get('HTTP_REFERER',False):
+        if 'size' in request.GET:
+            try:
+                mean=str(request.GET['mean']).strip()
+                size=str(request.GET['size']).strip()
+            except:
+                return render(request, 'grim_test_down.html', {'unicode':True})
+            if '.' in mean:
+                try:
+                    float(mean)
+                except:
+                    return render(request, 'grim_test_down.html', {'mean_number':True})
+                if len(mean.split('.')[-1])==2:
+                    mean=float(mean)
+                    if re.search('^[0-9]+$',size):
+                        size=int(size)
+                        if 1<=size<=100:
+                            if round_down(round(mean*size,0)/size,2)==mean:
+                                return render(request, 'grim_test_down.html', {'no_error':True,'consistent':True,'size':str(size),'mean':"%.2f" % round(mean,2)})
+                            else:
+                                return render(request, 'grim_test_down.html', {'no_error':True,'consistent':False,'size':str(size),'mean':"%.2f" % round(mean,2)})
+                        else:
+                            return render(request, 'grim_test_down.html', {'size_wrong':True})
+                    else:
+                        return render(request, 'grim_test_down.html', {'size_number':True})
+                else:
+                    return render(request, 'grim_test_down.html', {'two_places':True})
+            else:
+                return render(request, 'grim_test_down.html', {'decimal':True})
+        else:
+            return render(request, 'grim_test_down.html',{'home':True})
+    else:
+        return render(request, 'grim_test_down.html',{'home':True,})
 
 
 def general_grim(request):
@@ -196,7 +259,7 @@ def general_grim(request):
                     size=int(size)
                     if re.search('^[0-9]+$',likert):
                         likert=int(likert)
-                        if round(round(mean*size*likert,0)/(size*likert),decimals)==mean:
+                        if round_up(round(mean*size*likert,0)/(size*likert),decimals)==mean:
                             return render(request, 'general_grim.html',\
                                           {'no_error':True,'consistent':True,\
                                            'size':size,\

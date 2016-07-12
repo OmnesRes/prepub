@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title> {% block title %}PrePubMed{% endblock %} </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vollkorn">
+    <link rel="shortcut icon" href="https://s3.amazonaws.com/prepubmed/prepub_favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://s3.amazonaws.com/prepubmed/prepub_favicon.ico" type="image/x-icon">
+    <style>
+     body{
+        font-family:"Arial",sans-serif;
+    }
+    #mysite {
+    font-family: "Vollkorn", serif;
+    margin: 0px;
+    padding: 0px;
+    color: white;
+    font-size: 24px;
+    }
+    a:hover{
+        text-decoration: none;
+    }
+
+    #home {
+    margin-bottom: 0px;
+    padding: 0px;
+    color: white;
+    font-size: 20px;
+    }
+
+    p {
+        font-size:20px
+    }
+    h2 {
+        color:#985735;
+        font-weight: 600;
+        margin:0px;
+        padding:0px;
+    }
+
+    input[type=text] {
+        border: 2px solid #ca8a68;
+        text-align:center;
+    }
+    
+    input[type=text]:focus {
+        border: 2px solid #985735;
+    }
+
+    .btn-primary{
+        background-color:#369;
+        font-color:white;
+        width:300px;
+    }
+    .btn-default {
+        background-color:#985735;
+        font-color:white;
+    }
+    .btn-default:hover {
+        background-color:#985735;
+        font-color:white;
+    }
+    #calculate {
+        position:relative;
+        top:36px;
+        right:50px;
+    }
+    .form-group {
+        margin-top:10px;
+    }
+
+    .form-control{
+        font-size:24px;
+    }
+
+    .form-inline .form-group input{
+        width:50%;
+        height:36px;
+    }
+
+    #errors {
+        color:red;
+        margin-top:10px;
+        position:relative;
+        top:10px;
+        right:50px;
+        z-index:-100;
+    }
+
+    </style>
+</head>
+<body>
+    <div class="col-sm-12" style="background-color: #369; text-align:center">
+        <div class="col-sm-1" style="position:relative;top:2px">
+            <a id="home" href="/">Home</a></span>
+        </div>
+        <div class="col-sm-10">
+            <a id="mysite" href="http://www.omnesres.com/">Omnes Res</a>
+        </div>
+        <div class="col-sm-1">
+        </div>          
+    </div>
+    <div class="col-sm-12" style="text-align:center">
+        <h2>GRIM Test Help</h2>
+        <div class="col-sm-12">
+            <div class="col-sm-5">
+            </div>
+            <div class="col-sm-2">
+                <a href="/">
+                    <img src="https://s3.amazonaws.com/prepubmed/first_logo.png" style="height:90px;margin-top:10px" class="img-responsive center-block"   >
+                </a>
+            </div>
+            <div class="col-sm-5">
+            </div>
+        </div>
+    <div class="col-sm-12">
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-9" style="margin-top:10px;text-align:justify">
+            <p>The standard way to round numbers is to round up when the last decimal is a 5.  However, different software may or may not follow this convention.
+            <br>
+            <br>
+            For example, in Python 2 the call round(.125,2) will result in .13.
+            <br>
+            <br>
+            But in Python 3 the same call will result in .12.
+            <br>
+            <br>
+            As a result, if a researcher used a computer program to round their values it is possible they unknowingly rounded all of their values down instead of what they likely meant to do, id est round up.
+            <br>
+            <br>
+            So how can you check if this may have happened to the values you are testing?
+            <br>
+            <br>
+            I have a special implementation of the GRIM test <a href="/grim_test_down/">here</a>. If all of your values that failed the standard GRIM test now pass this GRIM test it is likely that rounding was an issue.  To be clear this special test will round a number like .125 down to .12, but round a number like .1251 to .13.
+            <br>
+            <br>
+            Another problem may arise that involves how computers store numbers.  For example, the number 2.675 should get rounded to 2.68, but the computer actually represents the number as 2.6749999... and it gets rounded down to 2.67.  See this <a href="https://docs.python.org/2.7/tutorial/floatingpoint.html">page</a> for more details.
+            <br>
+            <br>
+            This appears to only be a problem for sample sizes that are multiples of 40.  My default implementation of the GRIM test will round up.  If you are concerned that the value may have been rounded incorrectly also use the special GRIM test.
+            </p>
+        </div>
+        <div class="col-sm-2">
+        </div>
+    </div>
+</body>
+</html>
