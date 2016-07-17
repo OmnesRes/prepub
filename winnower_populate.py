@@ -12,7 +12,7 @@ from datetime import date as dt
 
 
 
-f=open(r'C:\Users\Jordan Anaya\Desktop\prepub\winnower\winnower.txt')
+f=open(r'C:\Users\Jordan Anaya\Desktop\prepub\winnower\winnower2.txt')
 winnower=[eval(i.strip()) for i in f]
 
 ##work on dates

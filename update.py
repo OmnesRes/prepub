@@ -651,6 +651,7 @@ data=[eval(i.strip()) for i in f]
 newdata=[]
 all_links=[i[4] for i in data]
 unique_links=[i[4].split('/')[-2] for i in data]
+unique_links+=['5-25']
 titles=[]
 authors=[]
 dates=[]
@@ -1058,7 +1059,7 @@ try:
         for i in templinks:
             r=requests.get('https://thewinnower.com'+i)
             soup=BeautifulSoup(r.content,'html.parser')
-            if soup.find('ul',{'class','paper-meta'}).find_all('li')[-1].text.split('\n')[-2]=='Paper':
+            if 'Paper' in str(soup.find('ul',{'class','paper-meta'}).find_all('li')):
                 dates.append(soup.find('ul',{'class','paper-meta'}).find_all('li')[1].text.split('\n')[-2].strip())
                 titles.append(soup.find('div',{'class','paper'}).find('h1').text.strip())
                 abstracts.append('')
