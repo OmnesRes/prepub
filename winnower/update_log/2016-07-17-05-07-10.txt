@@ -1,0 +1,1 @@
+[u'The Baryonic Tully-Fisher Relationship: Empirical Evidence for a Baryonic Solution to the Galactic \u201cMissing Mass\u201d Problem', ['Jeffrey M. La Fortune'], u'July 15 2016', '', u'/papers/4963-the-baryonic-tully-fisher-relationship-empirical-evidence-for-a-baryonic-solution-to-the-galactic-missing-mass-problem', ['Physics'], []]
