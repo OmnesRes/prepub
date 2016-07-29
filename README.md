@@ -16,7 +16,6 @@ Each preprint server has its own folder.  In each folder is code for the initial
 If you want to get this running locally you'll need to change the settings file, namely the host settings.  GitHub doesn't want the sqlite3 database in the repository so you will have to generate the database by making migrations and running "final_populate.py".  This could take time.  If you want it to go faster only make the database for a fraction of the articles.
 
 ###This is the current to do list:
-Index Winnower (I'll do this)
 
 Improve indexing code (I'll do this)
 
