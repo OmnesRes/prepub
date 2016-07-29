@@ -344,21 +344,22 @@ try:
                         date=myjson['created_date'].strip()
                         link=myjson['figshare_url'].strip()
                         title=myjson['title'].strip()
-                        temp=[]
-                        for j in myjson['categories']:
-                            temp.append(j['title'].replace(' not elsewhere classified',''))
-                        tag=temp
-                        temp=[]
-                        for j in myjson['authors']:
-                            temp.append(unicodedata.normalize('NFKD',j['full_name']).encode('ascii','ignore'))
-                        author=temp
-                        author_aff.append([])
-                        abstracts.append(abstract)
-                        dates.append(date)
-                        links.append(link)
-                        tags.append(tag)
-                        authors.append(author)
-                        titles.append(title)
+                        if 'Figure' not in title and '.' not in title and 'Supplement' not in title:
+                            temp=[]
+                            for j in myjson['categories']:
+                                temp.append(j['title'].replace(' not elsewhere classified',''))
+                            tag=temp
+                            temp=[]
+                            for j in myjson['authors']:
+                                temp.append(unicodedata.normalize('NFKD',j['full_name']).encode('ascii','ignore'))
+                            author=temp
+                            author_aff.append([])
+                            abstracts.append(abstract)
+                            dates.append(date)
+                            links.append(link)
+                            tags.append(tag)
+                            authors.append(author)
+                            titles.append(title)
         except:
             pass
 
