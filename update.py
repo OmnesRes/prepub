@@ -1184,3 +1184,172 @@ for i in data:
             tag=Tag.objects.create(name=t)
             paper.tags.add(tag)
     paper.save()
+
+###############################################################################preprints
+
+f=open(os.path.join(BASE_DIR,'preprints','preprints.txt'))
+data=[eval(i.strip()) for i in f]
+unique_links=[i[4] for i in data]
+unique={}
+for i in unique_links:
+    unique[i.split('/')[-2]]=''
+titles=[]
+authors=[]
+dates=[]
+abstracts=[]
+links=[]
+tags=[]
+author_aff=[]
+error=False
+
+
+categories=['biology','medicine_pharmacology','life_sciences']
+
+base='http://preprints.org/subject/browse/'
+
+try:
+    for cat in categories:
+        index=1
+        templinks=[]
+        tempdates=[]
+        tempabstracts=[]
+        tempauthors=[]
+        temptags=[]
+        while True:
+            r=requests.get(base+cat+'?page_num='+str(index)+'&page_length=100')
+            count=0
+            soup=BeautifulSoup(r.content,'html.parser')
+            for i in soup.find_all("a", {'class':'title'}):
+                if i.get('href') in unique_links:
+                    break
+                else:
+                    templinks.append(i.get('href'))
+            for i in soup.find_all('div',{'class','search-content-box'}):
+                tempdate=i.find('div',{'class','show-for-large-up'}).text.strip().split('Online: ')[1].split(' (')[0].strip().split()
+                tempdates.append(tempdate[1]+' '+tempdate[0]+' '+tempdate[2])
+                count+=1
+            for i in soup.find_all('div',{'class','abstract-content'}):
+                tempabstracts.append(i.text)
+            for i in soup.find_all('div',{'class','search-content-box-author'}):
+                tempauthors.append([unicodedata.normalize('NFKD',j.text).encode('ascii','ignore') for j in i.find_all('a')])
+            for i in soup.find_all('div',{'class','search-content-box'}):
+                temptags.append([i.find_all('div')[4].text.strip().split(', ')[1].split(';')[0].strip()])
+            if len(templinks)>len(temptags):
+                templinks=templinks[:-1]
+            if count==100:
+                index+=1
+            else:
+                break
+        for i,j,k,l,m in zip(templinks,tempdates,tempabstracts,tempauthors,temptags):
+            if i.split('/')[-2] not in unique:
+                r=requests.get('http://preprints.org'+i)
+                soup=BeautifulSoup(r.content,'html.parser')
+                if soup.find('span',{'class','type-span'}).text in ['Review','Article']:
+                    dates.append(j)
+                    titles.append(soup.find('h1').text.strip())
+                    abstracts.append(k)
+                    links.append(i)
+                    authors.append(l)
+                    temp_aff=[]
+                    for aff in soup.find('div',{'class','manuscript-affiliations'}).find_all('li'):
+                        temp_aff.append(aff.text)
+                    author_aff.append(temp_aff)
+                    tags.append(m)    
+                else:
+                    pass
+except Exception as e:
+    error=True
+    f=open(os.path.join(BASE_DIR,'preprints','error_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
+    f.write(str(e))
+    f.close()
+
+
+if error==False: 
+    if len(titles)==len(authors)==len(dates)==len(abstracts)==len(links)==len(tags)==len(author_aff):
+        data=[]
+        for title,author,date,abstract,link,tag,author_af in zip(titles,authors,dates,abstracts,links,tags,author_aff):
+            data.append([title,author,date,abstract,link,tag,author_af])
+        f=open(os.path.join(BASE_DIR,'preprints','update_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
+        for i in data:
+            f.write(str(i))
+            f.write('\n')
+        f.close()
+    else:
+        f=open(os.path.join(BASE_DIR,'preprints','error_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
+        f.write('length error')
+        f.close()
+        error=True
+
+
+
+if error==True:
+    data=[]
+else:
+    f=open(os.path.join(BASE_DIR,'preprints','preprints.txt'),'a')
+    for i in data:
+        f.write(str(i))
+        f.write('\n')
+    f.close()
+
+######deal with updating author dictionaries
+from papers.name_last import name_last
+from papers.name_first import name_first
+from papers.unique_last import unique_last
+from papers.unique_first import unique_first
+
+
+pub_authors=[]
+for i in data:
+    for author in i[1]:
+        pub_authors.append(author)
+
+update_authors(pub_authors)
+
+for i in data:
+    paper=Article(title=i[0],abstract=i[3],link='https://www.preprints.org'+i[4])
+    temp=i[2].split()
+    paper.pub_date=dt(int(temp[2]),date_dict[temp[0]],int(temp[1]))
+    paper.save()
+    temp=[]
+    for author in i[1]:
+        name=author.replace(',','').replace('.','')
+        if name[:3].lower()=='jr ':
+            name=name[3:]
+        if name[-3:].lower()==' jr':
+            name=name[:-3]
+        if name[:3].lower()=='sr ':
+            name=name[3:]
+        if name[-3:].lower()==' sr':
+            name=name[:-3]
+        first_name=name.split()[0]
+        last_name=name.split()[-1]
+        if len(name.split())==2:
+            middle_name=''
+        else:
+            middle_name=name.replace(first_name+' ','').replace(' '+last_name,'').strip()
+        if middle_name!='':
+            temp.append(first_name+' '+middle_name+' '+last_name)
+        else:
+            temp.append(first_name+' '+last_name)
+        try:
+            auth=Author.objects.get(first=first_name,middle=middle_name,last=last_name)
+            paper.authors.add(auth)
+        except:
+            auth=Author.objects.create(first=first_name,middle=middle_name,last=last_name)
+            paper.authors.add(auth)
+    paper.author_list=str(temp)
+    for affiliation in i[-1]:
+        try:
+            aff=Affiliation.objects.get(name=affiliation)
+            paper.affiliations.add(aff)
+        except:
+            aff=Affiliation.objects.create(name=affiliation)
+            paper.affiliations.add(aff)
+    for t in i[-2]:
+        try:
+            tag=Tag.objects.get(name=t)
+            paper.tags.add(tag)
+        except:
+            tag=Tag.objects.create(name=t)
+            paper.tags.add(tag)
+    paper.save()
