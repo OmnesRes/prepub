@@ -1,0 +1,1 @@
+[u'Telomere-driven karyotypic and molecular convergence mimics the transmissibility of cancer in the Tasmanian devil', ['Reinhard Stindl'], u'August 21 2016', '', u'/papers/5217-telomere-driven-karyotypic-and-molecular-convergence-mimics-the-transmissibility-of-cancer-in-the-tasmanian-devil', [u'Cell Biology', u'Genetics', u'Evolution'], []]
