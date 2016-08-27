@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^make_plot/$',views.make_plot),
     url(r'^grim_plot/$',views.grim_plot),
     url(r'^general_grim/$',views.general_grim),
+    url(r'^grimmer_sd/$',views.grimmer_sd),
     url(r'^rss_feed/$',views.rss_feed),
     url(r'^articles/(.{1,50})/rss/',views.RSSFeed()),
     

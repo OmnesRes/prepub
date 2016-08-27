@@ -136,7 +136,10 @@ def advanced_search(request):
 
 
 def round_up(number,places):
-    number=str(number)
+    if type(number)==type('string'):
+        pass
+    else:
+        number=repr(number)
     if number[-1]=='5':
         decimals=len(number.split('.')[-1])
         if places<decimals:
@@ -145,7 +148,6 @@ def round_up(number,places):
             return round(float(number),places)
     else:
         return round(float(number),places)
-
 
 def round_down(number,places):
     number=str(number)
@@ -282,6 +284,200 @@ def general_grim(request):
             return render(request, 'general_grim.html',{'home':True})
     else:
         return render(request, 'general_grim.html',{'home':True,})
+
+
+
+def grimmer_sd(request):
+    import re
+    import math
+    import importlib
+    var_precision=12
+    if request.META.get('HTTP_REFERER',False):
+        if 'size' in request.GET:
+            try:
+                mean=str(request.GET['mean']).strip()
+                size=str(request.GET['size']).strip()
+                sd=str(request.GET['sd']).strip()
+            except:
+                return render(request,'grimmer_sd.html', {'unicode':True})
+            if re.search('^[0-9]+$',size):
+                size=int(size)
+            else:
+                return render(request,'grimmer_sd.html', {'size_number':True})
+            if 'type' in request.GET:
+                Type=str(request.GET['type']).strip()
+                grim=False
+                if 5<=size<=99:
+                    mod=importlib.import_module('mysite.patterns.'+str(size))
+                    pattern_zero=mod.pattern_zero[:]
+                    pattern_even=mod.pattern_even[:]
+                    pattern_odd=mod.pattern_odd[:]
+                    averages_even=mod.averages_even.copy()
+                    averages_odd=mod.averages_odd.copy()
+                    pattern_zero_rounded=[round_up('.'+repr(n).split('.')[1],5) for n in pattern_zero]
+                    averages_zero={round_up('.'+repr(n).split('.')[1],5):averages_even[n] for n in averages_even if round_up('.'+repr(n).split('.')[1],5) in pattern_zero_rounded}
+                    def loop(low,high):
+                        possibilities=[]
+                        if low==0:
+                            possibilities=pattern_zero[:]
+                            low=1
+                        loop=0
+                        X=True
+                        if low%2==0:
+                            pattern=pattern_even+[n+1 for n in pattern_odd]
+                        else:
+                            pattern=pattern_odd+[n+1 for n in pattern_even]
+                        while True:
+                            if X==True:
+                                for i in pattern:
+                                    value=low+i+loop
+                                    possibilities.append(value)
+                                    if value>=high:
+                                        X=False
+                                        break
+                                loop+=2
+                            else:
+                                break
+                        return possibilities
+                    if mean:
+                        if '.' in mean:
+                            try:
+                                float(mean)
+                            except:
+                                return render(request,'grimmer_sd.html', {'mean_number':True})
+                            mean_decimals=len(mean.split('.')[1])
+                            mean=float(mean)
+                            if round_up(round_up(mean*size,0)/size,mean_decimals)==mean:
+                                grim=True
+                            else:
+                                return render(request, 'grimmer_sd.html', {'no_error':True,
+                                                                        'consistent':False,
+                                                                        'size':str(size),
+                                                                        'mean':("%."+str(mean_decimals)+"f") % round_up(mean,mean_decimals)})
+                        else:
+                            return render(request,'grimmer_sd.html', {'mean_number':True})
+                    if '.' in sd:
+                        try:
+                            float(sd)
+                        except:
+                            return render(request,'grimmer_sd.html', {'sd_number':True})
+                        sd_decimals=len(sd.split('.')[1])
+                        sd=float(sd)
+                        if sd>100:
+                            return render(request,'grimmer_sd.html', {'sd_large':True,})
+                        lower=sd-.5/(10**sd_decimals)
+                        higher=sd+.5/(10**sd_decimals)
+                        ##assume population SD first
+                        low=math.floor(lower**2)
+                        high=math.ceil(higher**2)
+                        sample_count=0
+                        population_count=0
+                        if Type!='Sample':
+                            possibilities=loop(low,high)
+                            if grim:
+                                for j in possibilities:
+                                    if int(j)==0:
+                                        if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [round_up(ave,mean_decimals) for ave in averages_zero[round_up('.'+repr(j).split('.')[1],5)]]:
+                                            if round_up(j**.5,sd_decimals)==sd:
+                                                population_count+=1
+                                    elif int(j)%2==0:
+                                        if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [round_up(ave,mean_decimals) for ave in averages_even[round_up('.'+repr(j).split('.')[1],var_precision)]]:
+                                            if round_up(j**.5,sd_decimals)==sd:
+                                                population_count+=1
+                                    else:
+                                        if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [round_up(ave,mean_decimals) for ave in averages_odd[round_up('.'+repr(j).split('.')[1],var_precision)]]:
+                                            if round_up(j**.5,sd_decimals)==sd:
+                                                population_count+=1
+                            else:
+                                for j in possibilities:
+                                    if round_up(j**.5,sd_decimals)==sd:
+                                        population_count+=1
+                        
+##                        try:
+####                            all_possibilities=[repr(i) for i in possibilities]
+##                        except:
+##                            all_possibilities=[]
+                        if Type!='Population':
+                            #recalculate low and high for sample variance
+                            low=math.floor(low*(size-1)/size)
+                            high=math.ceil(high*(size-1)/size)
+                            possibilities=loop(low,high)
+                            if grim:
+                                for j in possibilities:
+                                    if int(j)==0:
+                                        if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [round_up(ave,mean_decimals) for ave in averages_zero[round_up('.'+repr(j).split('.')[1],5)]]:
+                                            if round_up((j*size/(size-1))**.5,sd_decimals)==sd:
+                                                sample_count+=1
+                                    elif int(j)%2==0:
+                                        if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [round_up(ave,mean_decimals) for ave in averages_even[round_up('.'+repr(j).split('.')[1],var_precision)]]:
+                                            if round_up((j*size/(size-1))**.5,sd_decimals)==sd:
+                                                sample_count+=1
+                                    else:
+                                        if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [round_up(ave,mean_decimals) for ave in averages_odd[round_up('.'+repr(j).split('.')[1],var_precision)]]:
+                                            if round_up((j*size/(size-1))**.5,sd_decimals)==sd:
+                                                sample_count+=1
+                            else:
+                                for j in possibilities:
+                                    if round((j*size/(size-1))**.5,sd_decimals)==sd:
+                                        sample_count+=1
+##                            all_possibilities+=[repr(i) for i in possibilities]
+                        all_possibilities=[]
+                        all_variables=[population_count,sample_count,mean,size,Type,sd]
+                        if mean:
+                            return render(request,'grimmer_sd.html', {'p_count':population_count,
+                                                               's_count':sample_count,
+                                                               'mean':("%."+str(mean_decimals)+"f") % round(mean,mean_decimals),
+                                                               'size':size,
+                                                               'type':Type,
+                                                               'sd':("%."+str(sd_decimals)+"f") % round(sd,sd_decimals),
+                                                               'no_error':True,
+                                                               'consistent':True,
+                                                                'possibilities':all_possibilities,
+                                                                'all':all_variables,})
+                        else:
+                            return render(request,'grimmer_sd.html', {'p_count':population_count,
+                                                               's_count':sample_count,
+                                                               'size':size,
+                                                               'type':Type,
+                                                               'sd':("%."+str(sd_decimals)+"f") % round(sd,sd_decimals),
+                                                               'no_error':True,
+                                                               'consistent':True,
+                                                                'possibilities':all_possibilities,
+                                                                'all':all_variables,})
+                    else:
+                        if sd=='0':
+                            return render(request,'grimmer_sd.html', {'zero':True,})
+                        else:
+                            return render(request,'grimmer_sd.html', {'sd_number':True,})
+                else:
+                    return render(request,'grimmer_sd.html', {'size_wrong':True,})
+            else:
+                return render(request,'grimmer_sd.html', {'type_wrong':True,'mean':mean,'size':size,'sd':sd})
+        else:
+            return render(request,'grimmer_sd.html', {'home':True,})
+    else:
+        return render(request,'grimmer_sd.html', {'home':True,})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
