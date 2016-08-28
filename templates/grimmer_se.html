@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title> {% block title %}PrePubMed{% endblock %} </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vollkorn">
+    <link rel="shortcut icon" href="https://s3.amazonaws.com/prepubmed/prepub_favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://s3.amazonaws.com/prepubmed/prepub_favicon.ico" type="image/x-icon">
+    <style>
+     body{
+        font-family:"Arial",sans-serif;
+    }
+    #mysite {
+    font-family: "Vollkorn", serif;
+    margin: 0px;
+    padding: 0px;
+    color: white;
+    font-size: 24px;
+    }
+    a:hover{
+        text-decoration: none;
+    }
+
+    #home {
+    margin-bottom: 0px;
+    padding: 0px;
+    color: white;
+    font-size: 20px;
+    }
+
+    p {
+        font-size:20px
+    }
+    h2 {
+        color:#985735;
+        font-weight: 600;
+        margin:0px;
+        padding:0px;
+    }
+
+    input[type=text] {
+        border: 2px solid #ca8a68;
+        text-align:center;
+    }
+    
+    input[type=text]:focus {
+        border: 2px solid #985735;
+    }
+
+    .btn-primary{
+        background-color:#369;
+        font-color:white;
+        width:300px;
+    }
+    .btn-default {
+        background-color:#985735;
+        font-color:white;
+    }
+    .btn-default:hover {
+        background-color:#985735;
+        font-color:white;
+    }
+    #calculate {
+        position:relative;
+        top:36px;
+        right:50px;
+    }
+    .form-group {
+        margin-top:10px;
+    }
+
+    .form-control{
+        font-size:24px;
+    }
+
+    .form-inline .form-group input{
+        width:70%;
+        height:36px;
+    }
+
+    #errors {
+        color:red;
+        margin-top:10px;
+        position:relative;
+        top:10px;
+        right:50px;
+        z-index:-100;
+    }
+
+    </style>
+</head>
+<body>
+    <div class="col-sm-12" style="background-color: #369; text-align:center">
+        <div class="col-sm-1" style="position:relative;top:2px">
+            <a id="home" href="/">Home</a></span>
+        </div>
+        <div class="col-sm-10">
+            <a id="mysite" href="http://www.omnesres.com/">Omnes Res</a>
+        </div>
+        <div class="col-sm-1">
+        </div>          
+    </div>
+    <div class="col-sm-12" style="text-align:center;margin-top:10px">
+        <h2>GRIMMER Test for Standard Errors</h2>
+    <div class="col-sm-12">
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-10" style="margin-top:10px;text-align:left">
+            <p>Sample Size is currently limited to 5 through 99.
+                <br>
+                Standard Error is limited to 100, it is unlikely you would want to test values above this.
+                <br>
+                Mean is optional but preferable.
+                <br>
+                Standard Error is assumed to be calculated with a sample standard deviation.
+            </p>
+        </div>
+        <div class="col-sm-1">
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <form action="/grimmer_se/" method="get" class="form-inline entry" style="text-align:center">
+            <div class="col-sm-12" style="padding:0px,margin:0px">
+                <div style="font-size:20px;margin-top:10px">
+                    <div class="col-sm-12" style="padding=0px;margin-top:30px">
+                        <div class="form-group">
+                            <label for="sel2">Do you want to round Up, Down, or use Bankers'?</label>
+                            <div>
+                            <select class="form-control" id="sel2" name="direction" size="3">
+                                {% if direction == "Up" %}
+                                <option selected="Up">Up</option>
+                                {% else %}
+                                <option value="Up">Up</option>
+                                {% endif %}
+                                {% if direction == "Down" %}
+                                <option selected="Down">Down</option>
+                                {% else %}
+                                <option value="Down">Down</option>
+                                {% endif %}
+                                {% if direction == "Bankers'" %}
+                                <option selected="Bankers'" value="Bankers'">Bankers'</option>
+                                {% else %}
+                                <option value="Bankers'">Bankers'</option>
+                                {% endif %}
+                            </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12" style="padding=0px;margin-top:30px">
+                        <div class="col-sm-1">
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="sd">SE</label>
+                            <div>
+                                <input type="text" class="form-control" name="sd" maxlength=8 id="sd" value={{sd}}>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="mean">Mean</label>
+                            <div>
+                                <input type="text" class="form-control" name="mean" maxlength=8 id="mean" value={{mean}}>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="size">Sample Size</label>
+                            <div>
+                                <input type="text" class="form-control" name="size" maxlength=3 id="size" value={{size}}>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <button id="calculate" type="submit" class="btn btn-default" style="font-size:24px;color:white">Calculate</button>
+                        </div>
+                        <div class="col-sm-2">
+                        </div>
+                    </div>
+                    <div class="col-sm-12" style="padding=0px">
+                        {% if unicode %}
+                        <p id="errors">
+                        Please no unicode values
+                        </p>
+                        {% elif size_number %}
+                        <p id="errors">
+                        Please enter a number for size.
+                        </p>
+                        {% elif size_wrong %}
+                        <p id="errors">
+                        Please only type 5-99 for size.
+                        </p>
+                        {% elif mean_number %}
+                        <p id="errors">
+                        Please enter a mean with at least 1 decimal place.
+                        </p>
+                        {% elif zero %}
+                        <p id="errors">
+                        You entered zero for SE, you should be able to figure that one out on your own.
+                        </p>
+                        {% elif sd_number %}
+                        <p id="errors">
+                        Please enter a SE with at least one decimal.
+                        </p>
+                        {% elif sd_large %}
+                        <p id="errors">
+                        That's a large standard error. Please keep your standard errors below 100.
+                        </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    {% if not home %}
+    {% if no_error %}
+    <div class="col-sm-12" style="margin-top:20px;margin-bottom:20px">
+        <div class="container">
+            {% if mean %}
+                {% if not consistent %}
+                    <div class="alert alert-danger" style="font-size:16px">
+                        <strong>Your mean of {{mean}} did not pass the GRIM test so the GRIMMER test could not be performed.  Either enter a GRIM consistent mean or leave the mean blank.</strong>
+                    </div>
+                {% else %}
+                    {% if count %}
+                        <div class="alert alert-success" style="font-size:16px">
+                            <strong>Your mean of {{mean}} is GRIM Consistent, and your mean and standard error ({{sd}}) pair are GRIMMER Consistent!</strong>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-danger" style="font-size:16px">
+                            <strong>Your mean of {{mean}} is GRIM Consistent, but your mean and standard error ({{sd}}) pair are GRIMMER Inconsistent.</strong>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                {% if count %}
+                    <div class="alert alert-success" style="font-size:16px">
+                        <strong>Your standard error of {{sd}} is GRIMMER Consistent, consider adding a mean for more accuracy.</strong>
+                        </div>
+                {% else %}
+                    <div class="alert alert-danger" style="font-size:16px">
+                        <strong>Your standard error of {{sd}} is GRIMMER Inconsistent.</strong>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+    {% endif %}
+  <!--   <div class="col-sm-12" style="font-size:20px;text-align:left">
+        <br>
+        {{results}}
+        <br>
+        Below will be values used for debugging purposes:
+        <br>
+        population_count= {{all.0}}
+        <br>
+        sample_count= {{all.1}}
+        <br>
+        mean= {{all.2}}
+        <br>
+        size= {{all.3}}
+        <br>
+        Type= {{all.4}}
+        <br>
+        sd= {{all.5}}
+        <br>
+        population variances tested:
+        <br>
+        {% for i in possibilities %}
+        {{i}}
+        <br>
+        {% endfor %}
+    </div> -->
+</body>
+</html>

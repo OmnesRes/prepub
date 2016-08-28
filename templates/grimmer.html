@@ -105,7 +105,7 @@
         </div>          
     </div>
     <div class="col-sm-12" style="text-align:center">
-        <h2>GRIM Test Help</h2>
+        <h2>GRIMMER Test</h2>
         <div class="col-sm-12">
             <div class="col-sm-5">
             </div>
@@ -120,32 +120,32 @@
     <div class="col-sm-12">
         <div class="col-sm-1">
         </div>
-        <div class="col-sm-9" style="margin-top:10px;margin-bottom:50px;text-align:justify">
-            <p>The standard way to round numbers is to round up when the last decimal is a 5.  However, different software may or may not follow this convention.
-            <br>
-            <br>
-            For example, in Python 2 the call round(.125,2) will result in .13.
-            <br>
-            <br>
-            But in Python 3 the same call will result in .12.
-            <br>
-            <br>
-            As a result, if a researcher used a computer program to round their values it is possible they unknowingly rounded all of their values down instead of what they likely meant to do, id est round up.
-            <br>
-            <br>
-            So how can you check if this may have happened to the values you are testing?
-            <br>
-            <br>
-            I provide you the option to decide how you want numbers rounded.  If you believe rounding is an issue you can try the different options.
-            <br>
-            <br>
-            Another problem may arise that involves how computers store numbers.  For example, the number 2.675 should get rounded to 2.68, but the computer actually represents the number as 2.6749999... and it gets rounded down to 2.67.  See this <a href="https://docs.python.org/2.7/tutorial/floatingpoint.html">page</a> for more details.
-            <br>
-            <br>
-            This is an example of a floating point error that primarily occurs at sample sizes that are multiples of 40.  The different rounding options give you the ability to account for this possibility.  For the GRIMMER test there is a very small chance this type of floating point error will provide spurious results that cannot be accounted for without a detailed investigation.
+        <div class="col-sm-9" style="margin-top:10px;text-align:justify">
+            <p>
+                The GRIMMER test is an extension of the GRIM test and allows for testing measures of variability in addition to means. Through a mathematical discovery I am able to quickly check whether statistics of any size and precision are mathematically possible.
             </p>
+            <br>
+            <p>
+                Rounding issues and how computers store numbers can affect the accuracy of the test.  See the <a href="/grim_help">help page</a> for more details.
+            </p>
+            <br>
+            <p>A preprint detailing how the test works will be available shortly.</p>
+            <br>
+            <p>
+            <b>The GRIMMER test is currently available for:</b>
+            </p>
+            <div style="font-size:24px">
+                <a href="/grimmer_sd">Standard Deviations</a>
+            </div>
+            <div style="font-size:24px">
+                <a href="/grimmer_se">Standard Errors</a>
+            </div> 
+            <div style="font-size:24px">
+                <a href="/grimmer_var">Variances</a>
+            </div>    
+
         </div>
-        <div class="col-sm-2">
+        <div class="col-sm-1">
         </div>
     </div>
 </body>

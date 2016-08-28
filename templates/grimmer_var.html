@@ -105,14 +105,12 @@
         </div>          
     </div>
     <div class="col-sm-12" style="text-align:center;margin-top:10px">
-        <h2>GRIMMER Test for Standard Deviations</h2>
+        <h2>GRIMMER Test for Variances</h2>
     <div class="col-sm-12">
         <div class="col-sm-1">
         </div>
         <div class="col-sm-10" style="margin-top:10px;text-align:left">
             <p>Sample Size is currently limited to 5 through 99.
-                <br>
-                Standard Deviation is limited to 100, it is unlikely you would want to test values above this.
                 <br>
                 Mean is optional but preferable.
             </p>
@@ -121,13 +119,13 @@
         </div>
     </div>
     <div class="col-sm-12">
-        <form action="/grimmer_sd/" method="get" class="form-inline entry" style="text-align:center">
+        <form action="/grimmer_var/" method="get" class="form-inline entry" style="text-align:center">
             <div class="col-sm-12" style="padding:0px,margin:0px">
                 <div style="font-size:20px;margin-top:10px">
                     <div class="col-sm-12">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label for="sel1">Is your standard deviation a sample or population standard deviation?</label>
+                                <label for="sel1">Is your variance a sample or population variance?</label>
                                 <div>
                                 <select class="form-control" id="sel1" name="type" size="3">
                                     {% if type == "Sample" %}
@@ -178,7 +176,7 @@
                         <div class="col-sm-1">
                         </div>
                         <div class="form-group col-sm-2">
-                            <label for="sd">SD</label>
+                            <label for="sd">Variance</label>
                             <div>
                                 <input type="text" class="form-control" name="sd" maxlength=8 id="sd" value={{sd}}>
                             </div>
@@ -224,15 +222,11 @@
                         </p>
                         {% elif zero %}
                         <p id="errors">
-                        You entered zero for SD, you should be able to figure that one out on your own.
+                        You entered zero for variance, you should be able to figure that one out on your own.
                         </p>
                         {% elif sd_number %}
                         <p id="errors">
-                        Please enter a SD with at least one decimal.
-                        </p>
-                        {% elif sd_large %}
-                        <p id="errors">
-                        That's a large standard deviation. Please keep your standard deviations below 100.
+                        Please enter a variance with at least one decimal.
                         </p>
                         {% endif %}
                     </div>
@@ -253,39 +247,39 @@
                     {% if type == 'Sample' %}
                         {% if s_count %}
                             <div class="alert alert-success" style="font-size:16px">
-                                <strong>Your mean of {{mean}} is GRIM Consistent, and your mean and standard deviation ({{sd}}) pair are GRIMMER Consistent!</strong>
+                                <strong>Your mean of {{mean}} is GRIM Consistent, and your mean and variance ({{sd}}) pair are GRIMMER Consistent!</strong>
                             </div>
                         {% else %}
                             <div class="alert alert-danger" style="font-size:16px">
-                                <strong>Your mean of {{mean}} is GRIM Consistent, but your mean and standard deviation ({{sd}}) pair are GRIMMER Inconsistent.</strong>
+                                <strong>Your mean of {{mean}} is GRIM Consistent, but your mean and variance ({{sd}}) pair are GRIMMER Inconsistent.</strong>
                             </div>
                         {% endif %}
                     {% elif type == 'Population' %}
                         {% if p_count %}
                             <div class="alert alert-success" style="font-size:16px">
-                                <strong>Your mean of {{mean}} is GRIM Consistent, and your mean and standard deviation ({{sd}}) pair are GRIMMER Consistent!</strong>
+                                <strong>Your mean of {{mean}} is GRIM Consistent, and your mean and variance ({{sd}}) pair are GRIMMER Consistent!</strong>
                             </div>
                         {% else %}
                             <div class="alert alert-danger" style="font-size:16px">
-                                <strong>Your mean of {{mean}} is GRIM Consistent, but your mean and standard deviation ({{sd}}) pair are GRIMMER Inconsistent.</strong>
+                                <strong>Your mean of {{mean}} is GRIM Consistent, but your mean and variance ({{sd}}) pair are GRIMMER Inconsistent.</strong>
                             </div>
                         {% endif %}
                     {% else %}
                         {% if p_count and s_count %}
                             <div class="alert alert-success" style="font-size:16px">
-                                <strong>Your mean of {{mean}} is GRIM Consistent, and your mean and standard deviation ({{sd}}) pair are GRIMMER Consistent regardless of whether the standard deviation was a sample or population standard deviation.</strong>
+                                <strong>Your mean of {{mean}} is GRIM Consistent, and your mean and variance ({{sd}}) pair are GRIMMER Consistent regardless of whether the variance was a sample or population variance.</strong>
                             </div>
                         {% elif p_count %}
                             <div class="alert alert-warning" style="font-size:16px">
-                                <strong>Your mean of {{mean}} is GRIM Consistent, and your mean and standard deviation ({{sd}}) pair are GRIMMER Consistent if your standard deviation was a population standard deviation, but not if it was a sample standard deviation.</strong>
+                                <strong>Your mean of {{mean}} is GRIM Consistent, and your mean and variance ({{sd}}) pair are GRIMMER Consistent if your variance was a population variance, but not if it was a sample variance.</strong>
                             </div>
                         {% elif s_count %}
                             <div class="alert alert-warning" style="font-size:16px">
-                                <strong>Your mean of {{mean}} is GRIM Consistent, and your mean and standard deviation ({{sd}}) pair are GRIMMER Consistent if your standard deviation was a sample standard deviation, but not if it was a population standard deviation.</strong>
+                                <strong>Your mean of {{mean}} is GRIM Consistent, and your mean and variance ({{sd}}) pair are GRIMMER Consistent if your variance was a sample variance, but not if it was a population variance.</strong>
                             </div>
                         {% else %}
                             <div class="alert alert-danger" style="font-size:16px">
-                                <strong>Your mean of {{mean}} is GRIM Consistent, but your mean and standard deviation ({{sd}}) pair are GRIMMER Inconsistent regardless of whether the standard deviation was a sample or population standard deviation.</strong>
+                                <strong>Your mean of {{mean}} is GRIM Consistent, but your mean and variance ({{sd}}) pair are GRIMMER Inconsistent regardless of whether the variance was a sample or population variance.</strong>
                             </div>
                         {% endif %}
                     {% endif %}
@@ -294,39 +288,39 @@
                 {% if type == 'Sample' %}
                 {% if s_count %}
                 <div class="alert alert-success" style="font-size:16px">
-                    <strong>Your standard deviation of {{sd}} is GRIMMER Consistent, consider adding a mean for more accuracy.</strong>
+                    <strong>Your variance of {{sd}} is GRIMMER Consistent, consider adding a mean for more accuracy.</strong>
                 </div>
                 {% else %}
                 <div class="alert alert-danger" style="font-size:16px">
-                    <strong>Your standard deviation of {{sd}} is GRIMMER Inconsistent.</strong>
+                    <strong>Your variance of {{sd}} is GRIMMER Inconsistent.</strong>
                 </div>
                 {% endif %}
                 {% elif type == 'Population' %}
                 {% if p_count %}
                 <div class="alert alert-success" style="font-size:16px">
-                    <strong>Your standard deviation of {{sd}} is GRIMMER Consistent, consider adding a mean for more accuracy.</strong>
+                    <strong>Your variance of {{sd}} is GRIMMER Consistent, consider adding a mean for more accuracy.</strong>
                 </div>
                 {% else %}
                 <div class="alert alert-danger" style="font-size:16px">
-                    <strong>Your standard deviation of {{sd}} is GRIMMER Inconsistent.</strong>
+                    <strong>Your variance of {{sd}} is GRIMMER Inconsistent.</strong>
                 </div>
                 {% endif %}
                 {% else %}
                 {% if p_count and s_count %}
                 <div class="alert alert-success" style="font-size:16px">
-                    <strong>Your standard deviation of {{sd}} is GRIMMER Consistent regardless of whether the standard deviation was a sample or population standard deviation, consider adding a mean for more accuracy.</strong   >
+                    <strong>Your variance of {{sd}} is GRIMMER Consistent regardless of whether the variance was a sample or population variance, consider adding a mean for more accuracy.</strong   >
                 </div>
                 {% elif p_count %}
                 <div class="alert alert-warning" style="font-size:16px">
-                    <strong>Your standard deviation of {{sd}} is GRIMMER Consistent if your standard deviation was a population standard deviation, but not if it was a sample standard deviation.</strong>
+                    <strong>Your variance of {{sd}} is GRIMMER Consistent if your variance was a population variance, but not if it was a sample variance.</strong>
                 </div>
                 {% elif s_count %}
                 <div class="alert alert-warning" style="font-size:16px">
-                    <strong>Your standard deviation of {{sd}} is GRIMMER Consistent if your standard deviation was a sample standard deviation, but not if it was a population standard deviation.</strong>
+                    <strong>Your variance of {{sd}} is GRIMMER Consistent if your variance was a sample variance, but not if it was a population variance.</strong>
                 </div>
                 {% else %}
                 <div class="alert alert-danger" style="font-size:16px">
-                    <strong>Your standard deviation of {{sd}} is GRIMMER Inconsistent regardless of whether the standard deviation was a sample or population standard deviation.</strong>
+                    <strong>Your variance of {{sd}} is GRIMMER Inconsistent regardless of whether the variance was a sample or population variance.</strong>
                 </div>
                 {% endif %}
                 {% endif %}

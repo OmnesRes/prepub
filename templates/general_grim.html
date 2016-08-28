@@ -121,7 +121,7 @@
         </div>
         <div class="col-sm-9" style="margin-top:10px;text-align:justify">
             <p>The test below will allow for any number of decimal places, samples, and Likert categories. If your value is a percent convert it to a decimal.  Note that the sample size determines how many decimal places you can check.  With a sample size of 1-99 you can check two decimal places.  With a sample size of 100-999 you can check three decimal places.</p>
-            <p><b> Nota bene: This implementation always rounds up, for example .125 becomes .13.  Different programs may round differently, and sample sizes that are multiples of 40 present computers special problems.  See this <a href="/grim_help/">help page</a> for more information</b></p>
+            <p><b> See this <a href="/grim_help/">help page</a> for rounding issues.</b></p>
         </div>
         <div class="col-sm-2">
         </div>
@@ -129,7 +129,31 @@
     <div class="col-sm-12">
         <form action="/general_grim/" method="get" class="form-inline entry" style="text-align:center">
             <div class="col-sm-12">
-                <div style="font-size:20px;margin-top:10px">
+                <div style="font-size:20px;margin-top:0px">
+                    <div class="col-sm-12" style="padding=0px;margin-top:0px">
+                        <div class="form-group">
+                            <label for="sel2">Do you want to round Up, Down, or use Bankers'?</label>
+                            <div>
+                            <select class="form-control" id="sel2" name="direction" size="3">
+                                {% if direction == "Up" %}
+                                <option selected="Up">Up</option>
+                                {% else %}
+                                <option value="Up">Up</option>
+                                {% endif %}
+                                {% if direction == "Down" %}
+                                <option selected="Down">Down</option>
+                                {% else %}
+                                <option value="Down">Down</option>
+                                {% endif %}
+                                {% if direction == "Bankers'" %}
+                                <option selected="Bankers'" value="Bankers'">Bankers'</option>
+                                {% else %}
+                                <option value="Bankers'">Bankers'</option>
+                                {% endif %}
+                            </select>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-sm-12" style="padding=0px">
                         <div class="col-sm-1">
                         </div>

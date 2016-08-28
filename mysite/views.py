@@ -107,6 +107,9 @@ def my_help(request):
 def grim_help(request):
     return render(request, 'grim_help.html')
 
+def grimmer(request):
+    return render(request, 'grimmer.html')
+
 def rss_feed(request):
     if request.META.get('HTTP_REFERER',False):
         if 'q' in request.GET:
@@ -149,17 +152,28 @@ def round_up(number,places):
     else:
         return round(float(number),places)
 
-def round_down(number,places):
-    number=str(number)
+
+def my_round(number,places,direction):
+    if type(number)==type('string'):
+        pass
+    else:
+        number=repr(number)
     if number[-1]=='5':
         decimals=len(number.split('.')[-1])
         if places<decimals:
-            return round(float(number[:-1]+'4'),places)
+            if direction=="Up":
+                return round(float(number[:-1]+'6'),places)
+            elif direction=="Down":
+                return round(float(number[:-1]+'4'),places)
+            else:
+                if int(float(number))%2==0:
+                    return round(float(number[:-1]+'4'),places)
+                else:
+                    return round(float(number[:-1]+'6'),places)
         else:
             return round(float(number),places)
     else:
         return round(float(number),places)
-
 
 def grim_plot(request):
     if request.META.get('HTTP_REFERER',False):
@@ -175,6 +189,10 @@ def grim_test(request):
                 size=str(request.GET['size']).strip()
             except:
                 return render(request, 'grim_test.html', {'unicode':True})
+            try:
+                direction=str(request.GET['direction']).strip()
+            except:
+                direction="Up"
             if '.' in mean:
                 try:
                     float(mean)
@@ -185,10 +203,10 @@ def grim_test(request):
                     if re.search('^[0-9]+$',size):
                         size=int(size)
                         if 1<=size<=100:
-                            if round_up(round(mean*size,0)/size,2)==mean:
-                                return render(request, 'grim_test.html', {'no_error':True,'consistent':True,'size':str(size),'mean':"%.2f" % round(mean,2)})
+                            if my_round(round(mean*size,0)/size,2,direction)==mean:
+                                return render(request, 'grim_test.html', {'no_error':True,'direction':direction,'consistent':True,'size':str(size),'mean':"%.2f" % round(mean,2)})
                             else:
-                                return render(request, 'grim_test.html', {'no_error':True,'consistent':False,'size':str(size),'mean':"%.2f" % round(mean,2)})
+                                return render(request, 'grim_test.html', {'no_error':True,'direction':direction,'consistent':False,'size':str(size),'mean':"%.2f" % round(mean,2)})
                         else:
                             return render(request, 'grim_test.html', {'size_wrong':True})
                     else:
@@ -203,44 +221,6 @@ def grim_test(request):
         return render(request, 'grim_test.html',{'home':True,})
 
 
-
-
-def grim_test_down(request):
-    if request.META.get('HTTP_REFERER',False):
-        if 'size' in request.GET:
-            try:
-                mean=str(request.GET['mean']).strip()
-                size=str(request.GET['size']).strip()
-            except:
-                return render(request, 'grim_test_down.html', {'unicode':True})
-            if '.' in mean:
-                try:
-                    float(mean)
-                except:
-                    return render(request, 'grim_test_down.html', {'mean_number':True})
-                if len(mean.split('.')[-1])==2:
-                    mean=float(mean)
-                    if re.search('^[0-9]+$',size):
-                        size=int(size)
-                        if 1<=size<=100:
-                            if round_down(round(mean*size,0)/size,2)==mean:
-                                return render(request, 'grim_test_down.html', {'no_error':True,'consistent':True,'size':str(size),'mean':"%.2f" % round(mean,2)})
-                            else:
-                                return render(request, 'grim_test_down.html', {'no_error':True,'consistent':False,'size':str(size),'mean':"%.2f" % round(mean,2)})
-                        else:
-                            return render(request, 'grim_test_down.html', {'size_wrong':True})
-                    else:
-                        return render(request, 'grim_test_down.html', {'size_number':True})
-                else:
-                    return render(request, 'grim_test_down.html', {'two_places':True})
-            else:
-                return render(request, 'grim_test_down.html', {'decimal':True})
-        else:
-            return render(request, 'grim_test_down.html',{'home':True})
-    else:
-        return render(request, 'grim_test_down.html',{'home':True,})
-
-
 def general_grim(request):
     if request.META.get('HTTP_REFERER',False):
         if 'size' in request.GET:
@@ -250,6 +230,10 @@ def general_grim(request):
                 likert=str(request.GET['likert']).strip()
             except:
                 return render(request, 'general_grim.html', {'unicode':True})
+            try:
+                direction=str(request.GET['direction']).strip()
+            except:
+                direction="Up"
             if '.' in mean:
                 try:
                     float(mean)
@@ -261,19 +245,21 @@ def general_grim(request):
                     size=int(size)
                     if re.search('^[0-9]+$',likert):
                         likert=int(likert)
-                        if round_up(round(mean*size*likert,0)/(size*likert),decimals)==mean:
+                        if my_round(round(mean*size*likert,0)/(size*likert),decimals,direction)==mean:
                             return render(request, 'general_grim.html',\
                                           {'no_error':True,'consistent':True,\
                                            'size':size,\
                                            'mean':("%."+str(decimals)+"f") % round(mean,decimals),\
-                                           'likert':likert})
+                                           'likert':likert,\
+                                           'direction':direction})
                         else:
                             return render(request, 'general_grim.html',\
                                           {'no_error':True,\
                                            'consistent':False,\
                                            'size':size,\
                                            'mean':("%."+str(decimals)+"f") % round(mean,decimals),\
-                                           'likert':likert})
+                                           'likert':likert,\
+                                           'direction':direction})
                     else:
                         return render(request, 'general_grim.html', {'likert_number':True})
                 else:
@@ -300,6 +286,10 @@ def grimmer_sd(request):
                 sd=str(request.GET['sd']).strip()
             except:
                 return render(request,'grimmer_sd.html', {'unicode':True})
+            try:
+                direction=str(request.GET['direction']).strip()
+            except:
+                direction="Up"
             if re.search('^[0-9]+$',size):
                 size=int(size)
             else:
@@ -312,30 +302,43 @@ def grimmer_sd(request):
                     pattern_zero=mod.pattern_zero[:]
                     pattern_even=mod.pattern_even[:]
                     pattern_odd=mod.pattern_odd[:]
-                    averages_even=mod.averages_even.copy()
-                    averages_odd=mod.averages_odd.copy()
+                    averages_even=sorted(zip(mod.averages_even.copy().keys(),mod.averages_even.copy().values()))
+                    averages_odd=sorted(zip(mod.averages_odd.copy().keys(),mod.averages_odd.copy().values()))
                     pattern_zero_rounded=[round_up('.'+repr(n).split('.')[1],5) for n in pattern_zero]
-                    averages_zero={round_up('.'+repr(n).split('.')[1],5):averages_even[n] for n in averages_even if round_up('.'+repr(n).split('.')[1],5) in pattern_zero_rounded}
+                    averages_zero={round_up('.'+repr(n).split('.')[1],5):mod.averages_even.copy()[n] for n in mod.averages_even.copy() if round_up('.'+repr(n).split('.')[1],5) in pattern_zero_rounded}
+                    averages_zero=sorted(zip(averages_zero.copy().keys(),averages_zero.copy().values()))
                     def loop(low,high):
                         possibilities=[]
                         if low==0:
-                            possibilities=pattern_zero[:]
+                            for index,i in enumerate(pattern_zero):
+                                possibilities.append([i,index])
                             low=1
                         loop=0
                         X=True
                         if low%2==0:
-                            pattern=pattern_even+[n+1 for n in pattern_odd]
+                            pattern_1=pattern_even
+                            pattern_2=pattern_odd
                         else:
-                            pattern=pattern_odd+[n+1 for n in pattern_even]
+                            pattern_1=pattern_odd
+                            pattern_2=pattern_even
                         while True:
                             if X==True:
-                                for i in pattern:
+                                for index,i in enumerate(pattern_1):
                                     value=low+i+loop
-                                    possibilities.append(value)
+                                    possibilities.append([value,index])
                                     if value>=high:
                                         X=False
                                         break
-                                loop+=2
+                                loop+=1
+                                if X==False:
+                                    break
+                                for index,i in enumerate(pattern_2):
+                                    value=low+i+loop
+                                    possibilities.append([value,index])
+                                    if value>=high:
+                                        X=False
+                                        break
+                                loop+=1
                             else:
                                 break
                         return possibilities
@@ -347,7 +350,7 @@ def grimmer_sd(request):
                                 return render(request,'grimmer_sd.html', {'mean_number':True})
                             mean_decimals=len(mean.split('.')[1])
                             mean=float(mean)
-                            if round_up(round_up(mean*size,0)/size,mean_decimals)==mean:
+                            if my_round(round_up(mean*size,0)/size,mean_decimals,direction)==mean:
                                 grim=True
                             else:
                                 return render(request, 'grimmer_sd.html', {'no_error':True,
@@ -376,21 +379,21 @@ def grimmer_sd(request):
                             possibilities=loop(low,high)
                             if grim:
                                 for j in possibilities:
-                                    if int(j)==0:
-                                        if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [round_up(ave,mean_decimals) for ave in averages_zero[round_up('.'+repr(j).split('.')[1],5)]]:
-                                            if round_up(j**.5,sd_decimals)==sd:
+                                    if int(j[0])==0:
+                                        if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [my_round(ave,mean_decimals,direction) for ave in averages_zero[j[1]][1]]:
+                                            if my_round(j[0]**.5,sd_decimals,direction)==sd:
                                                 population_count+=1
-                                    elif int(j)%2==0:
-                                        if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [round_up(ave,mean_decimals) for ave in averages_even[round_up('.'+repr(j).split('.')[1],var_precision)]]:
-                                            if round_up(j**.5,sd_decimals)==sd:
+                                    elif int(j[0])%2==0:
+                                        if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [my_round(ave,mean_decimals,direction) for ave in averages_even[j[1]][1]]:
+                                            if my_round(j[0]**.5,sd_decimals,direction)==sd:
                                                 population_count+=1
                                     else:
-                                        if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [round_up(ave,mean_decimals) for ave in averages_odd[round_up('.'+repr(j).split('.')[1],var_precision)]]:
-                                            if round_up(j**.5,sd_decimals)==sd:
+                                        if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [my_round(ave,mean_decimals,direction) for ave in averages_odd[j[1]][1]]:
+                                            if my_round(j[0]**.5,sd_decimals,direction)==sd:
                                                 population_count+=1
                             else:
                                 for j in possibilities:
-                                    if round_up(j**.5,sd_decimals)==sd:
+                                    if my_round(j[0]**.5,sd_decimals,direction)==sd:
                                         population_count+=1
                         
 ##                        try:
@@ -404,21 +407,21 @@ def grimmer_sd(request):
                             possibilities=loop(low,high)
                             if grim:
                                 for j in possibilities:
-                                    if int(j)==0:
-                                        if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [round_up(ave,mean_decimals) for ave in averages_zero[round_up('.'+repr(j).split('.')[1],5)]]:
-                                            if round_up((j*size/(size-1))**.5,sd_decimals)==sd:
+                                    if int(j[0])==0:
+                                        if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [my_round(ave,mean_decimals,direction) for ave in averages_zero[j[1]][1]]:
+                                            if my_round((j[0]*size/(size-1))**.5,sd_decimals,direction)==sd:
                                                 sample_count+=1
-                                    elif int(j)%2==0:
-                                        if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [round_up(ave,mean_decimals) for ave in averages_even[round_up('.'+repr(j).split('.')[1],var_precision)]]:
-                                            if round_up((j*size/(size-1))**.5,sd_decimals)==sd:
+                                    elif int(j[0])%2==0:
+                                        if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [my_round(ave,mean_decimals,direction) for ave in averages_even[j[1]][1]]:
+                                            if my_round((j[0]*size/(size-1))**.5,sd_decimals,direction)==sd:
                                                 sample_count+=1
                                     else:
-                                        if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [round_up(ave,mean_decimals) for ave in averages_odd[round_up('.'+repr(j).split('.')[1],var_precision)]]:
-                                            if round_up((j*size/(size-1))**.5,sd_decimals)==sd:
+                                        if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [my_round(ave,mean_decimals,direction) for ave in averages_odd[j[1]][1]]:
+                                            if my_round((j[0]*size/(size-1))**.5,sd_decimals,direction)==sd:
                                                 sample_count+=1
                             else:
                                 for j in possibilities:
-                                    if round((j*size/(size-1))**.5,sd_decimals)==sd:
+                                    if my_round((j[0]*size/(size-1))**.5,sd_decimals,direction)==sd:
                                         sample_count+=1
 ##                            all_possibilities+=[repr(i) for i in possibilities]
                         all_possibilities=[]
@@ -429,6 +432,7 @@ def grimmer_sd(request):
                                                                'mean':("%."+str(mean_decimals)+"f") % round(mean,mean_decimals),
                                                                'size':size,
                                                                'type':Type,
+                                                               'direction':direction,
                                                                'sd':("%."+str(sd_decimals)+"f") % round(sd,sd_decimals),
                                                                'no_error':True,
                                                                'consistent':True,
@@ -439,6 +443,7 @@ def grimmer_sd(request):
                                                                's_count':sample_count,
                                                                'size':size,
                                                                'type':Type,
+                                                               'direction':direction,
                                                                'sd':("%."+str(sd_decimals)+"f") % round(sd,sd_decimals),
                                                                'no_error':True,
                                                                'consistent':True,
@@ -460,10 +465,364 @@ def grimmer_sd(request):
 
 
 
+def grimmer_var(request):
+    import re
+    import math
+    import importlib
+    var_precision=12
+    if request.META.get('HTTP_REFERER',False):
+        if 'size' in request.GET:
+            try:
+                mean=str(request.GET['mean']).strip()
+                size=str(request.GET['size']).strip()
+                sd=str(request.GET['sd']).strip()
+            except:
+                return render(request,'grimmer_var.html', {'unicode':True})
+            try:
+                direction=str(request.GET['direction']).strip()
+            except:
+                direction="Up"
+            if re.search('^[0-9]+$',size):
+                size=int(size)
+            else:
+                return render(request,'grimmer_var.html', {'size_number':True})
+            if 'type' in request.GET:
+                Type=str(request.GET['type']).strip()
+                grim=False
+                if 5<=size<=99:
+                    mod=importlib.import_module('mysite.patterns.'+str(size))
+                    pattern_zero=mod.pattern_zero[:]
+                    pattern_even=mod.pattern_even[:]
+                    pattern_odd=mod.pattern_odd[:]
+                    averages_even=sorted(zip(mod.averages_even.copy().keys(),mod.averages_even.copy().values()))
+                    averages_odd=sorted(zip(mod.averages_odd.copy().keys(),mod.averages_odd.copy().values()))
+                    pattern_zero_rounded=[round_up('.'+repr(n).split('.')[1],5) for n in pattern_zero]
+                    averages_zero={round_up('.'+repr(n).split('.')[1],5):mod.averages_even.copy()[n] for n in mod.averages_even.copy() if round_up('.'+repr(n).split('.')[1],5) in pattern_zero_rounded}
+                    averages_zero=sorted(zip(averages_zero.copy().keys(),averages_zero.copy().values()))
+                    def loop(low,high):
+                        possibilities=[]
+                        if low==0:
+                            for index,i in enumerate(pattern_zero):
+                                possibilities.append([i,index])
+                            low=1
+                        loop=0
+                        X=True
+                        if low%2==0:
+                            pattern_1=pattern_even
+                            pattern_2=pattern_odd
+                        else:
+                            pattern_1=pattern_odd
+                            pattern_2=pattern_even
+                        while True:
+                            if X==True:
+                                for index,i in enumerate(pattern_1):
+                                    value=low+i+loop
+                                    possibilities.append([value,index])
+                                    if value>=high:
+                                        X=False
+                                        break
+                                loop+=1
+                                if X==False:
+                                    break
+                                for index,i in enumerate(pattern_2):
+                                    value=low+i+loop
+                                    possibilities.append([value,index])
+                                    if value>=high:
+                                        X=False
+                                        break
+                                loop+=1
+                            else:
+                                break
+                        return possibilities
+                    if mean:
+                        if '.' in mean:
+                            try:
+                                float(mean)
+                            except:
+                                return render(request,'grimmer_var.html', {'mean_number':True})
+                            mean_decimals=len(mean.split('.')[1])
+                            mean=float(mean)
+                            if my_round(round_up(mean*size,0)/size,mean_decimals,direction)==mean:
+                                grim=True
+                            else:
+                                return render(request, 'grimmer_var.html', {'no_error':True,
+                                                                        'consistent':False,
+                                                                        'size':str(size),
+                                                                        'mean':("%."+str(mean_decimals)+"f") % round_up(mean,mean_decimals)})
+                        else:
+                            return render(request,'grimmer_var.html', {'mean_number':True})
+                    if '.' in sd:
+                        try:
+                            float(sd)
+                        except:
+                            return render(request,'grimmer_var.html', {'sd_number':True})
+                        sd_decimals=len(sd.split('.')[1])
+                        sd=float(sd)
+                        lower=sd-.5/(10**sd_decimals)
+                        higher=sd+.5/(10**sd_decimals)
+                        ##assume population SD first
+                        low=math.floor(lower)
+                        high=math.ceil(higher)
+                        sample_count=0
+                        population_count=0
+                        if Type!='Sample':
+                            possibilities=loop(low,high)
+                            if grim:
+                                for j in possibilities:
+                                    if int(j[0])==0:
+                                        if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [my_round(ave,mean_decimals,direction) for ave in averages_zero[j[1]][1]]:
+                                            if my_round(j[0],sd_decimals,direction)==sd:
+                                                population_count+=1
+                                    elif int(j[0])%2==0:
+                                        if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [my_round(ave,mean_decimals,direction) for ave in averages_even[j[1]][1]]:
+                                            if my_round(j[0],sd_decimals,direction)==sd:
+                                                population_count+=1
+                                    else:
+                                        if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [my_round(ave,mean_decimals,direction) for ave in averages_odd[j[1]][1]]:
+                                            if my_round(j[0],sd_decimals,direction)==sd:
+                                                population_count+=1
+                            else:
+                                for j in possibilities:
+                                    if my_round(j[0],sd_decimals,direction)==sd:
+                                        population_count+=1
+                        
+##                        try:
+####                            all_possibilities=[repr(i) for i in possibilities]
+##                        except:
+##                            all_possibilities=[]
+                        if Type!='Population':
+                            #recalculate low and high for sample variance
+                            low=math.floor(low*(size-1)/size)
+                            high=math.ceil(high*(size-1)/size)
+                            possibilities=loop(low,high)
+                            if grim:
+                                for j in possibilities:
+                                    if int(j[0])==0:
+                                        if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [my_round(ave,mean_decimals,direction) for ave in averages_zero[j[1]][1]]:
+                                            if my_round(j[0]*size/(size-1),sd_decimals,direction)==sd:
+                                                sample_count+=1
+                                            else:
+                                                if round_up(round(j[0]*size/(size-1),10),sd_decimals)==sd:
+                                                    sample_count+=1
+                                    elif int(j[0])%2==0:
+                                        if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [my_round(ave,mean_decimals,direction) for ave in averages_even[j[1]][1]]:
+                                            if my_round(j[0]*size/(size-1),sd_decimals,direction)==sd:
+                                                sample_count+=1
+                                            else:
+                                                if round_up(round(j[0]*size/(size-1),10),sd_decimals)==sd:
+                                                    sample_count+=1
+                                    else:
+                                        if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [my_round(ave,mean_decimals,direction) for ave in averages_odd[j[1]][1]]:
+                                            if my_round(j[0]*size/(size-1),sd_decimals,direction)==sd:
+                                                sample_count+=1
+                                            else:
+                                                if round_up(round(j[0]*size/(size-1),10),sd_decimals)==sd:
+                                                    sample_count+=1
+                            else:
+                                for j in possibilities:
+                                    if my_round(j[0]*size/(size-1),sd_decimals,direction)==sd:
+                                        sample_count+=1
+                                    else:
+                                        if round_up(round(j[0]*size/(size-1),10),sd_decimals)==sd:
+                                            sample_count+=1
+##                            all_possibilities+=[repr(i) for i in possibilities]
+                        all_possibilities=[]
+                        all_variables=[population_count,sample_count,mean,size,Type,sd]
+                        if mean:
+                            return render(request,'grimmer_var.html', {'p_count':population_count,
+                                                               's_count':sample_count,
+                                                               'mean':("%."+str(mean_decimals)+"f") % round(mean,mean_decimals),
+                                                               'size':size,
+                                                               'type':Type,
+                                                               'direction':direction,
+                                                               'sd':("%."+str(sd_decimals)+"f") % round(sd,sd_decimals),
+                                                               'no_error':True,
+                                                               'consistent':True,
+                                                                'possibilities':all_possibilities,
+                                                                'all':all_variables,})
+                        else:
+                            return render(request,'grimmer_var.html', {'p_count':population_count,
+                                                               's_count':sample_count,
+                                                               'size':size,
+                                                               'type':Type,
+                                                               'direction':direction,
+                                                               'sd':("%."+str(sd_decimals)+"f") % round(sd,sd_decimals),
+                                                               'no_error':True,
+                                                               'consistent':True,
+                                                                'possibilities':all_possibilities,
+                                                                'all':all_variables,})
+                    else:
+                        if sd=='0':
+                            return render(request,'grimmer_var.html', {'zero':True,})
+                        else:
+                            return render(request,'grimmer_var.html', {'sd_number':True,})
+                else:
+                    return render(request,'grimmer_var.html', {'size_wrong':True,})
+            else:
+                return render(request,'grimmer_var.html', {'type_wrong':True,'mean':mean,'size':size,'sd':sd})
+        else:
+            return render(request,'grimmer_var.html', {'home':True,})
+    else:
+        return render(request,'grimmer_var.html', {'home':True,})
 
 
-
-
+def grimmer_se(request):
+    import re
+    import math
+    import importlib
+    var_precision=12
+    if request.META.get('HTTP_REFERER',False):
+        if 'size' in request.GET:
+            try:
+                mean=str(request.GET['mean']).strip()
+                size=str(request.GET['size']).strip()
+                sd=str(request.GET['sd']).strip()
+            except:
+                return render(request,'grimmer_sd.html', {'unicode':True})
+            try:
+                direction=str(request.GET['direction']).strip()
+            except:
+                direction="Up"
+            if re.search('^[0-9]+$',size):
+                size=int(size)
+            else:
+                return render(request,'grimmer_se.html', {'size_number':True})
+            grim=False
+            if 5<=size<=99:
+                mod=importlib.import_module('mysite.patterns.'+str(size))
+                pattern_zero=mod.pattern_zero[:]
+                pattern_even=mod.pattern_even[:]
+                pattern_odd=mod.pattern_odd[:]
+                averages_even=sorted(zip(mod.averages_even.copy().keys(),mod.averages_even.copy().values()))
+                averages_odd=sorted(zip(mod.averages_odd.copy().keys(),mod.averages_odd.copy().values()))
+                pattern_zero_rounded=[round_up('.'+repr(n).split('.')[1],5) for n in pattern_zero]
+                averages_zero={round_up('.'+repr(n).split('.')[1],5):mod.averages_even.copy()[n] for n in mod.averages_even.copy() if round_up('.'+repr(n).split('.')[1],5) in pattern_zero_rounded}
+                averages_zero=sorted(zip(averages_zero.copy().keys(),averages_zero.copy().values()))
+                def loop(low,high):
+                    possibilities=[]
+                    if low==0:
+                        for index,i in enumerate(pattern_zero):
+                            possibilities.append([i,index])
+                        low=1
+                    loop=0
+                    X=True
+                    if low%2==0:
+                        pattern_1=pattern_even
+                        pattern_2=pattern_odd
+                    else:
+                        pattern_1=pattern_odd
+                        pattern_2=pattern_even
+                    while True:
+                        if X==True:
+                            for index,i in enumerate(pattern_1):
+                                value=low+i+loop
+                                possibilities.append([value,index])
+                                if value>=high:
+                                    X=False
+                                    break
+                            loop+=1
+                            if X==False:
+                                break
+                            for index,i in enumerate(pattern_2):
+                                value=low+i+loop
+                                possibilities.append([value,index])
+                                if value>=high:
+                                    X=False
+                                    break
+                            loop+=1
+                        else:
+                            break
+                    return possibilities
+                if mean:
+                    if '.' in mean:
+                        try:
+                            float(mean)
+                        except:
+                            return render(request,'grimmer_se.html', {'mean_number':True})
+                        mean_decimals=len(mean.split('.')[1])
+                        mean=float(mean)
+                        if my_round(round_up(mean*size,0)/size,mean_decimals,direction)==mean:
+                            grim=True
+                        else:
+                            return render(request, 'grimmer_se.html', {'no_error':True,
+                                                                    'consistent':False,
+                                                                    'size':str(size),
+                                                                    'mean':("%."+str(mean_decimals)+"f") % round_up(mean,mean_decimals)})
+                    else:
+                        return render(request,'grimmer_se.html', {'mean_number':True})
+                if '.' in sd:
+                    try:
+                        float(sd)
+                    except:
+                        return render(request,'grimmer_se.html', {'sd_number':True})
+                    sd_decimals=len(sd.split('.')[1])
+                    sd=float(sd)
+                    if sd>100:
+                        return render(request,'grimmer_se.html', {'sd_large':True,})
+                    lower=sd-.5/(10**sd_decimals)
+                    higher=sd+.5/(10**sd_decimals)
+                    ##assume population SD first
+                    low=math.floor((lower*size**.5)**2)
+                    low=math.floor(low*(size-1)/size)
+                    high=math.ceil((higher*size**.5)**2)
+                    high=math.ceil(high*(size-1)/size)
+                    count=0
+                    possibilities=loop(low,high)
+                    if grim:
+                        for j in possibilities:
+                            if int(j[0])==0:
+                                if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [my_round(ave,mean_decimals,direction) for ave in averages_zero[j[1]][1]]:
+                                    if my_round(((j[0]*size/(size-1))**.5)/size**.5,sd_decimals,direction)==sd:
+                                        count+=1
+                            elif int(j[0])%2==0:
+                                if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [my_round(ave,mean_decimals,direction) for ave in averages_even[j[1]][1]]:
+                                    if my_round(((j[0]*size/(size-1))**.5)/size**.5,sd_decimals,direction)==sd:
+                                        count+=1
+                            else:
+                                if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [my_round(ave,mean_decimals,direction) for ave in averages_odd[j[1]][1]]:
+                                    if my_round(((j[0]*size/(size-1))**.5)/size**.5,sd_decimals,direction)==sd:
+                                        count+=1
+                    else:
+                        for j in possibilities:
+                            if my_round(((j[0]*size/(size-1))**.5)/size**.5,sd_decimals,direction)==sd:
+                                count+=1
+                
+##                        try:
+####                            all_possibilities=[repr(i) for i in possibilities]
+##                        except:
+##                            all_possibilities=[]
+                    all_possibilities=[]
+                    all_variables=[count,mean,size,sd]
+                    if mean:
+                        return render(request,'grimmer_se.html', {'count':count,
+                                                           'mean':("%."+str(mean_decimals)+"f") % round(mean,mean_decimals),
+                                                           'size':size,
+                                                           'direction':direction,
+                                                           'sd':("%."+str(sd_decimals)+"f") % round(sd,sd_decimals),
+                                                           'no_error':True,
+                                                           'consistent':True,
+                                                            'possibilities':all_possibilities,
+                                                            'all':all_variables,})
+                    else:
+                        return render(request,'grimmer_se.html', {'count':count,
+                                                           'size':size,
+                                                           'direction':direction,
+                                                           'sd':("%."+str(sd_decimals)+"f") % round(sd,sd_decimals),
+                                                           'no_error':True,
+                                                           'consistent':True,
+                                                            'possibilities':all_possibilities,
+                                                            'all':all_variables,})
+                else:
+                    if sd=='0':
+                        return render(request,'grimmer_se.html', {'zero':True,})
+                    else:
+                        return render(request,'grimmer_se.html', {'sd_number':True,})
+            else:
+                return render(request,'grimmer_se.html', {'size_wrong':True,})
+        else:
+            return render(request,'grimmer_se.html', {'home':True,})
+    else:
+        return render(request,'grimmer_se.html', {'home':True,})
 
 
 
