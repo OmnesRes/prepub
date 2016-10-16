@@ -1,1 +1,0 @@
-[u'AMA Announcement: Tuesday 8/30 1PM EST - Caspar Hare (MIT) on ethics, rationality and edX intro to philosophy MOOC', ['ADefiniteDescription', 'r/Science'], u'August 28 2016', '', u'/papers/5287-ama-announcement-tuesday-8-30-1pm-est-caspar-hare-mit-on-ethics-rationality-and-edx-intro-to-philosophy-mooc', [u'Philosophy AMA'], []]

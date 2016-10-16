@@ -1,1 +1,0 @@
-[u'Digital workflow with Overleaf, Evernote, and Zotero to write papers', ['Arin Basu'], u'October 01 2016', '', u'/papers/5467-digital-workflow-with-overleaf-evernote-and-zotero-to-write-papers', [u'Communication'], [u'University of Canterbury']]

@@ -1,1 +1,0 @@
-[u'Science AMA Series: My name is Dr. Josh Bloom and I spent 27 years in Big Pharma. Now I write for a science media non-profit. Ask me anything!', ['Dr_Josh_Bloom', 'r/Science'], u'July 29 2016', '', u'/papers/5015-science-ama-series-my-name-is-dr-josh-bloom-and-i-spent-27-years-in-big-pharma-now-i-write-for-a-science-media-non-profit-ask-me-anything', [u'Science AMA'], []]

@@ -1,1 +1,0 @@
-[u'How to Write Using Rich Text Format and Markdown in LaTeX and Overleaf', ['Arin Basu'], u'July 24 2016', '', u'/papers/5002-how-to-write-using-rich-text-format-and-markdown-in-latex-and-overleaf', ['Social Sciences'], [u'University of Canterbury']]
