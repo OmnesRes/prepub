@@ -1,0 +1,2 @@
+[u'The Diel Hypothesis and Theory of Evolution', ['Glen D. Brown'], u'November 12 2016', '', u'/papers/5673-the-diel-hypothesis-and-theory-of-evolution', [u'Developmental Biology', u'Biochemistry', u'Evolution'], []]
+[u'Notes & Considerations on Proposal for Astrosphere Catalog and Baseline Model for Comparison and Reference over Time', ['Jayson Abalos'], u'November 12 2016', '', u'/papers/5674-notes-considerations-on-proposal-for-astrosphere-catalog-and-baseline-model-for-comparison-and-reference-over-time', ['Physics'], []]
