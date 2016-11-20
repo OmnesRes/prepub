@@ -64,7 +64,7 @@ def au_query(names):
         if names[1][index][1]=='full':
             q = Q(**{"authors__%s__iexact" % names[1][index][0]: name})
         else:
-            q = Q(**{"authors__%s__istartswith" % names[1][index][0]: name})
+            q = Q(**{"authors__%s__istartswith" % names[1][index][0]: name[0]})
         if and_query is None:
             and_query = q
         else:
@@ -172,6 +172,10 @@ def parsing_query(mystring,all_terms):
                                 middle_abb=[middle for middle,first in zip(name_last[query][1],name_last[query][0]) if first==query_plus_1[0] and middle!='']
                                 if query_plus_1[1] in middle_abb:
                                     all_terms['names']=all_terms.get('names',[])+[[[query_plus_1[0],query,query_plus_1[1]],[['first',''],['last','full'],['middle','']]]]
+                                    return parsing_query(mystring[2:],all_terms)
+                                #check for hyphenated first name
+                                elif query_plus_1 in name_last[query][0]:
+                                    all_terms['names']=all_terms.get('names',[])+[[[query_plus_1,query],[['first',''],['last','full']]]]
                                     return parsing_query(mystring[2:],all_terms)
                                 else:
                                     all_terms['names']=all_terms.get('names',[])+[[[query],[['last','full']]]]
