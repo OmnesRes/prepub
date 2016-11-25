@@ -878,7 +878,7 @@ try:
             templinks=[]
             soup=BeautifulSoup(r.content)
             for entry in soup.find_all('entry'):
-                titles.append(entry.find('title').text.strip())
+                titles.append(entry.find('title').text.strip().replace('\n',' ').replace('   ',' '))
                 temp=[]
                 unique={}
                 temp_aff=[]
@@ -890,7 +890,7 @@ try:
                             temp_aff.append(author.find('arxiv:affiliation').text.strip())
                 authors.append(temp)
                 dates.append(entry.find('published').text.strip().split('T')[0])
-                abstracts.append(entry.find('summary').text.strip())
+                abstracts.append(entry.find('summary').text.strip().replace('\n',' ').replace('   ',' '))
                 links.append(entry.find('link',{'type':'text/html'}).get('href').strip())
                 templinks.append(entry.find('link',{'type':'text/html'}).get('href').strip().split('/')[-1].split('v')[0])
                 author_aff.append(temp_aff)

@@ -1064,14 +1064,14 @@ def advanced_search_results(request):
                         qs=qs.filter(tiab_query([request.GET['tiab2']]))
                 if request.GET['aff1']:
                     if qs==None:
-                        qs=Article.objects.filter(affiliations__name__icontains=request.GET['aff1'])
+                        qs=Article.objects.filter(affiliations__name__icontains=request.GET['aff1']).distinct()
                     else:
-                        qs=qs.filter(affiliations__name__icontains=request.GET['aff1'])
+                        qs=qs.filter(affiliations__name__icontains=request.GET['aff1']).distinct()
                 if request.GET['aff2']:
                     if qs==None:
-                        qs=Article.objects.filter(affiliations__name__icontains=request.GET['aff2'])
+                        qs=Article.objects.filter(affiliations__name__icontains=request.GET['aff2']).distinct()
                     else:
-                        qs=qs.filter(affiliations__name__icontains=request.GET['aff2'])
+                        qs=qs.filter(affiliations__name__icontains=request.GET['aff2']).distinct()
                 if qs.exists():
                     qs=qs.order_by('-pub_date')
                     paginator=Paginator(qs, 20)
