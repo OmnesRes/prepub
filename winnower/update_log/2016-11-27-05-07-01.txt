@@ -1,0 +1,1 @@
+[u'Dreidel Fairness Study', ['Robert Nemiroff', 'Eva Nemiroff'], u'November 26 2016', '', u'/papers/5711-dreidel-fairness-study', [u'Communication'], []]
