@@ -142,8 +142,17 @@ def parsing_query(mystring,all_terms):
                                         all_terms['names']=all_terms.get('names',[])+[[[query_plus_1,query],[['first','full'],['last','full']]]]
                                         return parsing_query(mystring[2:],all_terms)
                                 else:
-                                    all_terms['names']=all_terms.get('names',[])+[[[query],[['last','full']]]]
-                                    return parsing_query(mystring[1:],all_terms)
+                                    ##check if it is actually first last
+                                    if query_plus_1 in name_last and query in name_first:
+                                        if query_plus_1 in name_first[query][0]:
+                                            all_terms['names']=all_terms.get('names',[])+[[[query,query_plus_1],[['first','full'],['last','full']]]]
+                                            return parsing_query(mystring[2:],all_terms)
+                                        else:
+                                            all_terms['names']=all_terms.get('names',[])+[[[query],[['last','full']]]]
+                                            return parsing_query(mystring[1:],all_terms)
+                                    else:
+                                        all_terms['names']=all_terms.get('names',[])+[[[query],[['last','full']]]]
+                                        return parsing_query(mystring[1:],all_terms)
                             else:
                                 ##check if it is actually first last
                                 if query_plus_1 in name_last and query in name_first:
