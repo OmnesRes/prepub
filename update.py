@@ -94,6 +94,7 @@ import requests
 from bs4 import BeautifulSoup
 import unicodedata
 import re
+import io
 
 
 
@@ -640,6 +641,48 @@ for i in newdata:
 
 
 
+f=io.open(os.path.join(BASE_DIR,'biorxiv','biorxiv_licenses.tsv'),'a',encoding='utf8')
+
+licenses=[]
+for article in newdata:
+    r=requests.get('http://biorxiv.org'+article[4]+'.article-info')
+    soup=BeautifulSoup(r.content)
+    try:
+        bio_license=soup.find('span',{'class':'license-type'}).text
+    except:
+        bio_license=soup.find('span',{'class':'license-type-none'}).text
+    licenses.append([article[4],article[2],article[-2],bio_license,article[0],article[1],article[-1]])
+    
+for i in licenses:
+    f.write(u'http://dx.doi.org/10.1101/'+i[0].split('/')[-1].split('.')[0])
+    f.write(u'\t')
+    temp=i[1].replace(',','').replace('.','').split()
+    f.write(unicode(dt(int(temp[2]),date_dict[temp[0]],int(temp[1]))))
+    f.write(u'\t')
+    for index,j in enumerate(i[2]):
+        f.write(unicode(j))
+        if index+1==len(i[2]):
+            break
+        f.write(u'|')
+    f.write(u'\t')
+    if 'It is made available under a ' in i[3]:
+        f.write(unicode(i[3].split('It is made available under a ')[1].split()[0]))
+    f.write(u'\t')
+    f.write(i[4].replace('\n',''))
+    f.write(u'\t')
+    for index,j in enumerate(i[5]):
+        f.write(unicode(j))
+        if index+1==len(i[5]):
+            break
+        f.write(u'|')
+    f.write(u'\t')
+    for index,j in enumerate(i[6]):
+        f.write(j)
+        if index+1==len(i[6]):
+            break
+        f.write(u'|')
+    f.write(u'\n')
+f.close()
 
 
 
