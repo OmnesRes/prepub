@@ -665,10 +665,13 @@ for i in licenses:
             break
         f.write(u'|')
     f.write(u'\t')
-    if 'It is made available under a ' in i[3]:
-        f.write(unicode(i[3].split('It is made available under a ')[1].split()[0]))
+    match = re.search(r'CC[ -]BY\S*', i[3])
+    if match:
+        abbreviation = match.group()
+        abbreviation = abbreviation.replace('CC-BY', 'CC BY')
+        f.write(abbreviation)
     f.write(u'\t')
-    f.write(i[4].replace('\n',''))
+    f.write(i[4].replace('\n','').replace('\t',''))
     f.write(u'\t')
     for index,j in enumerate(i[5]):
         f.write(unicode(j))
@@ -677,7 +680,7 @@ for i in licenses:
         f.write(u'|')
     f.write(u'\t')
     for index,j in enumerate(i[6]):
-        f.write(j)
+        f.write(j.replace('\n','').replace('\t',''))
         if index+1==len(i[6]):
             break
         f.write(u'|')
