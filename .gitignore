@@ -8,6 +8,12 @@ __pycache__/
 
 mysite/settings/local.py
 
+papers/name_first.py
+papers/name_last.py
+papers/unique_first.py
+papers/unique_last.py
+
+
 # Distribution / packaging
 .Python
 env/
