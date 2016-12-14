@@ -8,10 +8,10 @@ __pycache__/
 
 mysite/settings/local.py
 
-papers/name_first.py
-papers/name_last.py
-papers/unique_first.py
-papers/unique_last.py
+**/name_first.py
+**/name_last.py
+**/unique_first.py
+**/unique_last.py
 
 
 # Distribution / packaging
