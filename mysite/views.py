@@ -356,6 +356,8 @@ def grimmer_sd(request):
                                 return render(request, 'grimmer_sd.html', {'no_error':True,
                                                                         'consistent':False,
                                                                         'size':str(size),
+                                                                        'type':Type,
+                                                                        'direction':direction,
                                                                         'mean':("%."+str(mean_decimals)+"f") % round_up(mean,mean_decimals)})
                         else:
                             return render(request,'grimmer_sd.html', {'mean_number':True})
