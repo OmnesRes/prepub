@@ -1,1 +1,0 @@
-[u"On Braitenberg's Vehicles, Compound Polygons, and Evolutionary Developmental Structural Complexity", ['Bradly Alicea'], u'December 27 2016', '', u'/papers/5893-on-braitenberg-s-vehicles-compound-polygons-and-evolutionary-developmental-structural-complexity', [u'Computational Biology', u'Developmental Biology', u'Evolution'], [u'OpenWorm Foundation', u'Orthogonal Research']]

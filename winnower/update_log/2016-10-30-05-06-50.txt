@@ -1,1 +1,0 @@
-[u'A step by step guide for organizing open collaborative \u201cBrainhack\u201d events', ['Neuro Bureau'], u'October 29 2016', '', u'/papers/5577-a-step-by-step-guide-for-organizing-open-collaborative-brainhack-events', [u'Neurobiology', u'Bioinformatics', u'Neuroimaging'], [u'Neurobureau, Germany']]

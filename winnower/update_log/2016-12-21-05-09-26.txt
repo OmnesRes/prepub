@@ -1,1 +1,0 @@
-[u"AAAS AMA: Hi, we're the authors of the research articles in the inaugural issues of Science Robotics. Ask us anything!", ['AAAS-AMA', 'r/Science'], u'December 20 2016', '', u'/papers/5874-aaas-ama-hi-we-re-the-authors-of-the-research-articles-in-the-inaugural-issues-of-science-robotics-ask-us-anything', [u'Science AMA'], []]

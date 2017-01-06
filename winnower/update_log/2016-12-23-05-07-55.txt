@@ -1,1 +1,0 @@
-[u'Science AMA Series: We are the neuroscientists who started the Open Neuroimaging Lab, a winner of the Open Science Prize - AMA', ['Open_Neuroimaging', 'r/Science'], u'December 22 2016', '', u'/papers/5879-science-ama-series-we-are-the-neuroscientists-who-started-the-open-neuroimaging-lab-a-winner-of-the-open-science-prize-ama', [u'Science AMA'], []]

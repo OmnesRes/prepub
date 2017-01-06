@@ -300,6 +300,7 @@
                 </div>
             </div>
             {% endfor %}
+
             {% else %}
             <div class="col-sm-12">
                 <div class="col-sm-11" style="font-size:24px">
@@ -344,6 +345,45 @@
             <textarea rows='15' cols="30">{{search}}</textarea>
         </div>
     </div>
+    {% if articles %}
+    <div class="col-sm-12" style="margin-top:20px">
+        <div class="col-sm-10">
+            <div class="col-sm-12" style="margin-bottom:30px">
+                <div class="col-sm-4">
+                </div>
+                <div class="col-sm-4">
+                </div>
+                <div class="col-sm-4 pagination" style="margin:0px">
+                    <span class="step-links">
+                        {% if articles.has_previous %}
+                            {% if raw %}
+                                <a href="?q={{raw}}&page={{ articles.previous_page_number }}">&#60 Prev</a>
+                            {% else %}
+                                <a href="{{query_string}}&page={{ articles.previous_page_number }}">&#60 Prev</a>
+                            {% endif %}
+                        {% else %}
+                            <span style="color:#777777">&#60 Prev</span>
+                        {% endif %}
+                        <span class="current" style="padding-left:4px;padding-right:4px">
+                            Page {{ articles.number }} of {{ articles.paginator.num_pages }}
+                        </span>
+                        {% if articles.has_next %}
+                            {% if raw %}
+                                <a href="?q={{raw}}&page={{ articles.next_page_number }}">Next &#62</a>
+                            {% else %}
+                                <a href="{{query_string}}&page={{ articles.next_page_number }}">Next &#62</a>
+                            {% endif %}
+                        {% else %}
+                            <span style="color:#777777">Next &#62</span>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-2">
+        </div>
+    </div>
+    {% endif %}
     <div class="col-sm-12 empty" style="margin-bottom:100px">
     </div>
 </body>
