@@ -5,11 +5,11 @@
 
 pub_authors=[]
 
-f=open(r'C:\Users\Jordan Anaya\Desktop\prepub\figshare\figshare.txt')
-figshare=[eval(i.strip()) for i in f]
-for i in figshare:
-    for author in i[1]:
-        pub_authors.append(author)
+##f=open(r'C:\Users\Jordan Anaya\Desktop\prepub\figshare\figshare.txt')
+##figshare=[eval(i.strip()) for i in f]
+##for i in figshare:
+##    for author in i[1]:
+##        pub_authors.append(author)
 
 f=open(r'C:\Users\Jordan Anaya\Desktop\prepub\peerj\peerj.txt')
 peerj=[eval(i.strip()) for i in f]
@@ -51,6 +51,18 @@ for i in preprints:
         pub_authors.append(author)
 
 
+f=open(r'C:\Users\Jordan Anaya\Desktop\prepub\wellcome\wellcome.txt')
+wellcome=[eval(i.strip()) for i in f]
+for i in wellcome:
+    for author in i[1]:
+        pub_authors.append(author)
+
+f=open(r'C:\Users\Jordan Anaya\Desktop\prepub\nature\nature.txt')
+nature=[eval(i.strip()) for i in f]
+for i in nature:
+    for author in i[1]:
+        pub_authors.append(author)
+
 def middle_function(name):
     if name=='':
         return ''
@@ -87,11 +99,15 @@ for i in pub_authors:
             i=i[3:]
         if i[-3:]==' sr':
             i=i[:-3]
-        first_name=i.split()[0]
         last_name=i.split()[-1]
-        if len(i.split())==2:
+        if len(i.split())==1:
+            first_name=''
+            middle_name=''
+        elif len(i.split())==2:
+            first_name=i.split()[0]
             middle_name=''
         else:
+            first_name=i.split()[0]
             middle_name=i.replace(first_name+' ','').replace(' '+last_name,'').strip()
         ##need separate unique dictionaries
         myauthor_first=(last_name,first_name,middle_function(middle_name))

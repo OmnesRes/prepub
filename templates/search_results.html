@@ -146,8 +146,9 @@
     .abstract {
         display:none;
         font-size:20px;
-        text-align:justify;
+        text-align:left;
         color:#404040;
+        white-space:pre-wrap;
     }
     h2 {
         color:#985735;
@@ -289,9 +290,7 @@
                             <p class="show_abstracts btn">
                             Abstract
                             </p>
-                            <p class="abstract">
-                            {{entry.abstract}}
-                            </p>
+                            <p class="abstract">{{entry.abstract}}</p>
                         </div>
                     </div>
                 </div>
@@ -322,6 +321,8 @@
                         Please enter a query that is more than just stopwords.
                     {% else %}
                         No items were found for your query.
+                        <br>
+                        Make sure to use double quotes for titles.
                         <br>
                         <br>
                         Please use the search details box to see what was searched.

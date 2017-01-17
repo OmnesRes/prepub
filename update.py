@@ -39,12 +39,16 @@ def update_authors(pub_authors):
                 i=i[3:]
             if i[-3:]==' sr':
                 i=i[:-3]
-            first_name=i.split()[0]
-            last_name=i.split()[-1]
-            if len(i.split())==2:
+            last_name=name.split()[-1]
+            if len(name.split())==1:
+                first_name=''
+                middle_name=''
+            elif len(name.split())==2:
+                first_name=name.split()[0]
                 middle_name=''
             else:
-                middle_name=i.replace(first_name+' ','').replace(' '+last_name,'').strip()
+                first_name=name.split()[0]
+                middle_name=name.replace(first_name+' ','').replace(' '+last_name,'').strip()
             ##need separate unique dictionaries
             myauthor_first=(last_name,first_name,middle_function(middle_name))
             myauthor_last=(last_name,first_function(first_name),middle_function(middle_name))
@@ -263,16 +267,22 @@ for i in newdata:
                 name=name[3:]
             if name[-3:].lower()==' sr':
                 name=name[:-3]
-            first_name=name.split()[0]
             last_name=name.split()[-1]
-            if len(name.split())==2:
+            if len(name.split())==1:
+                first_name=''
+                middle_name=''
+            elif len(name.split())==2:
+                first_name=name.split()[0]
                 middle_name=''
             else:
+                first_name=name.split()[0]
                 middle_name=name.replace(first_name+' ','').replace(' '+last_name,'').strip()
-            if middle_name!='':
+            if middle_name!='' and first_name!='':
                 temp.append(first_name+' '+middle_name+' '+last_name)
-            else:
+            elif middle_name=='' and first_name:
                 temp.append(first_name+' '+last_name)
+            else:
+                temp.append(last_name)
             try:
                 auth=Author.objects.get(first=first_name,middle=middle_name,last=last_name)
                 paper.authors.add(auth)
@@ -301,170 +311,170 @@ for i in newdata:
 
 ############################################################################################figshare
 
-
-titles=[]
-authors=[]
-dates=[]
-abstracts=[]
-links=[]
-tags=[]
-author_aff=[]
-templinks=[]
-
-
-f=open(os.path.join(BASE_DIR,'figshare','figshare.txt'))
-data=[eval(i.strip()) for i in f]
-newdata=[]
-unique={}
-for i in data:
-    unique[i[-3].split('/')[-1]]=''
-
-        
-r=requests.get("https://api.figshare.com/v2/articles?page=1&order=modified_date&order_direction=desc&page_size=1000")
-
-
-for i in r.json():
-    if i['url'].split('/')[-1] not in unique:
-        unique[i['url'].split('/')[-1]]=''
-        if 'figshare' in i['doi']:
-            templinks.append(i['url'])
-
-from figshare_categories import categories
-
-error=False
-try:
-    for index, i in enumerate(templinks):
-        r=requests.get(i)
-        myjson=r.json()
-##        print index, i
-        try:
-            if 'figshare' in myjson['citation'] and 'Taylor & Francis' not in myjson['citation']:
-                abstract=BeautifulSoup(myjson['description']).find('p').text.strip()
-                if len(abstract)>250:
-                    if ' de ' not in abstract and ' el ' not in abstract and ' y ' not in abstract:
-                        date=myjson['created_date'].strip()
-                        link=myjson['figshare_url'].strip()
-                        title=myjson['title'].strip()
-                        if 'Figure' not in title and '.' not in title and 'Supplement' not in title:
-                            temp=[]
-                            for j in myjson['categories']:
-                                temp.append(j['title'].replace(' not elsewhere classified',''))
-                            tag=temp
-                            temp=[]
-                            for j in myjson['authors']:
-                                temp.append(unicodedata.normalize('NFKD',j['full_name']).encode('ascii','ignore'))
-                            author=temp
-                            author_aff.append([])
-                            abstracts.append(abstract)
-                            dates.append(date)
-                            links.append(link)
-                            tags.append(tag)
-                            authors.append(author)
-                            titles.append(title)
-        except:
-            pass
-
-except Exception as e:
-    error=True
-    f=open(os.path.join(BASE_DIR,'figshare','error_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
-    f.write(str(e))
-    f.close()
-
-
-
-if error==False:
-    if len(titles)==len(authors)==len(dates)==len(abstracts)==len(links)==len(tags)==len(author_aff):
-        f=open(os.path.join(BASE_DIR,'figshare','update_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
-        for title,author,date,abstract,link,tag,author_af in zip(titles,authors,dates,abstracts,links,tags,author_aff):
-            if int(date.split('-')[0])>=2014:
-                for j in tag:
-                    if j in categories:
-                        f.write(str([title,author,date,abstract,link,tag,author_af]))
-                        f.write('\n')
-                        newdata.append([title,author,date,abstract,link,tag,author_af])
-                        break
-        f.close()
-    else:
-        f=open(os.path.join(BASE_DIR,'figshare','error_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
-        f.write('length error')
-        f.close()
-else:
-    pass
-
-
-
-
-f=open(os.path.join(BASE_DIR,'figshare','figshare.txt'),'a')
-for i in newdata:
-    f.write(str(i))
-    f.write('\n')
-f.close()
-
-
-
-from papers.name_last import name_last
-from papers.name_first import name_first
-from papers.unique_last import unique_last
-from papers.unique_first import unique_first
-
-
-pub_authors=[]
-for i in newdata:
-    for author in i[1]:
-        pub_authors.append(author)
-
-update_authors(pub_authors)
-
-for i in newdata:
-    paper=Article(title=i[0],abstract=i[3],link=i[4])
-    temp=i[2].split('T')[0].split('-')
-    paper.pub_date=dt(int(temp[0]),int(temp[1]),int(temp[2]))
-    paper.save()
-    temp=[]
-    for author in i[1]:
-        name=author.replace(',','').replace('.','')
-        if name!='':
-            if name[:3].lower()=='jr ':
-                name=name[3:]
-            if name[-3:].lower()==' jr':
-                name=name[:-3]
-            if name[:3].lower()=='sr ':
-                name=name[3:]
-            if name[-3:].lower()==' sr':
-                name=name[:-3]
-            first_name=name.split()[0]
-            last_name=name.split()[-1]
-            if len(name.split())==2:
-                middle_name=''
-            else:
-                middle_name=name.replace(first_name+' ','').replace(' '+last_name,'').strip()
-            if middle_name!='':
-                temp.append(first_name+' '+middle_name+' '+last_name)
-            else:
-                temp.append(first_name+' '+last_name)
-            try:
-                auth=Author.objects.get(first=first_name,middle=middle_name,last=last_name)
-                paper.authors.add(auth)
-            except:
-                auth=Author.objects.create(first=first_name,middle=middle_name,last=last_name)
-                paper.authors.add(auth)
-    paper.author_list=str(temp)
-    for affiliation in i[-1]:
-        try:
-            aff=Affiliation.objects.get(name=affiliation)
-            paper.affiliations.add(aff)
-        except:
-            aff=Affiliation.objects.create(name=affiliation)
-            paper.affiliations.add(aff)
-    for t in i[-2]:
-        try:
-            tag=Tag.objects.get(name=t)
-            paper.tags.add(tag)
-        except:
-            tag=Tag.objects.create(name=t)
-            paper.tags.add(tag)
-    paper.save()
-    
+##no longer indexing 20170117
+##titles=[]
+##authors=[]
+##dates=[]
+##abstracts=[]
+##links=[]
+##tags=[]
+##author_aff=[]
+##templinks=[]
+##
+##
+##f=open(os.path.join(BASE_DIR,'figshare','figshare.txt'))
+##data=[eval(i.strip()) for i in f]
+##newdata=[]
+##unique={}
+##for i in data:
+##    unique[i[-3].split('/')[-1]]=''
+##
+##        
+##r=requests.get("https://api.figshare.com/v2/articles?page=1&order=modified_date&order_direction=desc&page_size=1000")
+##
+##
+##for i in r.json():
+##    if i['url'].split('/')[-1] not in unique:
+##        unique[i['url'].split('/')[-1]]=''
+##        if 'figshare' in i['doi']:
+##            templinks.append(i['url'])
+##
+##from figshare_categories import categories
+##
+##error=False
+##try:
+##    for index, i in enumerate(templinks):
+##        r=requests.get(i)
+##        myjson=r.json()
+####        print index, i
+##        try:
+##            if 'figshare' in myjson['citation'] and 'Taylor & Francis' not in myjson['citation']:
+##                abstract=BeautifulSoup(myjson['description']).find('p').text.strip()
+##                if len(abstract)>250:
+##                    if ' de ' not in abstract and ' el ' not in abstract and ' y ' not in abstract:
+##                        date=myjson['created_date'].strip()
+##                        link=myjson['figshare_url'].strip()
+##                        title=myjson['title'].strip()
+##                        if 'Figure' not in title and '.' not in title and 'Supplement' not in title:
+##                            temp=[]
+##                            for j in myjson['categories']:
+##                                temp.append(j['title'].replace(' not elsewhere classified',''))
+##                            tag=temp
+##                            temp=[]
+##                            for j in myjson['authors']:
+##                                temp.append(unicodedata.normalize('NFKD',j['full_name']).encode('ascii','ignore'))
+##                            author=temp
+##                            author_aff.append([])
+##                            abstracts.append(abstract)
+##                            dates.append(date)
+##                            links.append(link)
+##                            tags.append(tag)
+##                            authors.append(author)
+##                            titles.append(title)
+##        except:
+##            pass
+##
+##except Exception as e:
+##    error=True
+##    f=open(os.path.join(BASE_DIR,'figshare','error_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
+##    f.write(str(e))
+##    f.close()
+##
+##
+##
+##if error==False:
+##    if len(titles)==len(authors)==len(dates)==len(abstracts)==len(links)==len(tags)==len(author_aff):
+##        f=open(os.path.join(BASE_DIR,'figshare','update_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
+##        for title,author,date,abstract,link,tag,author_af in zip(titles,authors,dates,abstracts,links,tags,author_aff):
+##            if int(date.split('-')[0])>=2014:
+##                for j in tag:
+##                    if j in categories:
+##                        f.write(str([title,author,date,abstract,link,tag,author_af]))
+##                        f.write('\n')
+##                        newdata.append([title,author,date,abstract,link,tag,author_af])
+##                        break
+##        f.close()
+##    else:
+##        f=open(os.path.join(BASE_DIR,'figshare','error_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
+##        f.write('length error')
+##        f.close()
+##else:
+##    pass
+##
+##
+##
+##
+##f=open(os.path.join(BASE_DIR,'figshare','figshare.txt'),'a')
+##for i in newdata:
+##    f.write(str(i))
+##    f.write('\n')
+##f.close()
+##
+##
+##
+##from papers.name_last import name_last
+##from papers.name_first import name_first
+##from papers.unique_last import unique_last
+##from papers.unique_first import unique_first
+##
+##
+##pub_authors=[]
+##for i in newdata:
+##    for author in i[1]:
+##        pub_authors.append(author)
+##
+##update_authors(pub_authors)
+##
+##for i in newdata:
+##    paper=Article(title=i[0],abstract=i[3],link=i[4])
+##    temp=i[2].split('T')[0].split('-')
+##    paper.pub_date=dt(int(temp[0]),int(temp[1]),int(temp[2]))
+##    paper.save()
+##    temp=[]
+##    for author in i[1]:
+##        name=author.replace(',','').replace('.','')
+##        if name!='':
+##            if name[:3].lower()=='jr ':
+##                name=name[3:]
+##            if name[-3:].lower()==' jr':
+##                name=name[:-3]
+##            if name[:3].lower()=='sr ':
+##                name=name[3:]
+##            if name[-3:].lower()==' sr':
+##                name=name[:-3]
+##            first_name=name.split()[0]
+##            last_name=name.split()[-1]
+##            if len(name.split())==2:
+##                middle_name=''
+##            else:
+##                middle_name=name.replace(first_name+' ','').replace(' '+last_name,'').strip()
+##            if middle_name!='':
+##                temp.append(first_name+' '+middle_name+' '+last_name)
+##            else:
+##                temp.append(first_name+' '+last_name)
+##            try:
+##                auth=Author.objects.get(first=first_name,middle=middle_name,last=last_name)
+##                paper.authors.add(auth)
+##            except:
+##                auth=Author.objects.create(first=first_name,middle=middle_name,last=last_name)
+##                paper.authors.add(auth)
+##    paper.author_list=str(temp)
+##    for affiliation in i[-1]:
+##        try:
+##            aff=Affiliation.objects.get(name=affiliation)
+##            paper.affiliations.add(aff)
+##        except:
+##            aff=Affiliation.objects.create(name=affiliation)
+##            paper.affiliations.add(aff)
+##    for t in i[-2]:
+##        try:
+##            tag=Tag.objects.get(name=t)
+##            paper.tags.add(tag)
+##        except:
+##            tag=Tag.objects.create(name=t)
+##            paper.tags.add(tag)
+##    paper.save()
+##    
 
 
 
@@ -589,7 +599,7 @@ update_authors(pub_authors)
 
 
 for i in newdata:
-    paper=Article(title=i[0],abstract=i[3],link='http://biorxiv.org'+i[4])
+    paper=Article(title=i[0].replace('\n',' ').replace('\t',''),abstract=i[3].replace('\t',''),link='http://biorxiv.org'+i[4])
     temp=i[2].replace(',','').replace('.','').split()
     paper.pub_date=dt(int(temp[2]),date_dict[temp[0]],int(temp[1]))
     paper.save()
@@ -605,16 +615,22 @@ for i in newdata:
                 name=name[3:]
             if name[-3:].lower()==' sr':
                 name=name[:-3]
-            first_name=name.split()[0]
             last_name=name.split()[-1]
-            if len(name.split())==2:
+            if len(name.split())==1:
+                first_name=''
+                middle_name=''
+            elif len(name.split())==2:
+                first_name=name.split()[0]
                 middle_name=''
             else:
+                first_name=name.split()[0]
                 middle_name=name.replace(first_name+' ','').replace(' '+last_name,'').strip()
-            if middle_name!='':
+            if middle_name!='' and first_name!='':
                 temp.append(first_name+' '+middle_name+' '+last_name)
-            else:
+            elif middle_name=='' and first_name:
                 temp.append(first_name+' '+last_name)
+            else:
+                temp.append(last_name)
             try:
                 auth=Author.objects.get(first=first_name,middle=middle_name,last=last_name)
                 paper.authors.add(auth)
@@ -837,7 +853,7 @@ update_authors(pub_authors)
 
 
 for i in newdata:
-    paper=Article(title=i[0],abstract=i[3],link='http://f1000research.com'+i[4])
+    paper=Article(title=i[0].replace('\t',''),abstract=i[3].replace('\r\n',' '),link='http://f1000research.com'+i[4])
     temp=i[2].split()
     paper.pub_date=dt(int(temp[2]),date_dict[temp[1]],int(temp[0]))
     paper.save()
@@ -853,16 +869,22 @@ for i in newdata:
                 name=name[3:]
             if name[-3:].lower()==' sr':
                 name=name[:-3]
-            first_name=name.split()[0]
             last_name=name.split()[-1]
-            if len(name.split())==2:
+            if len(name.split())==1:
+                first_name=''
+                middle_name=''
+            elif len(name.split())==2:
+                first_name=name.split()[0]
                 middle_name=''
             else:
+                first_name=name.split()[0]
                 middle_name=name.replace(first_name+' ','').replace(' '+last_name,'').strip()
-            if middle_name!='':
+            if middle_name!='' and first_name!='':
                 temp.append(first_name+' '+middle_name+' '+last_name)
-            else:
+            elif middle_name=='' and first_name:
                 temp.append(first_name+' '+last_name)
+            else:
+                temp.append(last_name)
             try:
                 auth=Author.objects.get(first=first_name,middle=middle_name,last=last_name)
                 paper.authors.add(auth)
@@ -1015,7 +1037,7 @@ for i in newdata:
 update_authors(pub_authors)
 
 for i in newdata:
-    paper=Article(title=i[0],abstract=i[3],link=i[4])
+    paper=Article(title=i[0].replace('\n ',''),abstract=i[3].replace('\n',' '),link=i[4])
     temp=i[2].split('-')
     paper.pub_date=dt(int(temp[0]),int(temp[1]),int(temp[2]))
     paper.save()
@@ -1031,16 +1053,22 @@ for i in newdata:
                 name=name[3:]
             if name[-3:].lower()==' sr':
                 name=name[:-3]
-            first_name=name.split()[0]
             last_name=name.split()[-1]
-            if len(name.split())==2:
+            if len(name.split())==1:
+                first_name=''
+                middle_name=''
+            elif len(name.split())==2:
+                first_name=name.split()[0]
                 middle_name=''
             else:
+                first_name=name.split()[0]
                 middle_name=name.replace(first_name+' ','').replace(' '+last_name,'').strip()
-            if middle_name!='':
+            if middle_name!='' and first_name!='':
                 temp.append(first_name+' '+middle_name+' '+last_name)
-            else:
+            elif middle_name=='' and first_name:
                 temp.append(first_name+' '+last_name)
+            else:
+                temp.append(last_name)
             try:
                 auth=Author.objects.get(first=first_name,middle=middle_name,last=last_name)
                 paper.authors.add(auth)
@@ -1183,37 +1211,44 @@ for i in data:
 update_authors(pub_authors)
 
 for i in data:
-    paper=Article(title=i[0],abstract=i[3],link='https://thewinnower.com'+i[4])
+    paper=Article(title=i[0].replace('\r\n',' '),abstract=i[3],link='https://thewinnower.com'+i[4])
     temp=i[2].split()
     paper.pub_date=dt(int(temp[2]),date_dict[temp[0]],int(temp[1]))
     paper.save()
     temp=[]
     for author in i[1]:
         name=author.replace(',','').replace('.','')
-        if name[:3].lower()=='jr ':
-            name=name[3:]
-        if name[-3:].lower()==' jr':
-            name=name[:-3]
-        if name[:3].lower()=='sr ':
-            name=name[3:]
-        if name[-3:].lower()==' sr':
-            name=name[:-3]
-        first_name=name.split()[0]
-        last_name=name.split()[-1]
-        if len(name.split())==2:
-            middle_name=''
-        else:
-            middle_name=name.replace(first_name+' ','').replace(' '+last_name,'').strip()
-        if middle_name!='':
-            temp.append(first_name+' '+middle_name+' '+last_name)
-        else:
-            temp.append(first_name+' '+last_name)
-        try:
-            auth=Author.objects.get(first=first_name,middle=middle_name,last=last_name)
-            paper.authors.add(auth)
-        except:
-            auth=Author.objects.create(first=first_name,middle=middle_name,last=last_name)
-            paper.authors.add(auth)
+        if name!='':
+            if name[:3].lower()=='jr ':
+                name=name[3:]
+            if name[-3:].lower()==' jr':
+                name=name[:-3]
+            if name[:3].lower()=='sr ':
+                name=name[3:]
+            if name[-3:].lower()==' sr':
+                name=name[:-3]
+            last_name=name.split()[-1]
+            if len(name.split())==1:
+                first_name=''
+                middle_name=''
+            elif len(name.split())==2:
+                first_name=name.split()[0]
+                middle_name=''
+            else:
+                first_name=name.split()[0]
+                middle_name=name.replace(first_name+' ','').replace(' '+last_name,'').strip()
+            if middle_name!='' and first_name!='':
+                temp.append(first_name+' '+middle_name+' '+last_name)
+            elif middle_name=='' and first_name:
+                temp.append(first_name+' '+last_name)
+            else:
+                temp.append(last_name)
+            try:
+                auth=Author.objects.get(first=first_name,middle=middle_name,last=last_name)
+                paper.authors.add(auth)
+            except:
+                auth=Author.objects.create(first=first_name,middle=middle_name,last=last_name)
+                paper.authors.add(auth)
     paper.author_list=str(temp)
     for affiliation in i[-1]:
         try:
@@ -1359,30 +1394,37 @@ for i in data:
     temp=[]
     for author in i[1]:
         name=author.replace(',','').replace('.','')
-        if name[:3].lower()=='jr ':
-            name=name[3:]
-        if name[-3:].lower()==' jr':
-            name=name[:-3]
-        if name[:3].lower()=='sr ':
-            name=name[3:]
-        if name[-3:].lower()==' sr':
-            name=name[:-3]
-        first_name=name.split()[0]
-        last_name=name.split()[-1]
-        if len(name.split())==2:
-            middle_name=''
-        else:
-            middle_name=name.replace(first_name+' ','').replace(' '+last_name,'').strip()
-        if middle_name!='':
-            temp.append(first_name+' '+middle_name+' '+last_name)
-        else:
-            temp.append(first_name+' '+last_name)
-        try:
-            auth=Author.objects.get(first=first_name,middle=middle_name,last=last_name)
-            paper.authors.add(auth)
-        except:
-            auth=Author.objects.create(first=first_name,middle=middle_name,last=last_name)
-            paper.authors.add(auth)
+        if name!='':
+            if name[:3].lower()=='jr ':
+                name=name[3:]
+            if name[-3:].lower()==' jr':
+                name=name[:-3]
+            if name[:3].lower()=='sr ':
+                name=name[3:]
+            if name[-3:].lower()==' sr':
+                name=name[:-3]
+            last_name=name.split()[-1]
+            if len(name.split())==1:
+                first_name=''
+                middle_name=''
+            elif len(name.split())==2:
+                first_name=name.split()[0]
+                middle_name=''
+            else:
+                first_name=name.split()[0]
+                middle_name=name.replace(first_name+' ','').replace(' '+last_name,'').strip()
+            if middle_name!='' and first_name!='':
+                temp.append(first_name+' '+middle_name+' '+last_name)
+            elif middle_name=='' and first_name:
+                temp.append(first_name+' '+last_name)
+            else:
+                temp.append(last_name)
+            try:
+                auth=Author.objects.get(first=first_name,middle=middle_name,last=last_name)
+                paper.authors.add(auth)
+            except:
+                auth=Author.objects.create(first=first_name,middle=middle_name,last=last_name)
+                paper.authors.add(auth)
     paper.author_list=str(temp)
     for affiliation in i[-1]:
         try:
@@ -1399,3 +1441,183 @@ for i in data:
             tag=Tag.objects.create(name=t)
             paper.tags.add(tag)
     paper.save()
+
+
+#################################################################wellcome
+
+f=open(os.path.join(BASE_DIR,'wellcome','wellcome.txt'))
+data=[eval(i.strip()) for i in f]
+newdata=[]
+all_links=[i[4] for i in data]
+unique_links=[i[4].split('/')[-2] for i in data]
+titles=[]
+authors=[]
+links=[]
+tags=[]
+error=False
+
+try: 
+    X=True
+    for index in range(1,10):
+        if X==False:
+            break
+        r=requests.get("https://wellcomeopenresearch.org/browse?selectedDomain=articles&show=20&page="+str(index))
+        soup=BeautifulSoup(r.content)
+        
+        if soup.find_all('div',{'class':'search-result-message-text search-results-empty browse'}):
+            break
+
+        for i in soup.find_all("span", {"class":"article-title"}):
+            titles.append(i.text.strip())
+            tags.append([])
+
+        for i in soup.find_all('div',{'class':'article-detail-text'}):
+            temp=[]
+            for j in i.find_all('span',{'class':'author-listing-formatted'}):
+                name=j.text.split('\n')[1].strip().strip(',')
+                temp.append(unicodedata.normalize('NFKD',name).encode('ascii','ignore'))
+            authors.append(temp)
+                            
+        for i in soup.find_all('div',{'class':'article-title-text'}):
+            links.append(i.find('a').get('href').strip())
+
+        for i in links:
+            if i in all_links:
+                X=False
+except Exception as e:
+    error=True
+    f=open(os.path.join(BASE_DIR,'wellcome','error_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
+    f.write(str(e))
+    f.close()     
+
+temp_data=zip(titles,authors,links,tags)
+
+for i in temp_data:
+    if i[2].split('/')[-2] not in unique_links:
+        newdata.append(i)
+
+
+try:
+    for index,i in enumerate(newdata):
+        r=requests.get('https://wellcomeopenresearch.org'+i[2])
+        soup=BeautifulSoup(r.content)
+        abstract=soup.find('p',{'class':"article-abstract"}).text.strip()
+        temp=[]
+        for j in soup.find('div',{'class':'expanded-details affiliations is-hidden'}).text.strip().split('\n'):
+            if not re.search('^[0-9]+$',j.strip()):
+                temp.append(j.strip())
+        date_temp=[[k.get('name'),k.get('content')] for k in soup.find_all('meta')]
+        for j in date_temp:
+            if j[0]=='citation_date':
+                date=j[1]
+        
+        newdata.append(i[:2]+[date]+[abstract]+[i[2]]+[i[-1]]+[temp])
+except Exception as e:
+    error=True
+    f=open(os.path.join(BASE_DIR,'wellcome','error_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
+    f.write(str(e))
+    f.close()   
+
+
+
+if error==False:
+    if len(newdata)==len(set([i[0] for i in newdata])):
+        f=open(os.path.join(BASE_DIR,'wellcome','update_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
+        for i in newdata:
+            f.write(str(i))
+            f.write('\n')
+        f.close()
+    else:
+        f=open(os.path.join(BASE_DIR,'wellcome','error_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
+        f.write('length error')
+        f.close()
+        error=True
+
+
+if error==True:
+    newdata=[]
+else:
+    f=open(os.path.join(BASE_DIR,'wellcome','wellcome.txt'),'a')
+    for i in newdata:
+        f.write(str(i))
+        f.write('\n')
+    f.close()
+
+
+
+######deal with updating author dictionaries
+from papers.name_last import name_last
+from papers.name_first import name_first
+from papers.unique_last import unique_last
+from papers.unique_first import unique_first
+
+
+pub_authors=[]
+for i in newdata:
+    for author in i[1]:
+        pub_authors.append(author)
+
+update_authors(pub_authors)
+
+
+for i in newdata:
+    paper=Article(title=i[0],abstract=i[3],link='https://wellcomeopenresearch.org'+i[4])
+    temp=i[2].split('/')
+    paper.pub_date=dt(int(temp[0]),int(temp[1]),int(temp[2]))
+    paper.save()
+    temp=[]
+    for author in i[1]:
+        name=author.replace(',','').replace('.','')
+        if name!='':
+            if name[:3].lower()=='jr ':
+                name=name[3:]
+            if name[-3:].lower()==' jr':
+                name=name[:-3]
+            if name[:3].lower()=='sr ':
+                name=name[3:]
+            if name[-3:].lower()==' sr':
+                name=name[:-3]
+            last_name=name.split()[-1]
+            if len(name.split())==1:
+                first_name=''
+                middle_name=''
+            elif len(name.split())==2:
+                first_name=name.split()[0]
+                middle_name=''
+            else:
+                first_name=name.split()[0]
+                middle_name=name.replace(first_name+' ','').replace(' '+last_name,'').strip()
+            if middle_name!='' and first_name!='':
+                temp.append(first_name+' '+middle_name+' '+last_name)
+            elif middle_name=='' and first_name:
+                temp.append(first_name+' '+last_name)
+            else:
+                temp.append(last_name)
+            try:
+                auth=Author.objects.get(first=first_name,middle=middle_name,last=last_name)
+                paper.authors.add(auth)
+            except:
+                auth=Author.objects.create(first=first_name,middle=middle_name,last=last_name)
+                paper.authors.add(auth)
+    paper.author_list=str(temp)
+    for affiliation in i[-1]:
+        try:
+            aff=Affiliation.objects.get(name=affiliation)
+            paper.affiliations.add(aff)
+        except:
+            aff=Affiliation.objects.create(name=affiliation)
+            paper.affiliations.add(aff)
+    for t in i[-2]:
+        try:
+            tag=Tag.objects.get(name=t)
+            paper.tags.add(tag)
+        except:
+            tag=Tag.objects.create(name=t)
+            paper.tags.add(tag)
+    paper.save()
+
+
+
+
+
+    

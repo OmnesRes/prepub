@@ -970,11 +970,15 @@ def search_author(request):
             raw=request.GET['q']
             if raw!='':
                 author=raw
-                first_name=author.split()[0]
                 last_name=author.split()[-1]
-                if len(author.split())==2:
+                if len(author.split())==1:
+                    first_name=''
+                    middle_name=''
+                elif len(author.split())==2:
+                    first_name=author.split()[0]
                     middle_name=''
                 else:
+                    first_name=author.split()[0]
                     middle_name=author.replace(first_name+' ','').replace(' '+last_name,'').strip()
                 middle_name=author.strip(first_name).strip(last_name).strip()
                 ##lenient on middle due to punctuation differences
