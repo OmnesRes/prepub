@@ -39,16 +39,16 @@ def update_authors(pub_authors):
                 i=i[3:]
             if i[-3:]==' sr':
                 i=i[:-3]
-            last_name=name.split()[-1]
-            if len(name.split())==1:
+            last_name=i.split()[-1]
+            if len(i.split())==1:
                 first_name=''
                 middle_name=''
-            elif len(name.split())==2:
-                first_name=name.split()[0]
+            elif len(i.split())==2:
+                first_name=i.split()[0]
                 middle_name=''
             else:
-                first_name=name.split()[0]
-                middle_name=name.replace(first_name+' ','').replace(' '+last_name,'').strip()
+                first_name=i.split()[0]
+                middle_name=i.replace(first_name+' ','').replace(' '+last_name,'').strip()
             ##need separate unique dictionaries
             myauthor_first=(last_name,first_name,middle_function(middle_name))
             myauthor_last=(last_name,first_function(first_name),middle_function(middle_name))
