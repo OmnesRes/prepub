@@ -1491,14 +1491,14 @@ except Exception as e:
     f.close()     
 
 temp_data=zip(titles,authors,links,tags)
-
+temp_newdata=[]
 for i in temp_data:
     if i[2].split('/')[-2] not in unique_links:
-        newdata.append(i)
+        temp_newdata.append(i)
 
 
 try:
-    for index,i in enumerate(newdata):
+    for index,i in enumerate(temp_newdata):
         r=requests.get('https://wellcomeopenresearch.org'+i[2])
         soup=BeautifulSoup(r.content)
         abstract=soup.find('p',{'class':"article-abstract"}).text.strip()
@@ -1511,7 +1511,7 @@ try:
             if j[0]=='citation_date':
                 date=j[1]
         
-        newdata.append(i[:2]+[date]+[abstract]+[i[2]]+[i[-1]]+[temp])
+        newdata.append(list(i)[:2]+[date]+[abstract]+[i[2]]+[i[-1]]+[temp])
 except Exception as e:
     error=True
     f=open(os.path.join(BASE_DIR,'wellcome','error_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
