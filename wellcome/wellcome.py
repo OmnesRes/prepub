@@ -46,7 +46,7 @@ for index,i in enumerate(links):
     if not r.ok:
         print r
     soup=BeautifulSoup(r.content)
-    abstracts.append(soup.find('p',{'class':"article-abstract"}).text.strip())
+    abstracts.append(soup.find('div',{'class':"abstract-text is-expanded"}).text.strip())
     temp=[]
     for j in soup.find('div',{'class':'expanded-details affiliations is-hidden'}).text.strip().split('\n'):
         if not re.search('^[0-9]+$',j.strip()):

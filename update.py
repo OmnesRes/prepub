@@ -798,7 +798,7 @@ try:
 ##        print index,i[3]
         r=requests.get('http://f1000research.com'+i[3])
         soup=BeautifulSoup(r.content)
-        abstract=soup.find('p',{'class':"article-abstract"}).text.strip()
+        abstract=soup.find('div',{'class':"abstract-text is-expanded"}).text.strip()
         temp=[]
         for j in soup.find('div',{'class':'expanded-details affiliations is-hidden'}).text.strip().split('\n'):
             if not re.search('^[0-9]+$',j.strip()):
@@ -1501,7 +1501,7 @@ try:
     for index,i in enumerate(temp_newdata):
         r=requests.get('https://wellcomeopenresearch.org'+i[2])
         soup=BeautifulSoup(r.content)
-        abstract=soup.find('p',{'class':"article-abstract"}).text.strip()
+        abstract=soup.find('div',{'class':"abstract-text is-expanded"}).text.strip()
         temp=[]
         for j in soup.find('div',{'class':'expanded-details affiliations is-hidden'}).text.strip().split('\n'):
             if not re.search('^[0-9]+$',j.strip()):
