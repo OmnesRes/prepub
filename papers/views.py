@@ -166,6 +166,26 @@ def parsing_query(mystring,all_terms):
                                     all_terms['names']=all_terms.get('names',[])+[[[query],[['last','full']]]]
                                     return parsing_query(mystring[1:],all_terms)
                         else:
+                            #check julia s wong
+                            if query in name_first:
+                                if len(query_plus_1)<=2 and len(mystring)!=2:
+                                    query_plus_2=mystring[2]
+                                    if len(query_plus_2.split())==1:
+                                        if query_plus_2 in name_first[query][0]:
+                                            #check if the middle initial is in the correct place in the list
+                                            #need to get a list of the first middle initial of each matching last name first name combo if middle exists
+                                            middle_list=[middle[0] for last,middle in zip(name_first[query][0],name_first[query][1]) if last==query_plus_2 and middle!='']
+                                            if query_plus_1[0] in middle_list:
+                                                all_terms['names']=all_terms.get('names',[])+[[[query,query_plus_1,query_plus_2],[['first','full'],['middle',''],['last','full']]]]
+                                                return parsing_query(mystring[3:],all_terms)
+                                            else:
+                                                pass
+                                        else:
+                                            pass      
+                                    else:
+                                        pass
+                                else:
+                                    pass
                             #could still be wong j or wong js
                             if len(query_plus_1)==1:
                                 #check for first name abbreviation
