@@ -481,21 +481,11 @@ for i in newdata:
 ########################################################################################biorxiv
 
 
-titles=[]
-authors=[]
-dates=[]
-abstracts=[]
-links=[]
-tags=[]
-author_aff=[]
-
-
 
 f=open(os.path.join(BASE_DIR,'biorxiv','biorxiv.txt'))
 
 data=[eval(i.strip()) for i in f]
 newdata=[]
-
 unique={}
 all_links=[]
 for i in data:
@@ -504,57 +494,71 @@ for i in data:
 
 error=False
 
-X=True
-try:
-    for index in range(380):
-        if X==False:
-            break
-##        print 'index',index
-        if index==0:
-            r=requests.get("http://biorxiv.org/content/early/recent")
-        else:
-            r=requests.get("http://biorxiv.org/content/early/recent?page="+str(index))
-        soup=BeautifulSoup(r.content)
-        for i in soup.find_all("span", {"class":"highwire-cite-title"})[::2]:
-            titles.append(i.text.strip())
-        for i in soup.find_all('div',{'class':'highwire-cite-authors'}):
-            temp=[]    
-            for j,k in zip(i.find_all('span',{'class':'nlm-given-names'}),i.find_all('span',{'class':'nlm-surname'})):
-                given=unicodedata.normalize('NFKD',j.text.strip()).encode('ascii','ignore')
-                sur=unicodedata.normalize('NFKD',k.text.strip()).encode('ascii','ignore')
-                temp.append(given+' '+sur)
-            authors.append(temp)
-        for i in soup.find_all('a',{'class':'highwire-cite-linked-title'}):
-            if i.get('href').strip() not in all_links:
-                links.append(i.get('href').strip())
-            else:
-                X=False
+for attempt in range(3):
+    titles=[]
+    authors=[]
+    dates=[]
+    abstracts=[]
+    links=[]
+    tags=[]
+    author_aff=[]
+    X=True
+    try:
+        for index in range(380):
+            if X==False:
                 break
-            
-
-    for index2,i in enumerate(links):
-##        print index2
-        r=requests.get('http://biorxiv.org'+i)
-        soup=BeautifulSoup(r.content)
-        dates.append(soup.find('li',{'class':"published"}).text.strip('Posted').strip())
-        abstracts.append(soup.find('p',{'id':"p-2"}).text.strip())
-        temp=[]
-        unique_aff={}
-        for j in soup.find_all('span',{'class':'nlm-aff'}):
-            if j.text.strip() not in unique_aff:
-                unique_aff[j.text.strip()]=''
+    ##        print 'index',index
+            if index==0:
+                r=requests.get("http://biorxiv.org/content/early/recent")
+            else:
+                r=requests.get("http://biorxiv.org/content/early/recent?page="+str(index))
+            soup=BeautifulSoup(r.content)
+            for i in soup.find_all("span", {"class":"highwire-cite-title"})[::2]:
+                titles.append(i.text.strip())
+            for i in soup.find_all('div',{'class':'highwire-cite-authors'}):
+                temp=[]    
+                for j,k in zip(i.find_all('span',{'class':'nlm-given-names'}),i.find_all('span',{'class':'nlm-surname'})):
+                    given=unicodedata.normalize('NFKD',j.text.strip()).encode('ascii','ignore')
+                    sur=unicodedata.normalize('NFKD',k.text.strip()).encode('ascii','ignore')
+                    temp.append(given+' '+sur)
+                authors.append(temp)
+            for i in soup.find_all('a',{'class':'highwire-cite-linked-title'}):
+                if i.get('href').strip() not in all_links:
+                    links.append(i.get('href').strip())
+                else:
+                    X=False
+                    break
+                
+        for index2,i in enumerate(links):
+    ##        print index2
+            r=requests.get('http://biorxiv.org'+i)
+            soup=BeautifulSoup(r.content)
+            dates.append(soup.find('li',{'class':"published"}).text.strip('Posted').strip())
+            abstracts.append(soup.find('p',{'id':"p-2"}).text.strip())
+            temp=[]
+            unique_aff={}
+            for j in soup.find_all('span',{'class':'nlm-aff'}):
+                if j.text.strip() not in unique_aff:
+                    unique_aff[j.text.strip()]=''
+                    temp.append(j.text.strip())
+            author_aff.append(temp)
+            temp=[]
+            for j in soup.find_all('span',{'class':'highwire-article-collection-term'}):
                 temp.append(j.text.strip())
-        author_aff.append(temp)
-        temp=[]
-        for j in soup.find_all('span',{'class':'highwire-article-collection-term'}):
-            temp.append(j.text.strip())
-        tags.append(temp)
-        
-except Exception as e:
-    error=True
-    f=open(os.path.join(BASE_DIR,'biorxiv','error_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
-    f.write(str(e))
-    f.close()
+            tags.append(temp)
+            
+    except Exception as e:
+        error=True
+        if attempt==2:
+            f=open(os.path.join(BASE_DIR,'biorxiv','error_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
+            f.write(str(e))
+            f.write('\n')
+            f.write(r.content)
+            f.close()
+    if error==False:
+        break
+    time.sleep(60)
+    
 
 
 
