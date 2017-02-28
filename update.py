@@ -492,9 +492,9 @@ for i in data:
     unique[i[4].split('/')[-1].split('.')[0]]=''
     all_links.append(i[4])
 
-error=False
 
 for attempt in range(3):
+    error=False
     titles=[]
     authors=[]
     dates=[]
