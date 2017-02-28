@@ -179,7 +179,10 @@ def parsing_query(mystring,all_terms):
                                                 all_terms['names']=all_terms.get('names',[])+[[[query,query_plus_1,query_plus_2],[['first','full'],['middle',''],['last','full']]]]
                                                 return parsing_query(mystring[3:],all_terms)
                                             else:
-                                                pass
+                                                all_terms['names']=all_terms.get('names',[])+[[[query,query_plus_2],[['first','full'],['last','full']]]]
+                                                ##the middle initial was not found, but still allowing search to proceed
+                                                all_terms['unknown']=all_terms.get('unknown',[])+[query_plus_1]
+                                                return parsing_query(mystring[3:],all_terms)
                                         else:
                                             pass      
                                     else:
