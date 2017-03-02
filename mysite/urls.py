@@ -34,5 +34,6 @@ urlpatterns = [
     url(r'^grimmer/$',views.grimmer),
     url(r'^rss_feed/$',views.rss_feed),
     url(r'^articles/(.{1,50})/rss/',views.RSSFeed()),
+    url(r'^terms/$',views.terms),
     
 ]

@@ -18,6 +18,7 @@
     font-family: "Vollkorn", serif;
     margin: 0px;
     padding: 0px;
+    color:black;
     }
     a:hover{
         text-decoration: none;
@@ -33,10 +34,19 @@
     }
     .btn{
         font-size:24px;
+        border: 0 none;
     }
+
     .btn-primary{
-        background-color:#369;
-        font-color:white;
+        background-color:#ffbb00;
+        color:#000000;
+
+    }
+    .btn-primary.active.focus, .btn-primary.active:focus, .btn-primary.active:hover, .btn-primary:active.focus,
+    .btn-primary:active:focus, .btn-primary:active:hover,.btn-primary:hover,.btn-primary:active,.btn-primary:focus
+    {
+        background-color:#ffcc40;
+        color:#000000;
     }
 
     .entry{
@@ -59,8 +69,19 @@
         height:48px;
     }
 
+
+    h1 {
+        color:#fb6542;
+        font-weight: 600;
+        margin:0px;
+        margin-top:10px;
+        margin-bottom:5px;
+        padding:0px;
+        font-size:32px;
+
+    }
     h2 {
-        color:#985735;
+        color:#fb6542;
         font-weight: 600;
         margin:0px;
         margin-top:10px;
@@ -70,41 +91,59 @@
 
     }
 
-    p a {
-        color:#14376c;
+    a {
+        
+        font-weight: 500;
+        color:#375e97;
+        text-decoration:none;
+    }
+
+    a:hover {
+        
+        font-weight: 500;
+        text-decoration:underline;
+    }
+    #links a
+    {
+        color:#375e97;
+        font-weight: 500;
+        text-decoration:none;
+    }
+
+    #links a:hover {
+        color:#375e97;
         font-weight: 500;
         text-decoration:underline;
     }
 
-    p a:hover {
-        color:#14376c;
-        font-weight: 500;
-        text-decoration:underline;
-    }
+
+
+
+
     #help {
         position:relative;
         left:75%;
     }
     #grad {
-  background: #369; /* For browsers that do not support gradients */
-  background: -webkit-linear-gradient(left, #369,#19334d, #141927); /* For Safari 5.1 to 6.0 */
-  background: -o-linear-gradient(right, #369,#19334d, #141927); /* For Opera 11.1 to 12.0 */
-  background: -moz-linear-gradient(right, #369,#19334d, #141927); /* For Firefox 3.6 to 15 */
-  background: linear-gradient(to right, #369,#19334d, #141927); /* Standard syntax */
+  background: #ffbb00; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(left, #ffbb00,#ffe396, #ffeab0); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(right, #ffbb00,#ffe396, #ffeab0); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(right, #ffbb00,#ffe396, #ffeab0); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to right, #ffbb00,#ffe396,#ffeab0); /* Standard syntax */
 } 
 
     #search_area{
-        background-color: #d5d5d5; 
+        background-color: #b5d998; 
         min-height: 100px;
-        box-shadow: 0px -1px 3px  #999999 inset;
+        box-shadow: 0px -1px 3px  #3f681c inset;
 
     }
 
     </style>
 </head>
 <body>
-    <div class="col-sm-12" style="background-color: #369">
-        <a id="mysite" href="http://www.omnesres.com/" style="color: white; font-size: 24px;padding-left:20px">Omnes Res</a>        
+    <div class="col-sm-12" style="background-color: #ffbb00">
+        <a id="mysite" href="http://www.omnesres.com/" style="font-size: 24px;padding-left:20px">Omnes Res</a>        
     </div>
     <div id="search_area" class="col-sm-12">
         <div class="col-sm-1" style="margin-top:5px">
@@ -121,20 +160,21 @@
                     <button type="submit" class="btn btn-primary">Search</button>
                 </div>
             <form>
-            <div style="margin-top:2px;font-size:20px">
+            <div id="links" style="margin-top:2px;font-size:20px">
                 <span style="margin-left:2px"><a href="/advanced_search/">Advanced</a></span>
                 <span id='help'><a href="/help/">Help</a></span>
             </div>
         </div>
     </div>
     <div class="col-sm-12">
-        <div class="col-sm-8" style="margin-top:10px">
-            <div class="col-sm-3" style="background-image: url(https://s3.amazonaws.com/prepubmed/book_big.png); height:180px">
-                <span></span>
-            </div>
-            <div class="col-sm-9" style="background-color:#141927; color:white;padding:0; height:180px">
-                <div id='grad' style="margin:0;font-size:20px;padding-left:10px"><b>PrePubMed</b></div>
-                <p style="font-size:20px;padding:10px">PrePubMed indexes preprints from arXiv q-bio, PeerJ Preprints, bioRxiv, F1000Research, preprints.org, The Winnower, Nature Precedings, and Wellcome Open Research. Articles are not stored on PrePubMed, but you will be linked to the article at the respective site.</p>
+        <div class="col-sm-8" style="margin-top:10px;padding:0px">
+            <div class="col-sm-11">
+                <div class="col-sm-12" style="background-color:#ffeab0; color:black;padding:0; height:150px">
+                    <div id='grad' style="margin:0;font-size:20px;padding-left:10px;color:black"><b>PrePubMed</b></div>
+                    <p style="font-size:20px;padding:10px">PrePubMed indexes preprints from arXiv q-bio, PeerJ Preprints, bioRxiv, F1000Research, preprints.org, The Winnower, Nature Precedings, and Wellcome Open Research. Articles are not stored on PrePubMed, but you will be linked to the article at the respective site.</p>
+                </div>
+                <div class='col-sm-1'>
+                </div>
             </div>
             <div class="col-sm-12" style="font-size:16px; text-align:left; margin-top:10px">
                 <div class="col-sm-4">
@@ -174,24 +214,37 @@
                     </p>
                 </div>
             </div>
-            <div class="col-sm-12" style="font-size:18px; text-align:left; margin-top:20px">
-                <h2>Some Tips!</h2>
-                Use double quotes for long phrases such as exact titles
-                <br>
-                <br>
-                All terms are combined with AND logic, so don't bother typing "AND" or "OR"
-                <br>
-                <br>
-                Don't try to search for affiliations in the default search box, use <a href="/advanced_search/">Advanced Search</a> instead
-                <br>
-                <br>
-                Site is free to use and <a href="https://github.com/OmnesRes/prepub">open source</a>, send questions to omnesresnetwork at gmail.com
+            <div class="col-sm-12" style="font-size:22px; text-align:left; margin-top:10px;">
+                <div class="col-sm-12">
+                    <div class="col-sm-7" style="font-size:24px;font-weight:500">
+                        <h1>Quick Guide</h1>
+                        <span style="color:#bc6854;float:left">Titles</span>
+                        <span style="float:right">Double Quotes!</span>
+                        <div style="clear: both;"></div>
+                        <span style="color:#bc6854;float:left">Authors</span>
+                        <span style="float:right">Simply type name</span>
+                        <div style="clear: both;"></div>
+                        <span style="color:#bc6854;float:left">Affiliations</span>
+                        <span style="float:right"><a href="/advanced_search/">Advanced Search</a></span>
+                        <div style="clear: both;"></div>
+                        <span style="color:#bc6854;float:left">Text</span>
+                        <span style="float:right">Exact match</span>
+                        <div style="clear: both;"></div>
+                        <span style="color:#bc6854;float:left">Terms</span>
+                        <span style="float:right">AND logic</span>
+                    </div>
+                    <div class="col-sm-5">
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-sm-4 text-center">
-            <a class="twitter-timeline"  height="600px" width="400px" href="https://twitter.com/search?q=%23preprint%20-RT" data-widget-id="715556781448171520">Tweets about #preprint -RT</a>
+        <div class="col-sm-4 text-center" style="padding:0px">
+            <a class="twitter-timeline"  height="550px" width="500px" href="https://twitter.com/search?q=%23preprint%20-RT" data-widget-id="715556781448171520">Tweets about #preprint -RT</a>
             <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
           
+        </div>
+        <div class="col-sm-12" style="text-align:center;margin-top:40px;font-size:20px">
+        Site is free to use and <a href="https://github.com/OmnesRes/prepub">open source</a>, policies <a href="/terms/">here</a>, send questions to omnesresnetwork at gmail.com
         </div>
     </div>
 </body>

@@ -18,17 +18,24 @@
     font-family: "Vollkorn", serif;
     margin: 0px;
     padding: 0px;
-    color: white;
+    color: black;
     font-size: 24px;
     }
-    a:hover{
-        text-decoration: none;
+    a {
+        font-weight: 500;
+        color:#375e97;
+        text-decoration:none;
+    }
+
+    a:hover {
+        font-weight: 500;
+        text-decoration:underline;
     }
 
     #home {
     margin-bottom: 0px;
     padding: 0px;
-    color: white;
+    color: black;
     font-size: 20px;
     }
 
@@ -36,33 +43,31 @@
         font-size:20px
     }
     h2 {
-        color:#985735;
+        color:#fb6542;
         font-weight: 600;
         margin:0px;
         padding:0px;
     }
 
     input[type=text] {
-        border: 2px solid #ca8a68;
+        border: 2px solid #7EB351;
         text-align:center;
     }
     
     input[type=text]:focus {
-        border: 2px solid #985735;
+        border: 2px solid #3f681c;
     }
 
-    .btn-primary{
-        background-color:#369;
-        font-color:white;
-        width:300px;
-    }
     .btn-default {
-        background-color:#985735;
-        font-color:white;
+        background-color:#fb6542;
+        color:black;
     }
-    .btn-default:hover {
-        background-color:#985735;
-        font-color:white;
+
+    .btn-default.active.focus, .btn-default.active:focus, .btn-default.active:hover, .btn-default:active.focus,
+    .btn-default:active:focus, .btn-default:active:hover,.btn-default:hover,.btn-default:active,.btn-default:focus
+    {
+        background-color:#fd8c71;
+        color:#000000;
     }
     #calculate {
         position:relative;
@@ -94,7 +99,7 @@
     </style>
 </head>
 <body>
-    <div class="col-sm-12" style="background-color: #369; text-align:center">
+    <div class="col-sm-12" style="background-color: #ffbb00; text-align:center">
         <div class="col-sm-1" style="position:relative;top:2px">
             <a id="home" href="/">Home</a></span>
         </div>

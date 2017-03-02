@@ -18,9 +18,17 @@
     font-family: "Vollkorn", serif;
     margin: 0px;
     padding: 0px;
+    color:black;
     }
-    a:hover{
-        text-decoration: none;
+    a {
+        font-weight: 500;
+        color:#375e97;
+        text-decoration:none;
+    }
+
+    a:hover {
+        font-weight: 500;
+        text-decoration:underline;
     }
     div form {
         position:relative;
@@ -28,7 +36,7 @@
 
     }
     h1, h2, h3 {
-        color:#724128
+        color:#fb6542
     }
     span.tab{
     padding: 0 30px;
@@ -43,10 +51,19 @@
     }
     .btn{
         font-size:24px;
+        border: 0 none;
+
     }
     .btn-primary{
-        background-color:#369;
-        font-color:white;
+        background-color:#ffbb00;
+        color:#000000;
+
+    }
+    .btn-primary.active.focus, .btn-primary.active:focus, .btn-primary.active:hover, .btn-primary:active.focus,
+    .btn-primary:active:focus, .btn-primary:active:hover,.btn-primary:hover,.btn-primary:active,.btn-primary:focus
+    {
+        background-color:#ffcc40;
+        color:#000000;
     }
 
     .entry{
@@ -81,7 +98,7 @@
 } 
 
     #search_area{
-        background-color: #d5d5d5; 
+        background-color: #b5d998; 
         min-height: 100px;
         box-shadow: 0px -1px 3px  #999999 inset;
 
@@ -90,8 +107,8 @@
     </style>
 </head>
 <body>
-    <div class="col-sm-12" style="background-color: #369">
-        <a id="mysite" href="http://www.omnesres.com/" style="color: white; font-size: 24px;padding-left:20px">Omnes Res</a>        
+    <div class="col-sm-12" style="background-color: #ffbb00">
+        <a id="mysite" href="http://www.omnesres.com/" style="font-size: 24px;padding-left:20px">Omnes Res</a>        
     </div>
     <div id="search_area" class="col-sm-12">
         <div class="col-sm-1" style="margin-top:5px">
@@ -119,7 +136,7 @@
         </div>
         <div class="col-sm-9" style="margin-top:10px;text-align:justify">
             <h1>PrePubMed Help</h1>
-            <p>PrePubMed currently indexes tens of thousands of articles from the preprint servers arXiv q-bio, PeerJ Preprints, bioRxiv, and Nature Precedings, along with articles at F1000Research and Wellcome Open Research that are undergoing post-publication peer review and free form articles from The Winnower.  New articles are indexed daily. The goal of PrePubMed is to provide a means to search for articles that are not indexed by PubMed, which could be due to the article being "unpublished", or due to the delay between "publication" and indexing by PubMed.  With that said, PrePubMed does not remove articles once they are indexed by PubMed in order to give preprinted articles as much exposure as possible.  A video showing how to search with PrePubMed is available on <a href="https://www.youtube.com/watch?v=a_HoqWqUJ7Y">youtube</a>.</p>
+            <p>Policies are <a href="/terms/">here</a>. PrePubMed currently indexes tens of thousands of articles from the preprint servers arXiv q-bio, PeerJ Preprints, bioRxiv, and Nature Precedings, along with articles at F1000Research and Wellcome Open Research that are undergoing post-publication peer review and free form articles from The Winnower.  New articles are indexed daily. The goal of PrePubMed is to provide a means to search for articles that are not indexed by PubMed, which could be due to the article being "unpublished", or due to the delay between "publication" and indexing by PubMed.  With that said, PrePubMed does not remove articles once they are indexed by PubMed in order to give preprinted articles as much exposure as possible.  A video showing how to search with PrePubMed is available on <a href="https://www.youtube.com/watch?v=a_HoqWqUJ7Y">youtube</a>.</p>
             <h2>A note on other servers such as Figshare and OSF Preprints</h2>
             <p>Most uploads on Figshare with the label "Paper" are not actually preprints and as a result it is difficult to accurately index preprints from Figshare.  I previously attempted indexing Figshare, and you can see that data <a href="https://github.com/OmnesRes/prepub/tree/master/figshare">here</a>, but I no longer index Figshare.</p>
             <p>OSF Preprints, along with its offsprings PsyArXiv and SocArXiv, primarily contain social science preprints.  I know this because I indvidually looked through all of the OSF preprints. PrePubMed was created for biology preprints because there wasn't a central hub for these types of preprints.  Math and physics preprints have arXiv, and social science preprints now have the <a href="https://osf.io/preprints/">OSF</a>.</p>
@@ -156,7 +173,7 @@
             <h3>How to search by affiliation</h3>
             <p>You can search for affiliation with the advanced search option.  Note that Figshare does not list affiliations for authors so a search for an affiliation will not return any Figshare preprints.  See <a href="#advanced">using advanced search</a> for more details.</p>
             <h3>What do I do about duplicated or questionable articles?</h3>
-            <p>Nothing. It is the responsibility of the preprint server to not publish duplicated articles (they should be different versions of the same article instead).  Also, how am I supposed to know which version of the article the authors want indexed in PrePubMed?  I also do not believe I should have the authority to prevent articles from being indexed.  If your article passes the screening process at the preprint servers it will be indexed (even if it uses the word God). It is the job of post-publication peer review to determine whether or not your article is useful, and PrePubMed facilitates that process by providing a means to find your article. Note: Figshare does not appear to have a screening process so I did have to institute my own for Figshare.</p>
+            <p>Nothing. It is the responsibility of the preprint server to not publish duplicated articles (they should be different versions of the same article instead).  Also, how am I supposed to know which version of the article the authors want indexed in PrePubMed?  I also do not believe I should have the authority to prevent articles from being indexed.  If your article passes the screening process at the preprint servers it will be indexed (even if it uses the word God). It is the job of post-publication peer review to determine whether or not your article is useful, and PrePubMed facilitates that process by providing a means to find your article.</p>
             <h3>How to search by dates</h3>
             <p>You can't.  I do index dates, and articles are sorted by date when you perform a search, however the problem with dates is that they change for preprints. When someone submits a revised version of an article, it then gets a more recent date.  As a result, an article can be originally published years ago but have a recent date, which is misleading. Once an article is indexed by PrePubMed, if a revision to the article is posted, I do not update the date in PrePubMed. If I did then someone could submit a minimally revised article to get it to appear at the top of the search results, which is what currently happens at the preprint servers PrePubMed indexes.</p>
             <h3>What punctuation gets removed?</h3>

@@ -48,33 +48,33 @@
         margin:0px;
         padding:0px;
     }
-
+    h1{
+        color:#fb6542
+    }
     input[type=text] {
-        border: 2px solid #ca8a68;
+        border: 2px solid #7EB351;
         text-align:center;
     }
     
     input[type=text]:focus {
-        border: 2px solid #985735;
+        border: 2px solid #3f681c;
     }
 
-    .btn-primary{
-        background-color:#369;
-        font-color:white;
-        width:300px;
-    }
     .btn-default {
-        background-color:#985735;
-        font-color:white;
+        background-color:#fb6542;
+        color:white;
     }
-    .btn-default:hover {
-        background-color:#985735;
-        font-color:white;
+
+    .btn-default.active.focus, .btn-default.active:focus, .btn-default.active:hover, .btn-default:active.focus,
+    .btn-default:active:focus, .btn-default:active:hover,.btn-default:hover,.btn-default:active,.btn-default:focus
+    {
+        background-color:#fd8c71;
+        color:white;
     }
     #calculate {
         position:relative;
-        top:36px;
-        right:50px;
+        top:40px;
+        right:70px;
     }
     .form-group {
         margin-top:10px;
@@ -85,8 +85,8 @@
     }
 
     .form-inline .form-group input{
-        width:50%;
-        height:36px;
+        width:70%;
+        height:48px;
     }
 
     #errors {
@@ -112,7 +112,7 @@
         </div>          
     </div>
     <div class="col-sm-12" style="text-align:center">
-        <h2>GRIM Test Help</h2>
+        <h2>Terms of use and policies</h2>
         <div class="col-sm-12">
             <div class="col-sm-5">
             </div>
@@ -124,33 +124,18 @@
             <div class="col-sm-5">
             </div>
         </div>
-    <div class="col-sm-12">
+    </div>
+    <div class="col-sm-12" style="margin-bottom:200px">
         <div class="col-sm-1">
         </div>
-        <div class="col-sm-9" style="margin-top:10px;margin-bottom:50px;text-align:justify">
-            <p>The standard way to round numbers is to round up when the last decimal is a 5.  However, different software may or may not follow this convention.
-            <br>
-            <br>
-            For example, in Python 2 the call round(.125,2) will result in .13.
-            <br>
-            <br>
-            But in Python 3 the same call will result in .12.
-            <br>
-            <br>
-            As a result, if a researcher used a computer program to round their values it is possible they unknowingly rounded all of their values down instead of what they likely meant to do, id est round up.
-            <br>
-            <br>
-            So how can you check if this may have happened to the values you are testing?
-            <br>
-            <br>
-            I provide you the option to decide how you want numbers rounded.  If you believe rounding is an issue you can try the different options.
-            <br>
-            <br>
-            Another problem may arise that involves how computers store numbers.  For example, the number 2.675 should get rounded to 2.68, but the computer actually represents the number as 2.6749999... and it gets rounded down to 2.67.  See this <a href="https://docs.python.org/2.7/tutorial/floatingpoint.html">page</a> for more details.
-            <br>
-            <br>
-            This is an example of a floating point error that primarily occurs at sample sizes that are multiples of 40.  The different rounding options give you the ability to account for this possibility.  For the GRIMMER test there is a very small chance this type of floating point error will provide spurious results that cannot be accounted for without a detailed investigation.
-            </p>
+        <div class="col-sm-9" style="margin-top:10px;text-align:justify">
+            <h1>About</h1>
+            <p>PrePubMed is meant as a stopgap method for finding biology preprints until an institution develops a better method. Although PrePubMed was developed to look and function similarly to PubMed for the familiarity of users, PrePubMed has no affiliation with the NCBI. Any problems with PrePubMed are not reflective of PubMed, or vice versa. I do not know if the PubMed brand is trademarked. No copyright infringement was intended.</p>
+            <h1>Terms</h1>
+            <p>PrePubMed is provided "as is". PrePubMed indexes new preprints daily, but indexing preprints is not an exact science, and the daily indexing may encounter an error and as a result the preprints in PrePubMed are not guaranteed to contain the most recent preprints. I try to check to make sure the indexing is running smoothly.</p>
+            <h1>Data indexed</h1>
+            <p>PrePubMed does not store PDFs or the full text of articles. PrePubMed only indexes basic facts such as titles, author names, and abstracts. I believe this indexing falls under fair use. Many other sites index similar data, including <a href="https://www.ncbi.nlm.nih.gov/pubmed">PubMed</a>, <a href="https://scholar.google.com/">Google Scholar</a>, <a href="https://osf.io/preprints/">OSF Preprints</a>, <a href="https://www.scienceopen.com/">ScienceOpen</a>, <a href="http://www.academickarma.org/">Academic Karma</a>, and <a href="https://jhubiostatistics.shinyapps.io/papr/">papr</a>, and some sites even host entire articles such as <a href="https://www.researchgate.net/">ResearchGate</a>.</p>
+            <p>If you are a copyright holder and believe your copyright is being violated and don't want people to be able to find your article(s), contact me and I will happily delete them from the database.</p>
         </div>
         <div class="col-sm-2">
         </div>

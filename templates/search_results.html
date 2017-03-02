@@ -42,9 +42,17 @@
     font-family: "Vollkorn", serif;
     margin: 0px;
     padding: 0px;
+    color:black;
     }
-    a:hover{
-        text-decoration: none;
+    a {
+        font-weight: 500;
+        color:#375e97;
+        text-decoration:none;
+    }
+
+    a:hover {
+        font-weight: 500;
+        text-decoration:underline;
     }
     div form {
         position:relative;
@@ -54,9 +62,21 @@
         position:relative;
         left:10px;
     }
+
+    .btn{
+        border: 0 none;
+
+    }
     .btn-primary{
-        background-color:#369;
-        font-color:white;
+        background-color:#ffbb00;
+        color:#000000;
+
+    }
+    .btn-primary.active.focus, .btn-primary.active:focus, .btn-primary.active:hover, .btn-primary:active.focus,
+    .btn-primary:active:focus, .btn-primary:active:hover,.btn-primary:hover,.btn-primary:active,.btn-primary:focus
+    {
+        background-color:#ffcc40;
+        color:#000000;
     }
 
     .entry{
@@ -85,10 +105,10 @@
     .title a {
         font-size:24px;
         text-decoration: underline;
-        color:#2222cc;
+        color:#375e97;
     }
     .title a:hover{
-        color:#2222cc;
+        color:#375e97;
         text-decoration: underline;
     }
     .title {
@@ -107,14 +127,14 @@
     }
 
     #grad {
-        background: #369; /* For browsers that do not support gradients */
-        background: -webkit-linear-gradient(left, #369,#19334d, #141927); /* For Safari 5.1 to 6.0 */
-        background: -o-linear-gradient(right, #369,#19334d, #141927); /* For Opera 11.1 to 12.0 */
-        background: -moz-linear-gradient(right, #369,#19334d, #141927); /* For Firefox 3.6 to 15 */
-        background: linear-gradient(to right, #369,#19334d, #141927); /* Standard syntax */
+      background: #ffbb00; /* For browsers that do not support gradients */
+      background: -webkit-linear-gradient(left, #ffbb00,#ffe396, #ffeab0); /* For Safari 5.1 to 6.0 */
+      background: -o-linear-gradient(right, #ffbb00,#ffe396, #ffeab0); /* For Opera 11.1 to 12.0 */
+      background: -moz-linear-gradient(right, #ffbb00,#ffe396, #ffeab0); /* For Firefox 3.6 to 15 */
+      background: linear-gradient(to right, #ffbb00,#ffe396,#ffeab0); /* Standard syntax */
     } 
     #search_area{
-        background-color: #d5d5d5; 
+        background-color: #b5d998; 
         min-height: 100px;
         box-shadow: 0px -1px 3px  #999999 inset;
     }
@@ -151,13 +171,13 @@
         white-space:pre-wrap;
     }
     h2 {
-        color:#985735;
+        color:#fb5b37;
         font-weight: 600;
         margin-bottom:0px;
         margin-left:0px;
     }
     h3 {
-        color:#724128;
+        color:#fb6542;
         font-weight: 600;
         margin-top:8px;
     }
@@ -180,8 +200,8 @@
     </style>
 </head>
 <body>
-    <div class="col-sm-12" style="background-color: #369">
-        <a id="mysite" href="http://www.omnesres.com/" style="color: white; font-size: 24px;padding-left:20px">Omnes Res</a>        
+    <div class="col-sm-12" style="background-color: #ffbb00">
+        <a id="mysite" href="http://www.omnesres.com/" style="font-size: 24px;padding-left:20px">Omnes Res</a>        
     </div>
     <div id="search_area" class="col-sm-12">
         <div class="col-sm-1" style="margin-top:5px">

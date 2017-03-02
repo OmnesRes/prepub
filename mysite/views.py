@@ -104,6 +104,9 @@ def home(request):
 def my_help(request):
     return render(request, 'help.html')
 
+def terms(request):
+    return render(request, 'terms.html')
+
 def grim_help(request):
     return render(request, 'grim_help.html')
 
