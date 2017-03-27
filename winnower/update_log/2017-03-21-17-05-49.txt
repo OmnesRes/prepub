@@ -1,0 +1,1 @@
+[u'ACS AMA: Hi Reddit! I am Sam Lemonick, a freelance science journalist. Ask me anything about writing about science!', ['AmerChemSocietyAMA', 'r/Science'], u'March 21 2017', '', u'/papers/6642-acs-ama-hi-reddit-i-am-sam-lemonick-a-freelance-science-journalist-ask-me-anything-about-writing-about-science', [u'Science AMA'], []]
