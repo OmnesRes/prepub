@@ -1,0 +1,1 @@
+[u"Science AMA Series: Hi Reddit! We're scientists on a NOAA mission to explore deep, unseen waters in the central Pacific. Ask Us Anything!", ['NOAAgov', 'r/Science'], u'May 01 2017', '', u'/papers/7009-science-ama-series-hi-reddit-we-re-scientists-on-a-noaa-mission-to-explore-deep-unseen-waters-in-the-central-pacific-ask-us-anything', [u'Science AMA'], []]
