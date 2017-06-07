@@ -1,0 +1,1 @@
+[u'Capgras Syndrome: a disorder of kin recognition', ['Elfed Huw Price'], u'June 06 2017', '', u'/papers/7111-capgras-syndrome-a-disorder-of-kin-recognition', [u'Neurobiology', u'Evolution'], [u'https://orcid.org/0000-0002-3660-8363']]
