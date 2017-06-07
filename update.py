@@ -1298,7 +1298,6 @@ try:
         templinks=[]
         tempdates=[]
         tempabstracts=[]
-        tempauthors=[]
         temptags=[]
         while True:
             r=requests.get(base+cat+'?page_num='+str(index)+'&page_length=100')
@@ -1315,8 +1314,6 @@ try:
                 count+=1
             for i in soup.find_all('div',{'class','abstract-content'}):
                 tempabstracts.append(i.text)
-            for i in soup.find_all('div',{'class','search-content-box-author'}):
-                tempauthors.append([unicodedata.normalize('NFKD',j.text).encode('ascii','ignore') for j in i.find_all('a')])
             for i in soup.find_all('div',{'class','search-content-box'}):
                 temptags.append([i.find_all('div')[4].text.strip().split(', ')[1].split(';')[0].strip()])
             if len(templinks)>len(temptags):
@@ -1325,7 +1322,7 @@ try:
                 index+=1
             else:
                 break
-        for i,j,k,l,m in zip(templinks,tempdates,tempabstracts,tempauthors,temptags):
+        for i,j,k,m in zip(templinks,tempdates,tempabstracts,temptags):
             if i.split('/')[-2] not in unique:
                 r=requests.get('http://preprints.org'+i)
                 soup=BeautifulSoup(r.content,'html.parser')
@@ -1334,7 +1331,11 @@ try:
                     titles.append(soup.find('h1').text.strip())
                     abstracts.append(k)
                     links.append(i)
-                    authors.append(l)
+                    authors=[]
+                    author_temp=[[l.get('name'),l.get('content')] for l in soup.find_all('meta')]
+                    for ii in author_temp:
+                        if ii[0]=='citation_author':
+                            authors.append(unicodedata.normalize('NFKD',ii[1]).encode('ascii','ignore'))
                     temp_aff=[]
                     for aff in soup.find('div',{'class','manuscript-affiliations'}).find_all('li'):
                         temp_aff.append(aff.text)
