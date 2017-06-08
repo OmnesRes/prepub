@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title> {% block title %}PrePubMed{% endblock %} </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vollkorn">
+    <link rel="shortcut icon" href="https://s3.amazonaws.com/prepubmed/prepub_favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://s3.amazonaws.com/prepubmed/prepub_favicon.ico" type="image/x-icon">
+    <style>
+     body{
+        font-family:"Arial",sans-serif;
+    }
+    #mysite {
+    font-family: "Vollkorn", serif;
+    margin: 0px;
+    padding: 0px;
+    color:black;
+    }
+    a {
+        font-weight: 500;
+        color:#375e97;
+        text-decoration:none;
+    }
+
+    a:hover {
+        font-weight: 500;
+        text-decoration:underline;
+    }
+    div form {
+        position:relative;
+        top:5px;
+
+    }
+    h1, h2, h3 {
+        color:#fb6542
+    }
+    span.tab{
+    padding: 0 30px;
+    position:relative;
+    }
+    img {
+        position:relative;
+        left:10px;
+    }
+    p {
+        font-size:20px
+    }
+    .btn{
+        font-size:24px;
+        border: 0 none;
+
+    }
+    .btn-primary{
+        background-color:#ffbb00;
+        color:#000000;
+
+    }
+    .btn-primary.active.focus, .btn-primary.active:focus, .btn-primary.active:hover, .btn-primary:active.focus,
+    .btn-primary:active:focus, .btn-primary:active:hover,.btn-primary:hover,.btn-primary:active,.btn-primary:focus
+    {
+        background-color:#ffcc40;
+        color:#000000;
+    }
+
+    .entry{
+        position:relative;
+        left:30px;
+    }
+    button{
+        clear:all;
+        position:relative;
+        left:10px;
+    }
+    .form-control{
+        font-size:32px;
+    }
+    .form-inline .form-group{
+        width:90%;
+    }
+    .form-inline .form-group input{
+        width:80%;
+        height:48px;
+    }
+    #help {
+        position:relative;
+        left:75%;
+    }
+    #grad {
+  background: #369; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(left, #369,#19334d, #141927); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(right, #369,#19334d, #141927); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(right, #369,#19334d, #141927); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to right, #369,#19334d, #141927); /* Standard syntax */
+} 
+
+    #search_area{
+        background-color: #b5d998; 
+        min-height: 100px;
+        box-shadow: 0px -1px 3px  #999999 inset;
+
+    }
+
+    </style>
+</head>
+<body>
+    <div class="col-sm-12" style="background-color: #ffbb00">
+        <a id="mysite" href="http://www.omnesres.com/" style="font-size: 24px;padding-left:20px">Omnes Res</a>        
+    </div>
+    <div id="search_area" class="col-sm-12">
+        <div class="col-sm-1" style="margin-top:5px">
+            <a href="/">
+                <img src="https://s3.amazonaws.com/prepubmed/first_logo.png" style="height:90px">
+            </a>
+        </div>
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-10" style="vertical-align:middle;margin-top:15px">
+            <form action="/search_results/" method="get" class="form-inline entry">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="q" maxlength=150>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </form>
+            <div id="links" style="margin-top:6px;font-size:20px">
+                <span style="margin-left:30px"><a href="/advanced_search/">Advanced</a></span>
+                <span id='help'><a href="/help/">Help</a></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12" style="margin-bottom:200px">
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-10" style="margin-top:10px;text-align:center">
+            <h1 style="font-weight:700;margin-bottom:20px">Monthly Statistics for May 2017</h1>
+            <div class="col-sm-6" style="font-size:30px;font-weight:700">
+                1343 preprints added
+                <img class ="img-responsive center-block" src="https://s3.amazonaws.com/prepubmed/may_preprints.png" style='width:100%;margin-top:30px'/>
+            </div>
+            <div class="col-sm-6" style="font-size:30px;font-weight:700">
+                696 new senior authors
+                <img class ="img-responsive center-block" src=" https://s3.amazonaws.com/prepubmed/may_authors.png " style='width:95%;margin-top:30px'/>
+            </div>
+            <div class="col-sm-12" style="margin-top:10px;margin-bottom:30px;text-align:justify">
+                <p>The number of preprints added per month continues to increase, thanks in large part to bioRxiv.  I was interested if the increase was due to new labs submitting preprints (which would be indicated by new senior authors in the database), or if the same authors were simply submitting more preprints.  The plot of new authors per month appears to closely mirror the plot of new preprints per month.</p>
+                <p>The data and code for these graphs are available at <a href="https://github.com/OmnesRes/prepub/tree/master/analyses">GitHub</a>
+            </div>
+            <div class="col-sm-12"><h1 style="font-weight:700">Real-time analytics (beta)</h1></div>
+            <div class="col-sm-12" style="text-align:justify">
+                <p>I've played around with the idea of allowing for user-defined plots/other output.  One request I often hear is how is subject area X doing.  So below I made an attempt at showing what this might look like.</p>
+                <p>Note: bioRxiv preprints are often missing subject information when posted, and thus indexed by my server, so none of the bioRxiv data should be taken too seriously.  I think the other servers' subject data is trustworthy.</p>
+            </div>
+            <div class="col-sm-12">
+                <form action="" method="get">
+                    <div class="form-group">
+                        <select class="form-control" id="sel" name="Subject" size="1">
+                            <option value='Adaptive and Self-Organizing Systems'>Adaptive and Self-Organizing Systems</option>
+                            <option value='Aerospace'>Aerospace</option>
+                            <option value='Agents and Multi-Agent Systems'>Agents and Multi-Agent Systems</option>
+                            <option value='Agricultural Science'>Agricultural Science</option>
+                            <option value='Agricultural Sciences & Agronomy'>Agricultural Sciences & Agronomy</option>
+                            <option value='Algorithms and Analysis of Algorithms'>Algorithms and Analysis of Algorithms</option>
+                            <option value='Allergology'>Allergology</option>
+                            <option value='Allergy & Immunology'>Allergy & Immunology</option>
+                            <option value='Allergy and Clinical Immunology'>Allergy and Clinical Immunology</option>
+                            <option value='Anaesthesiology and Pain Management'>Anaesthesiology and Pain Management</option>
+                            <option value='Analytical Chemistry'>Analytical Chemistry</option>
+                            <option value='Anatomy & Morphology'>Anatomy & Morphology</option>
+                            <option value='Anatomy and Physiology'>Anatomy and Physiology</option>
+                            <option value='Andrology'>Andrology</option>
+                            <option value='Anesthesiology'>Anesthesiology</option>
+                            <option value='Animal Behavior'>Animal Behavior</option>
+                            <option value='Animal Behavior and Cognition'>Animal Behavior and Cognition</option>
+                            <option value='Animal Sciences & Zoology'>Animal Sciences & Zoology</option>
+                            <option value='Anthropology'>Anthropology</option>
+                            <option value='Aquaculture, Fisheries and Fish Science'>Aquaculture, Fisheries and Fish Science</option>
+                            <option value='Artificial Intelligence'>Artificial Intelligence</option>
+                            <option value='Askscience AMA'>Askscience AMA</option>
+                            <option value='Autonomous Systems'>Autonomous Systems</option>
+                            <option value='Behavioral Neuroscience'>Behavioral Neuroscience</option>
+                            <option value='Biochemistry'>Biochemistry</option>
+                            <option value='Biodiversity'>Biodiversity</option>
+                            <option value='Bioengineering'>Bioengineering</option>
+                            <option value='Biogeography'>Biogeography</option>
+                            <option value='Bioinformatics'>Bioinformatics</option>
+                            <option value='Biomolecules'>Biomolecules</option>
+                            <option value='Biophysics'>Biophysics</option>
+                            <option value='Biotechnology'>Biotechnology</option>
+                            <option value='Bone Disorders'>Bone Disorders</option>
+                            <option value='Brain-Computer Interface'>Brain-Computer Interface</option>
+                            <option value='Cancer Biology'>Cancer Biology</option>
+                            <option value='Cardiology'>Cardiology</option>
+                            <option value='Cardiopulmonary & Vascular Disorders'>Cardiopulmonary & Vascular Disorders</option>
+                            <option value='Cell & Developmental Biology'>Cell & Developmental Biology</option>
+                            <option value='Cell Behavior'>Cell Behavior</option>
+                            <option value='Cell Biology'>Cell Biology</option>
+                            <option value='Chemical Information'>Chemical Information</option>
+                            <option value='Clinical Neurology'>Clinical Neurology</option>
+                            <option value='Clinical Trials'>Clinical Trials</option>
+                            <option value='Cognitive Disorders'>Cognitive Disorders</option>
+                            <option value='Communication'>Communication</option>
+                            <option value='Computational Biology'>Computational Biology</option>
+                            <option value='Computational Linguistics'>Computational Linguistics</option>
+                            <option value='Computational Science'>Computational Science</option>
+                            <option value='Computer Aided Design'>Computer Aided Design</option>
+                            <option value='Computer Architecture'>Computer Architecture</option>
+                            <option value='Computer Education'>Computer Education</option>
+                            <option value='Computer Networks and Communications'>Computer Networks and Communications</option>
+                            <option value='Computer Sciences'>Computer Sciences</option>
+                            <option value='Computer Vision'>Computer Vision</option>
+                            <option value='Conservation Biology'>Conservation Biology</option>
+                            <option value='Coupled Natural and Human Systems'>Coupled Natural and Human Systems</option>
+                            <option value='Critical Care & Emergency Medicine'>Critical Care & Emergency Medicine</option>
+                            <option value='Cryptography'>Cryptography</option>
+                            <option value='Data Mining and Machine Learning'>Data Mining and Machine Learning</option>
+                            <option value='Data Science'>Data Science</option>
+                            <option value='Databases'>Databases</option>
+                            <option value='Dataisbeautiful AMA'>Dataisbeautiful AMA</option>
+                            <option value='Dentistry'>Dentistry</option>
+                            <option value='Dermatology'>Dermatology</option>
+                            <option value='Development & Evolution'>Development & Evolution</option>
+                            <option value='Developmental Biology'>Developmental Biology</option>
+                            <option value='Diabetes and Endocrinology'>Diabetes and Endocrinology</option>
+                            <option value='Digital Libraries'>Digital Libraries</option>
+                            <option value='Distributed and Parallel Computing'>Distributed and Parallel Computing</option>
+                            <option value='Drugs and Devices'>Drugs and Devices</option>
+                            <option value='Ecology'>Ecology</option>
+                            <option value='Ecosystem Science'>Ecosystem Science</option>
+                            <option value='Electrical'>Electrical</option>
+                            <option value='Embedded Computing'>Embedded Computing</option>
+                            <option value='Emergency'>Emergency</option>
+                            <option value='Emergency and Critical Care'>Emergency and Critical Care</option>
+                            <option value='Emerging Technologies'>Emerging Technologies</option>
+                            <option value='Endocrinology & Gastroenterology'>Endocrinology & Gastroenterology</option>
+                            <option value='Endocrinology & Metabolomics'>Endocrinology & Metabolomics</option>
+                            <option value='Entomology'>Entomology</option>
+                            <option value='Environmental Sciences'>Environmental Sciences</option>
+                            <option value='Epidemiology'>Epidemiology</option>
+                            <option value='Ethical Issues'>Ethical Issues</option>
+                            <option value='Evidence Based Medicine'>Evidence Based Medicine</option>
+                            <option value='Evolution'>Evolution</option>
+                            <option value='Evolutionary Biology'>Evolutionary Biology</option>
+                            <option value='Evolutionary Studies'>Evolutionary Studies</option>
+                            <option value='Eye Disorders & ENT'>Eye Disorders & ENT</option>
+                            <option value='Family'>Family</option>
+                            <option value='Food Science and Technology'>Food Science and Technology</option>
+                            <option value='Forestry'>Forestry</option>
+                            <option value='Funding'>Funding</option>
+                            <option value='Gastroenterology'>Gastroenterology</option>
+                            <option value='Gastroenterology and Hepatology'>Gastroenterology and Hepatology</option>
+                            <option value='General Medical Research'>General Medical Research</option>
+                            <option value='Genetics'>Genetics</option>
+                            <option value='Genomics'>Genomics</option>
+                            <option value='Genomics, Computational & Systems Biology'>Genomics, Computational & Systems Biology</option>
+                            <option value='Geology'>Geology</option>
+                            <option value='Geosciences'>Geosciences</option>
+                            <option value='Geriatrics'>Geriatrics</option>
+                            <option value='Global Health'>Global Health</option>
+                            <option value='Graphics'>Graphics</option>
+                            <option value='Gynecology and Obstetrics'>Gynecology and Obstetrics</option>
+                            <option value='HIV'>HIV</option>
+                            <option value='Health Policy'>Health Policy</option>
+                            <option value='Hematology'>Hematology</option>
+                            <option value='Hepatology & Nephrology'>Hepatology & Nephrology</option>
+                            <option value='Histology'>Histology</option>
+                            <option value='History'>History</option>
+                            <option value='Horticulture'>Horticulture</option>
+                            <option value='Human-Computer Interaction'>Human-Computer Interaction</option>
+                            <option value='Immunology'>Immunology</option>
+                            <option value='Immunology, Microbiology & Infectious Diseases'>Immunology, Microbiology & Infectious Diseases</option>
+                            <option value='Infectious Diseases'>Infectious Diseases</option>
+                            <option value='Inorganic Chemistry'>Inorganic Chemistry</option>
+                            <option value='Internal Medicine'>Internal Medicine</option>
+                            <option value='Kinesiology'>Kinesiology</option>
+                            <option value='Languages'>Languages</option>
+                            <option value='Law'>Law</option>
+                            <option value='Legal Issues'>Legal Issues</option>
+                            <option value='Literature'>Literature</option>
+                            <option value='Marine Biology'>Marine Biology</option>
+                            <option value='Mathematical Biology'>Mathematical Biology</option>
+                            <option value='Mathematics'>Mathematics</option>
+                            <option value='Mechanical'>Mechanical</option>
+                            <option value='Medical Genetics'>Medical Genetics</option>
+                            <option value='Metabolic Sciences'>Metabolic Sciences</option>
+                            <option value='Meteorology'>Meteorology</option>
+                            <option value='Microbiology'>Microbiology</option>
+                            <option value='Mobile and Ubiquitous Computing'>Mobile and Ubiquitous Computing</option>
+                            <option value='Molecular Biology'>Molecular Biology</option>
+                            <option value='Molecular Networks'>Molecular Networks</option>
+                            <option value='Molecular, Cellular & Structural Biology'>Molecular, Cellular & Structural Biology</option>
+                            <option value='Multimedia'>Multimedia</option>
+                            <option value='Mycology'>Mycology</option>
+                            <option value='Nanotechnology'>Nanotechnology</option>
+                            <option value='Natural Language and Speech'>Natural Language and Speech</option>
+                            <option value='Nephrology'>Nephrology</option>
+                            <option value='Network Science and Online Social Networks'>Network Science and Online Social Networks</option>
+                            <option value='Neurobiology'>Neurobiology</option>
+                            <option value='Neuroimaging'>Neuroimaging</option>
+                            <option value='Neurology'>Neurology</option>
+                            <option value='Neurons and Cognition'>Neurons and Cognition</option>
+                            <option value='Neuroscience'>Neuroscience</option>
+                            <option value='Neuroscience, Neurology & Psychiatry'>Neuroscience, Neurology & Psychiatry</option>
+                            <option value='Nursing'>Nursing</option>
+                            <option value='Nursing & Health Studies'>Nursing & Health Studies</option>
+                            <option value='Nutrition'>Nutrition</option>
+                            <option value='Obstetrics & Gynaecology'>Obstetrics & Gynaecology</option>
+                            <option value='Obstetrics & Gynecology'>Obstetrics & Gynecology</option>
+                            <option value='Oncology'>Oncology</option>
+                            <option value='Oncology & Hematology'>Oncology & Hematology</option>
+                            <option value='Oncology & Oncogenics'>Oncology & Oncogenics</option>
+                            <option value='Ophthalmology'>Ophthalmology</option>
+                            <option value='Optimization Theory and Computation'>Optimization Theory and Computation</option>
+                            <option value='Organic Chemistry'>Organic Chemistry</option>
+                            <option value='Orthopedics'>Orthopedics</option>
+                            <option value='Other'>Other</option>
+                            <option value='Otorhinolaryngology'>Otorhinolaryngology</option>
+                            <option value='Paleontology'>Paleontology</option>
+                            <option value='Palliative Care'>Palliative Care</option>
+                            <option value='Parasitology'>Parasitology</option>
+                            <option value='Pathology'>Pathology</option>
+                            <option value='Pathology & Pathobiology'>Pathology & Pathobiology</option>
+                            <option value='Pediatrics'>Pediatrics</option>
+                            <option value='Pharmacology'>Pharmacology</option>
+                            <option value='Pharmacology & Toxicology'>Pharmacology & Toxicology</option>
+                            <option value='Pharmacology and Toxicology'>Pharmacology and Toxicology</option>
+                            <option value='Philosophy'>Philosophy</option>
+                            <option value='Philosophy AMA'>Philosophy AMA</option>
+                            <option value='Physical Chemistry'>Physical Chemistry</option>
+                            <option value='Physics'>Physics</option>
+                            <option value='Physiology'>Physiology</option>
+                            <option value='Physiology, Pharmacology & Drug Discovery'>Physiology, Pharmacology & Drug Discovery</option>
+                            <option value='Plant Biology'>Plant Biology</option>
+                            <option value='Plant Biology, Ecology & Environmental Sciences'>Plant Biology, Ecology & Environmental Sciences</option>
+                            <option value='Plant Science'>Plant Science</option>
+                            <option value='Plant Sciences'>Plant Sciences</option>
+                            <option value='Policy'>Policy</option>
+                            <option value='Populations and Evolution'>Populations and Evolution</option>
+                            <option value='Programming Languages'>Programming Languages</option>
+                            <option value='Psychiatry'>Psychiatry</option>
+                            <option value='Psychiatry & Mental Health studies'>Psychiatry & Mental Health studies</option>
+                            <option value='Psychiatry and Psychology'>Psychiatry and Psychology</option>
+                            <option value='Public Health'>Public Health</option>
+                            <option value='Public Health & Epidemiology'>Public Health & Epidemiology</option>
+                            <option value='Public health'>Public health</option>
+                            <option value='Publishing, Education & Communication'>Publishing, Education & Communication</option>
+                            <option value='Quantitative Methods'>Quantitative Methods</option>
+                            <option value='Radiology'>Radiology</option>
+                            <option value='Radiology and Medical Imaging'>Radiology and Medical Imaging</option>
+                            <option value='Real-Time and Embedded Systems'>Real-Time and Embedded Systems</option>
+                            <option value='Respiratory Medicine'>Respiratory Medicine</option>
+                            <option value='Rheumatology'>Rheumatology</option>
+                            <option value='Robotics'>Robotics</option>
+                            <option value='Science AMA'>Science AMA</option>
+                            <option value='Science Policy'>Science Policy</option>
+                            <option value='Science and Medical Education'>Science and Medical Education</option>
+                            <option value='Scientific Communication'>Scientific Communication</option>
+                            <option value='Scientific Communication and Education'>Scientific Communication and Education</option>
+                            <option value='Scientific Computing and Simulation'>Scientific Computing and Simulation</option>
+                            <option value='Scientometrics'>Scientometrics</option>
+                            <option value='Security and Privacy'>Security and Privacy</option>
+                            <option value='Social Computing'>Social Computing</option>
+                            <option value='Social Sciences'>Social Sciences</option>
+                            <option value='Software Engineering'>Software Engineering</option>
+                            <option value='Soil Science'>Soil Science</option>
+                            <option value='Spatial and Geographic Information Systems'>Spatial and Geographic Information Systems</option>
+                            <option value='Sport Sciences & Therapy'>Sport Sciences & Therapy</option>
+                            <option value='Statistics'>Statistics</option>
+                            <option value='Subcellular Processes'>Subcellular Processes</option>
+                            <option value='Surgery'>Surgery</option>
+                            <option value='Surgery and Surgical Specialties'>Surgery and Surgical Specialties</option>
+                            <option value='Synthetic Biology'>Synthetic Biology</option>
+                            <option value='Systems Biology'>Systems Biology</option>
+                            <option value='Taxonomy'>Taxonomy</option>
+                            <option value='Theory and Formal Methods'>Theory and Formal Methods</option>
+                            <option value='Tissues and Organs'>Tissues and Organs</option>
+                            <option value='Toxicology'>Toxicology</option>
+                            <option value='Translational Medicine'>Translational Medicine</option>
+                            <option value='Urology'>Urology</option>
+                            <option value='Urology, Gynecology & Obstetrics'>Urology, Gynecology & Obstetrics</option>
+                            <option value='Veterinary Medicine'>Veterinary Medicine</option>
+                            <option value='Virology'>Virology</option>
+                            <option value='Visual Analytics'>Visual Analytics</option>
+                            <option value='Visual Arts'>Visual Arts</option>
+                            <option value="Women's Health">Women's Health</option>
+                            <option value='World Wide Web and Web Science'>World Wide Web and Web Science</option>
+                            <option value='Zoology'>Zoology</option>
+                        </select>
+                    </div>
+                    <button id="calculate" type="submit" class="btn btn-primary" style="font-size:36px">Subject Plot</button>
+                    {% if subject %}
+                        <div class="col-sm-12" style="margin-top:50px">
+                            <img class ="img-responsive center-block" src='/subject_plot/' width="100%"/>
+                        </div>
+                    {% endif %}
+                </form>
+            </div>
+        <div class="col-sm-1">
+        </div>
+    </div>
+</body>
+</html>

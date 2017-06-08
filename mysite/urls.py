@@ -21,6 +21,8 @@ urlpatterns = [
     url(r'^search_tag/$',views.search_tag),
     url(r'^search_author/$',views.search_author),
     url(r'^help/$',views.my_help),
+    url(r'^monthly_stats/$',views.monthly_stats),
+    url(r'^subject_plot/$',views.subject_plot),
     url(r'^advanced_search/$',views.advanced_search),
     url(r'^ad_search_results/$',views.advanced_search_results),
     url(r'^grim_test/$',views.grim_test),

@@ -287,20 +287,26 @@ def parsing_query(mystring,all_terms):
 ##my_Q=super_query(parsing_query(finalstring,all_terms))
 ##
 ##print my_Q
+import datetime
+for i in range(10):
+    start=time.time()
+##    qs1=Article.objects.filter(tags__name="Cancer Biology").all().order_by('-pub_date')
+    qs2=Tag.objects.get(name="Bioinformatics").article_set.all().filter(pub_date__gte=datetime.date(2014,1,1))
+    test=[(i.pub_date,i.link) for i in qs2]
+    end=time.time()
+    print end-start
+
 
 ##start=time.time()
-##qs1=Article.objects.filter(tags__name="Animal Behavior").prefetch_related('authors')
+##qs=perform_query(parsing_query(finalstring,all_terms))
+##qs=Article.objects.filter(abstract__icontains="a")
+##len(qs)
+##authors=Article.objects.all().values().prefetch_related('authors')
+##print len([i.authors for i in authors])
 ##end=time.time()
 ##print end-start
 
 
-start=time.time()
-##qs=perform_query(parsing_query(finalstring,all_terms))
-##qs=Article.objects.filter(abstract__icontains="a")
-##len(qs)
-authors=[eval(i['author_list']) for i in Article.objects.all().values()]
-end=time.time()
-print end-start
 
 
 
