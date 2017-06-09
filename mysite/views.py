@@ -1256,13 +1256,23 @@ def subject_plot(request):
 
         y8=y7+np.array([i[1] for i in wellcome_data])
 
-        ax.fill_between(x1,y1,0,color='#EC5f67',label='arXiv q-bio')
-        ax.fill_between(x1[x3_start:],y1[x3_start:],y3[x3_start:],color='#F99157',label='F1000Research')
-        ax.fill_between(x1[x4_start:],y3[x4_start:],y4[x4_start:],color='#FAC863',label='PeerJ Preprints')
-        ax.fill_between(x1[x5_start:],y4[x5_start:],y5[x5_start:],color='#99C794',label='bioRxiv')
-        ax.fill_between(x1[x6_start:],y5[x6_start:],y6[x6_start:],color='#5FB3B3',label='The Winnower')
-        ax.fill_between(x1[x7_start:],y6[x7_start:],y7[x7_start:],color='#6699CC',label='preprints.org')
-        ax.fill_between(x1[x8_start:],y7[x8_start:],y8[x8_start:],color='#C594C5',label='Wellcome Open Research')
+        ax.fill_between(x1,y1,0,color='#EC5f67')
+        ax.fill_between(x1[x3_start:],y1[x3_start:],y3[x3_start:],color='#F99157')
+        ax.fill_between(x1[x4_start:],y3[x4_start:],y4[x4_start:],color='#FAC863')
+        ax.fill_between(x1[x5_start:],y4[x5_start:],y5[x5_start:],color='#99C794')
+        ax.fill_between(x1[x6_start:],y5[x6_start:],y6[x6_start:],color='#5FB3B3')
+        ax.fill_between(x1[x7_start:],y6[x7_start:],y7[x7_start:],color='#6699CC')
+        ax.fill_between(x1[x8_start:],y7[x8_start:],y8[x8_start:],color='#C594C5')
+        
+        ax.plot([],[],color='#EC5f67',linewidth=15,label='arXiv q-bio')
+        ax.plot([],[],color='#F99157',linewidth=15,label='F1000Research')
+        ax.plot([],[],color='#FAC863',linewidth=15,label='PeerJ Preprints')
+        ax.plot([],[],color='#99C794',linewidth=15,label='bioRxiv')
+        ax.plot([],[],color='#5FB3B3',linewidth=15,label='The Winnower')
+        ax.plot([],[],color='#6699CC',linewidth=15,label='preprints.org')
+        ax.plot([],[],color='#C594C5',linewidth=15,label='Wellcome Open Research')
+
+
 
         ax.tick_params(axis='x',length=0,width=2,direction='out',labelsize=22)
         ax.tick_params(axis='y',length=15,width=0,direction='out',labelsize=20,pad=0)
