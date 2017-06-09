@@ -1331,15 +1331,16 @@ try:
                     titles.append(soup.find('h1').text.strip())
                     abstracts.append(k)
                     links.append(i)
-                    authors=[]
+                    temp_authors=[]
                     author_temp=[[l.get('name'),l.get('content')] for l in soup.find_all('meta')]
                     for ii in author_temp:
                         if ii[0]=='citation_author':
-                            authors.append(unicodedata.normalize('NFKD',ii[1]).encode('ascii','ignore'))
+                            temp_authors.append(unicodedata.normalize('NFKD',ii[1]).encode('ascii','ignore'))
                     temp_aff=[]
                     for aff in soup.find('div',{'class','manuscript-affiliations'}).find_all('li'):
                         temp_aff.append(aff.text)
                     author_aff.append(temp_aff)
+                    authors.append(temp_authors)
                     tags.append(m)    
                 else:
                     pass
