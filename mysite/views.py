@@ -102,9 +102,26 @@ def home(request):
 
 def monthly_stats(request):
     subject=request.GET.get('Subject',False)
-
+    query=request.GET.get('query',False)
     if request.META.get('HTTP_REFERER',False):
-        return render(request, 'monthly_stats.html',{'subject': subject})
+        if query:
+            try:
+                query=str(request.GET['query']).strip().lower()
+                from papers.views import *
+                mystring=get_mystring(query)
+                all_terms=''
+                for i in mystring:
+                    if i in stopwords:
+                        pass
+                    else:
+                        all_terms+=i
+                if all_terms!='':
+                    return render(request, 'monthly_stats.html',{'subject': subject,'query': query})
+                else:
+                    return render(request, 'monthly_stats.html', {'stopwords':True})
+            except:
+                return render(request, 'monthly_stats.html', {'unicode':True})
+        return render(request, 'monthly_stats.html',{'subject': subject,'query': query})
     else:
         return render(request, 'monthly_stats.html')
 
@@ -1298,6 +1315,201 @@ def subject_plot(request):
         del canvas
         gc.collect()
         return response
+
+
+def query_plot(request):
+    from matplotlib.backends.backend_agg import FigureCanvasAgg
+    from matplotlib.figure import Figure
+    import matplotlib.pyplot as plt
+    import gc
+    import datetime
+    import numpy as np
+    if not request.META.get('HTTP_REFERER',False):
+        return HttpResponse('something is wrong')
+    else:
+        raw=request.META.get('HTTP_REFERER').replace('+',' ').replace('%20',' ').replace('%2C',',').replace('%26','&').replace('%22','"')
+        query=raw.split('query=')[1]
+        from papers.views import *
+        mystring=get_mystring(str(query))
+        final_query=[]
+        for i in mystring:
+            if i in stopwords:
+                pass
+            else:
+                final_query.append(i)
+        if final_query!=[]:
+            qs=Article.objects.filter(tiab_query(final_query)).filter(pub_date__gte=datetime.date(2014,1,1))
+            data=[(i.pub_date,i.link) for i in qs]
+            all_dates=[]
+            current_year=datetime.date.today().year
+            current_month=datetime.date.today().month
+            for i in range(2014,current_year):
+                for j in range(1,13):
+                    all_dates.append((i,j))
+            for i in range(1,current_month+1):
+                all_dates.append((current_year,i))
+            arxiv_counts={}
+            peerj_counts={}
+            f1000research_counts={}
+            biorxiv_counts={}
+            preprints_counts={}
+            winnower_counts={}
+            wellcome_counts={}
+            for i in data:
+                date=(i[0].year,i[0].month)
+                if 'arxiv' in i[1]:
+                    arxiv_counts[date]=arxiv_counts.get(date,0)+1
+                elif 'peerj' in i[1]:
+                    peerj_counts[date]=peerj_counts.get(date,0)+1
+                elif 'f1000research' in i[1]:
+                    f1000research_counts[date]=f1000research_counts.get(date,0)+1
+                elif 'biorxiv' in i[1]:
+                    biorxiv_counts[date]=biorxiv_counts.get(date,0)+1
+                elif 'preprints' in i[1]:
+                    preprints_counts[date]=preprints_counts.get(date,0)+1
+                elif 'winnower' in i[1]:
+                    winnower_counts[date]=winnower_counts.get(date,0)+1
+                elif 'wellcome' in i[1]:
+                    wellcome_counts[date]=wellcome_counts.get(date,0)+1
+                else:
+                    pass
+
+            for i in all_dates:
+                if i not in arxiv_counts:
+                    arxiv_counts[i]=0
+                if i not in peerj_counts:
+                    peerj_counts[i]=0
+                if i not in f1000research_counts:
+                    f1000research_counts[i]=0
+                if i not in biorxiv_counts:
+                    biorxiv_counts[i]=0
+                if i not in preprints_counts:
+                    preprints_counts[i]=0
+                if i not in winnower_counts:
+                    winnower_counts[i]=0
+                if i not in wellcome_counts:
+                    wellcome_counts[i]=0
+
+            
+            arxiv_data=sorted(zip(arxiv_counts.keys(),arxiv_counts.values()))
+            peerj_data=sorted(zip(peerj_counts.keys(),peerj_counts.values()))
+            f1000research_data=sorted(zip(f1000research_counts.keys(),f1000research_counts.values()))
+            biorxiv_data=sorted(zip(biorxiv_counts.keys(),biorxiv_counts.values()))
+            preprints_data=sorted(zip(preprints_counts.keys(),preprints_counts.values()))
+            winnower_data=sorted(zip(winnower_counts.keys(),winnower_counts.values()))
+            wellcome_data=sorted(zip(wellcome_counts.keys(),wellcome_counts.values()))
+                
+                                                                      
+            fig=Figure(figsize=(22.62372, 12),facecolor='white')
+            ax=fig.add_subplot(111,)
+            fig.subplots_adjust(bottom=.1)
+            fig.subplots_adjust(left=.04)
+            fig.subplots_adjust(right=.98)
+            fig.subplots_adjust(top=.96)
+            x1=range(len(all_dates))
+            y1=np.array([i[1] for i in arxiv_data])
+
+            x3_start=-1
+            for index, i in enumerate(f1000research_data):
+                if i[1]==0:
+                    pass
+                else:
+                    x3_start=index
+                    break
+
+            y3=y1+np.array([i[1] for i in f1000research_data])
+
+            x4_start=-1
+            for index, i in enumerate(peerj_data):
+                if i[1]==0:
+                    pass
+                else:
+                    x4_start=index
+                    break
+
+            y4=y3+np.array([i[1] for i in peerj_data])
+
+            x5_start=-1
+            for index, i in enumerate(biorxiv_data):
+                if i[1]==0:
+                    pass
+                else:
+                    x5_start=index
+                    break
+
+            x6_start=-1
+            y5=y4+np.array([i[1] for i in biorxiv_data])
+
+            for index, i in enumerate(winnower_data):
+                if i[1]==0:
+                    pass
+                else:
+                    x6_start=index
+                    break
+
+            y6=y5+np.array([i[1] for i in winnower_data])
+
+            x7_start=-1
+            for index, i in enumerate(preprints_data):
+                if i[1]==0:
+                    pass
+                else:
+                    x7_start=index
+                    break
+
+            y7=y6+np.array([i[1] for i in preprints_data])
+
+            x8_start=-1
+            for index, i in enumerate(wellcome_data):
+                if i[1]==0:
+                    pass
+                else:
+                    x8_start=index
+                    break
+
+            y8=y7+np.array([i[1] for i in wellcome_data])
+
+            ax.fill_between(x1,y1,0,color='#EC5f67')
+            ax.fill_between(x1[x3_start:],y1[x3_start:],y3[x3_start:],color='#F99157')
+            ax.fill_between(x1[x4_start:],y3[x4_start:],y4[x4_start:],color='#FAC863')
+            ax.fill_between(x1[x5_start:],y4[x5_start:],y5[x5_start:],color='#99C794')
+            ax.fill_between(x1[x6_start:],y5[x6_start:],y6[x6_start:],color='#5FB3B3')
+            ax.fill_between(x1[x7_start:],y6[x7_start:],y7[x7_start:],color='#6699CC')
+            ax.fill_between(x1[x8_start:],y7[x8_start:],y8[x8_start:],color='#C594C5')
+            
+            ax.plot([],[],color='#EC5f67',linewidth=15,label='arXiv q-bio')
+            ax.plot([],[],color='#F99157',linewidth=15,label='F1000Research')
+            ax.plot([],[],color='#FAC863',linewidth=15,label='PeerJ Preprints')
+            ax.plot([],[],color='#99C794',linewidth=15,label='bioRxiv')
+            ax.plot([],[],color='#5FB3B3',linewidth=15,label='The Winnower')
+            ax.plot([],[],color='#6699CC',linewidth=15,label='preprints.org')
+            ax.plot([],[],color='#C594C5',linewidth=15,label='Wellcome Open Research')
+
+
+            ax.tick_params(axis='x',length=0,width=2,direction='out',labelsize=22)
+            ax.tick_params(axis='y',length=15,width=0,direction='out',labelsize=20,pad=0)
+            ax.spines['top'].set_visible(False)
+            ax.spines['right'].set_visible(False)
+            ax.spines['left'].set_visible(False)
+            ax.spines['bottom'].set_visible(False)
+            ax.spines['left'].set_linewidth(3)
+            ax.spines['bottom'].set_position(['outward',0])
+            ax.spines['left'].set_position(['outward',-5])
+            ax.xaxis.set_ticks_position('bottom')
+            ax.yaxis.set_ticks_position('left')
+            ax.set_xticks([i for i in x1 if i%12==0])
+            ax.set_xticklabels(['2014','2015','2016','2017'])
+            ax.set_xlim(0,len(x1)-1)
+            ax.set_title(''.join([i+j for i,j in zip(final_query,[' ']*len(final_query))])+'Preprints per Month',fontsize=30,y=1.01)
+            ax.legend(loc='upper left',frameon=False,fontsize=21,ncol=4)
+            canvas=FigureCanvasAgg(fig)
+            response=HttpResponse(content_type='image/png')
+            canvas.print_png(response)
+            fig.clf()
+            plt.close(fig)
+            del canvas
+            gc.collect()
+            return response
 
 
 def handler500(request):

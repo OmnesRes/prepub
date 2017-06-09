@@ -20,6 +20,18 @@
     padding: 0px;
     color:black;
     }
+
+    input[id=plot] {
+        border: 2px solid #7EB351;
+        text-align:center;
+    }
+    
+    input[id=plot]:focus {
+        border: 2px solid #3f681c;
+    }
+
+
+
     a {
         font-weight: 500;
         color:#375e97;
@@ -151,6 +163,8 @@
             <div class="col-sm-12"><h1 style="font-weight:700">Real-time analytics (beta)</h1></div>
             <div class="col-sm-12" style="text-align:justify">
                 <p>I've played around with the idea of allowing for user-defined plots/other output.  One request I often hear is how is subject area X doing.  So below I made an attempt at showing what this might look like.</p>
+                <h2>Subject areas over time</h2>
+                <p>Each preprint server has their own defined subject areas, with little overlap between servers.  Further information can be found in this blog <a href="https://medium.com/@OmnesRes/biorxiv-vs-peerj-preprints-f7589141c532">post</a>.</p>
                 <p>Note: bioRxiv preprints are often missing subject information when posted, and thus indexed by my server, so none of the bioRxiv data should be taken too seriously.  I think the other servers' subject data is trustworthy.</p>
             </div>
             <div class="col-sm-12">
@@ -392,6 +406,27 @@
                     {% if subject %}
                         <div class="col-sm-12" style="margin-top:50px">
                             <img class ="img-responsive center-block" src='/subject_plot/' width="100%"/>
+                        </div>
+                    {% endif %}
+                </form>
+            </div>
+            <div class="col-sm-12" style="text-align:justify">
+                <h2>Term frequency over time</h2>
+                <p>Here you can see the popularity of your term of interest.  The search follows the rules of the RSS <a href="/rss_feed/">Feed</a>.</p>
+                <form action="" method="get" class="form-inline entry">
+                    <div class="form-group">
+                        <input id="plot" type="text" class="form-control" name="query" maxlength=50>
+                    <button id="calculate" type="submit" class="btn btn-primary" style="font-size:36px">Term Plot</button>
+                    </div>
+                    {% if unicode %}
+                    <p>Please no unicode</p>
+                    {% endif %}
+                    {% if stopwords %}
+                    <p>You only entered stopwords</p>
+                    {% endif %}
+                    {% if query %}
+                        <div class="col-sm-12" style="margin-top:50px">
+                            <img class ="img-responsive center-block" src='/query_plot/' width="100%"/>
                         </div>
                     {% endif %}
                 </form>
