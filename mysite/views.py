@@ -1161,19 +1161,19 @@ def subject_plot(request):
         wellcome_counts={}
         for i in data:
             date=(i[0].year,i[0].month)
-            if 'arxiv' in i[1]:
+            if 'arxiv.org' in i[1]:
                 arxiv_counts[date]=arxiv_counts.get(date,0)+1
-            elif 'peerj' in i[1]:
+            elif 'peerj.com' in i[1]:
                 peerj_counts[date]=peerj_counts.get(date,0)+1
-            elif 'f1000research' in i[1]:
+            elif 'f1000research.com' in i[1]:
                 f1000research_counts[date]=f1000research_counts.get(date,0)+1
-            elif 'biorxiv' in i[1]:
+            elif 'biorxiv.org' in i[1]:
                 biorxiv_counts[date]=biorxiv_counts.get(date,0)+1
-            elif 'preprints' in i[1]:
+            elif 'preprints.org' in i[1]:
                 preprints_counts[date]=preprints_counts.get(date,0)+1
-            elif 'winnower' in i[1]:
+            elif 'thewinnower.com' in i[1]:
                 winnower_counts[date]=winnower_counts.get(date,0)+1
-            elif 'wellcome' in i[1]:
+            elif 'wellcomeopenresearch.org' in i[1]:
                 wellcome_counts[date]=wellcome_counts.get(date,0)+1
             else:
                 pass
@@ -1357,19 +1357,19 @@ def query_plot(request):
             wellcome_counts={}
             for i in data:
                 date=(i[0].year,i[0].month)
-                if 'arxiv' in i[1]:
+                if 'arxiv.org' in i[1]:
                     arxiv_counts[date]=arxiv_counts.get(date,0)+1
-                elif 'peerj' in i[1]:
+                elif 'peerj.com' in i[1]:
                     peerj_counts[date]=peerj_counts.get(date,0)+1
-                elif 'f1000research' in i[1]:
+                elif 'f1000research.com' in i[1]:
                     f1000research_counts[date]=f1000research_counts.get(date,0)+1
-                elif 'biorxiv' in i[1]:
+                elif 'biorxiv.org' in i[1]:
                     biorxiv_counts[date]=biorxiv_counts.get(date,0)+1
-                elif 'preprints' in i[1]:
+                elif 'preprints.org' in i[1]:
                     preprints_counts[date]=preprints_counts.get(date,0)+1
-                elif 'winnower' in i[1]:
+                elif 'thewinnower.com' in i[1]:
                     winnower_counts[date]=winnower_counts.get(date,0)+1
-                elif 'wellcome' in i[1]:
+                elif 'wellcomeopenresearch.org' in i[1]:
                     wellcome_counts[date]=wellcome_counts.get(date,0)+1
                 else:
                     pass
