@@ -178,18 +178,18 @@ ax.yaxis.set_ticks_position('left')
 
 ax.set_xticks([i for i in x if i%12==0])
 ax.set_xticklabels(['2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017'])
-ax.set_yticks([100,200,300,400,500,600,700])
-ax.set_xlim(0,len(x)-2)
+ax.set_yticks([100,200,300,400,500,600,700,800])
+ax.set_xlim(0,len(x)-2.2)
 ##ax.set_ylim(0,11000)
 ax.set_title('New Senior Authors per Month',fontsize=50)
 
 
 ##plt.savefig('figure1.pdf')
-plt.savefig('may_authors.png')
+plt.savefig('june_authors.png')
 plt.show()
 print y[-2]
 
-f=open('may_author_data.txt','w')
+f=open('june_author_data.txt','w')
 for i in all_dates[:-1]:
     f.write(str(i[0])+'-'+str(i[1]))
     f.write('\t')

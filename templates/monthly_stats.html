@@ -149,12 +149,12 @@
         <div class="col-sm-10" style="margin-top:10px;text-align:center">
             <h1 style="font-weight:700;margin-bottom:20px">Monthly Statistics for May 2017</h1>
             <div class="col-sm-6" style="font-size:30px;font-weight:700">
-                1343 preprints added
-                <img class ="img-responsive center-block" src="https://s3.amazonaws.com/prepubmed/may_preprints.png" style='width:100%;margin-top:30px'/>
+                1468 preprints added
+                <img class ="img-responsive center-block" src="https://s3.amazonaws.com/prepubmed/june_preprints.png" style='width:100%;margin-top:30px'/>
             </div>
             <div class="col-sm-6" style="font-size:30px;font-weight:700">
-                696 new senior authors
-                <img class ="img-responsive center-block" src=" https://s3.amazonaws.com/prepubmed/may_authors.png " style='width:95%;margin-top:30px'/>
+                773 new senior authors
+                <img class ="img-responsive center-block" src=" https://s3.amazonaws.com/prepubmed/june_authors.png " style='width:95%;margin-top:30px'/>
             </div>
             <div class="col-sm-12" style="margin-top:10px;margin-bottom:30px;text-align:justify">
                 <p>The number of preprints added per month continues to increase, thanks in large part to bioRxiv.  I was interested if the increase was due to new labs submitting preprints (which would be indicated by new senior authors in the database), or if the same authors were simply submitting more preprints.  The plot of new authors per month appears to closely mirror the plot of new preprints per month.</p>
@@ -168,7 +168,7 @@
                 <p>Note: bioRxiv preprints are often missing subject information when posted, and thus indexed by my server, so none of the bioRxiv data should be taken too seriously.  I think the other servers' subject data is trustworthy.</p>
             </div>
             <div class="col-sm-12">
-                <form action="" method="get">
+                <form action="" method="get" class="form-inline entry">
                     <div class="form-group">
                         <select class="form-control" id="sel" name="Subject" size="1">
                             <option value='Adaptive and Self-Organizing Systems'>Adaptive and Self-Organizing Systems</option>
@@ -401,8 +401,8 @@
                             <option value='World Wide Web and Web Science'>World Wide Web and Web Science</option>
                             <option value='Zoology'>Zoology</option>
                         </select>
-                    </div>
                     <button id="calculate" type="submit" class="btn btn-primary" style="font-size:36px">Subject Plot</button>
+                    </div>
                     {% if subject %}
                         <div class="col-sm-12" style="margin-top:50px">
                             <img class ="img-responsive center-block" src='/subject_plot/' width="100%"/>
@@ -410,7 +410,7 @@
                     {% endif %}
                 </form>
             </div>
-            <div class="col-sm-12" style="text-align:justify">
+            <div class="col-sm-12" style="text-align:justify;margin-top:20px">
                 <h2>Term frequency over time</h2>
                 <p>Here you can see the popularity of your term of interest.  The search follows the rules of the RSS <a href="/rss_feed/">Feed</a>.</p>
                 <form action="" method="get" class="form-inline entry">
