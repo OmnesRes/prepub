@@ -534,7 +534,10 @@ for attempt in range(3):
             r=requests.get('http://biorxiv.org'+i)
             soup=BeautifulSoup(r.content)
             dates.append(soup.find('li',{'class':"published"}).text.strip('Posted').strip())
-            abstracts.append(soup.find('p',{'id':"p-1"}).text.strip())
+            try:
+                abstracts.append(soup.find('p',{'id':"p-2"}).text.strip())
+            except:
+                abstracts.append(soup.find('p',{'id':"p-1"}).text.strip())
             temp=[]
             unique_aff={}
             for j in soup.find_all('span',{'class':'nlm-aff'}):
