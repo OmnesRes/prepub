@@ -769,8 +769,8 @@ try:
                 authors.append(temp)
                                 
             for i in soup.find_all('div',{'class':'article-title-text'}):
-                links.append(i.find('a').get('href').strip())
-                templinks.append(i.find('a').get('href').strip())
+                links.append(i.find('a').get('href').strip().split('https://f1000research.com')[1])
+                templinks.append(i.find('a').get('href').strip().split('https://f1000research.com')[1])
 
             for i in soup.find_all("div",{'class':"article-bottom-bar"}):
                 dates.append(i.text.replace("PUBLISHED ","").split("\n")[1].strip())
@@ -807,9 +807,10 @@ try:
         soup=BeautifulSoup(r.content)
         abstract=soup.find('div',{'class':"abstract-text is-expanded"}).text.strip()
         temp=[]
-        for j in soup.find('div',{'class':'expanded-details affiliations is-hidden'}).text.strip().split('\n'):
-            if not re.search('^[0-9]+$',j.strip()):
-                temp.append(j.strip())
+        affiliation_source=soup.find('div',{'class':'expanded-details affiliations is-hidden'}).text.strip().split('\n')
+        for index,j in enumerate(affiliation_source):
+            if re.search('^[0-9]+$',j.strip()):
+                temp.append(affiliation_source[index+1].strip())
         newdata.append(i[:3]+[abstract]+[i[3]]+[i[-1]]+[temp])
 except Exception as e:
     error=True
@@ -1488,7 +1489,7 @@ try:
             authors.append(temp)
                             
         for i in soup.find_all('div',{'class':'article-title-text'}):
-            links.append(i.find('a').get('href').strip())
+            links.append(i.find('a').get('href').strip().split('https://wellcomeopenresearch.org')[1])
 
         for i in links:
             if i in all_links:
@@ -1512,9 +1513,10 @@ try:
         soup=BeautifulSoup(r.content)
         abstract=soup.find('div',{'class':"abstract-text is-expanded"}).text.strip()
         temp=[]
-        for j in soup.find('div',{'class':'expanded-details affiliations is-hidden'}).text.strip().split('\n'):
-            if not re.search('^[0-9]+$',j.strip()):
-                temp.append(j.strip())
+        affiliation_source=soup.find('div',{'class':'expanded-details affiliations is-hidden'}).text.strip().split('\n')
+        for index,j in enumerate(affiliation_source):
+            if re.search('^[0-9]+$',j.strip()):
+                temp.append(affiliation_source[index+1].strip())
         date_temp=[[k.get('name'),k.get('content')] for k in soup.find_all('meta')]
         for j in date_temp:
             if j[0]=='citation_date':
