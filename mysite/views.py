@@ -939,7 +939,7 @@ def search_results(request):
                         articles=qs[0].article_set.all()
                         for a in qs[1:]:
                             articles=articles | a.article_set.all()
-                        articles.order_by('-pub_date')
+                        articles=articles.order_by('-pub_date')
                     else:
                         articles=perform_query(all_terms).order_by('-pub_date')
                     if articles!=[]:
@@ -1023,13 +1023,13 @@ def search_author(request):
                     articles=qs[0].article_set.all()
                     for a in qs[1:]:
                         articles=articles | a.article_set.all()
-                    articles.order_by('-pub_date')
+                    articles=articles.order_by('-pub_date')
                 else:
                     qs=Author.objects.filter(first=first_name,last=last_name)
                     articles=qs[0].article_set.all()
                     for a in qs[1:]:
                         articles=articles | a.article_set.all()
-                    articles.order_by('-pub_date')
+                    articles=articles.order_by('-pub_date')
                 if articles.exists():
                     paginator=Paginator(articles, 20)
                     page=request.GET.get('page')
