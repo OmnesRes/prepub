@@ -933,7 +933,15 @@ def search_results(request):
                 if all_terms=={'names':[],'terms':[]}:
                     return render(request, 'search_results.html', {'articles':False,'search':None,'stopwords':True})
                 else:
-                    articles=perform_query(all_terms).order_by('-pub_date')
+                    if len(all_terms['names'])==1 and all_terms['terms']==[]:
+                        q=single_au_query(all_terms['names'][0])
+                        qs=Author.objects.filter(q)
+                        articles=qs[0].article_set.all()
+                        for a in qs[1:]:
+                            articles=articles | a.article_set.all()
+                        articles.order_by('-pub_date')
+                    else:
+                        articles=perform_query(all_terms).order_by('-pub_date')
                     if articles!=[]:
                         if articles.exists():
                             paginator = Paginator(articles, 20)
@@ -968,7 +976,7 @@ def search_tag(request):
             else:
                 raw=request.GET['q']
             if raw!='':
-                articles=Article.objects.filter(tags__name=raw).order_by('-pub_date')
+                articles=Tag.objects.get(name=raw).article_set.all().order_by('-pub_date')
                 if articles.exists():
                     paginator=Paginator(articles, 20)
                     page = request.GET.get('page')
@@ -1011,9 +1019,17 @@ def search_author(request):
                 middle_name=author.strip(first_name).strip(last_name).strip()
                 ##lenient on middle due to punctuation differences
                 if middle_name:
-                    articles=Article.objects.filter(authors__first=first_name,authors__last=last_name,authors__middle__startswith=middle_name[0]).order_by('-pub_date')
+                    qs=Author.objects.filter(first=first_name,last=last_name,middle__startswith=middle_name[0])
+                    articles=qs[0].article_set.all()
+                    for a in qs[1:]:
+                        articles=articles | a.article_set.all()
+                    articles.order_by('-pub_date')
                 else:
-                    articles=Article.objects.filter(authors__first=first_name,authors__last=last_name).order_by('-pub_date')
+                    qs=Author.objects.filter(first=first_name,last=last_name)
+                    articles=qs[0].article_set.all()
+                    for a in qs[1:]:
+                        articles=articles | a.article_set.all()
+                    articles.order_by('-pub_date')
                 if articles.exists():
                     paginator=Paginator(articles, 20)
                     page=request.GET.get('page')
@@ -1291,7 +1307,7 @@ def subject_plot(request):
 
 
 
-        ax.tick_params(axis='x',length=0,width=2,direction='out',labelsize=22)
+        ax.tick_params(axis='x',length=0,width=2,direction='out',labelsize=22,pad=10)
         ax.tick_params(axis='y',length=15,width=0,direction='out',labelsize=20,pad=0)
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
@@ -1486,7 +1502,7 @@ def query_plot(request):
             ax.plot([],[],color='#C594C5',linewidth=15,label='Wellcome Open Research')
 
 
-            ax.tick_params(axis='x',length=0,width=2,direction='out',labelsize=22)
+            ax.tick_params(axis='x',length=0,width=2,direction='out',labelsize=22,pad=10)
             ax.tick_params(axis='y',length=15,width=0,direction='out',labelsize=20,pad=0)
             ax.spines['top'].set_visible(False)
             ax.spines['right'].set_visible(False)

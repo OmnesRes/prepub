@@ -73,18 +73,37 @@ def tiab_query(query_string):
 #example
 name_test=[['John','Smith'],[['first','full'],['last','full']]]
 
+##def au_query(names):
+##    and_query = None
+##    for index, name in enumerate(names[0]):
+##        if names[1][index][1]=='full':
+##            q = Q(**{"authors__%s__iexact" % names[1][index][0]: name})
+##        else:
+##            q = Q(**{"authors__%s__istartswith" % names[1][index][0]: name})
+##        if and_query is None:
+##            and_query = q
+##        else:
+##            and_query = and_query & q
+##    return and_query
+
+
 def au_query(names):
     and_query = None
     for index, name in enumerate(names[0]):
         if names[1][index][1]=='full':
-            q = Q(**{"authors__%s__iexact" % names[1][index][0]: name})
+            q = Q(**{"%s__iexact" % names[1][index][0]: name})
         else:
-            q = Q(**{"authors__%s__istartswith" % names[1][index][0]: name})
+            q = Q(**{"%s__istartswith" % names[1][index][0]: name})
         if and_query is None:
             and_query = q
         else:
             and_query = and_query & q
     return and_query
+
+
+
+
+
 
 
 def super_query(all_terms):
@@ -288,11 +307,28 @@ def parsing_query(mystring,all_terms):
 ##
 ##print my_Q
 import datetime
+
+#do an author test
+
+q=au_query([['Jordan','Anaya'],[['first','full'],['last','full']]])
+q=au_query([['Church'],[['last','full']]])
+
+
+all_terms={'names':[[['Jordan','Anaya'],[['first','full'],['last','full']]]],'terms':[]}
 for i in range(10):
     start=time.time()
 ##    qs1=Article.objects.filter(tags__name="Cancer Biology").all().order_by('-pub_date')
-    qs2=Tag.objects.get(name="Bioinformatics").article_set.all().filter(pub_date__gte=datetime.date(2014,1,1))
-    test=[(i.pub_date,i.link) for i in qs2]
+##    qs2=Tag.objects.get(name="Bioinformatics").article_set.all().filter(pub_date__gte=datetime.date(2014,1,1))
+
+##    qs=Article.objects.filter(q).order_by('-pub_date')
+##    qs=perform_query(all_terms).order_by('-pub_date')
+    qs=Author.objects.filter(q)
+    #get articles of each queryset
+    qs2=qs[0].article_set.all()
+    for a in qs[1:]:
+        qs2=qs2 | a.article_set.all()
+    qs2.order_by('-pub_date')
+    result=[(i.pub_date,i.link) for i in qs2]
     end=time.time()
     print end-start
 

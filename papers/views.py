@@ -72,6 +72,19 @@ def au_query(names):
     return and_query
 
 
+def single_au_query(names):
+    and_query = None
+    for index, name in enumerate(names[0]):
+        if names[1][index][1]=='full':
+            q = Q(**{"%s__iexact" % names[1][index][0]: name})
+        else:
+            q = Q(**{"%s__istartswith" % names[1][index][0]: name[0]})
+        if and_query is None:
+            and_query = q
+        else:
+            and_query = and_query & q
+    return and_query
+
 
 
 def perform_query(all_terms):
