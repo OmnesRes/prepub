@@ -153,10 +153,10 @@ nature_data=sorted(zip(nature_counts.keys(),nature_counts.values()))
 ###plot the data with pylab
 fig=plt.figure(figsize=(22.62372, 12))
 ax = fig.add_subplot(111)
-fig.subplots_adjust(bottom=.1)
+fig.subplots_adjust(bottom=.04)
 fig.subplots_adjust(left=.04)
 fig.subplots_adjust(right=.98)
-fig.subplots_adjust(top=.96)
+fig.subplots_adjust(top=.95)
 
 x1=range(len(all_dates))
 y1=np.array([i[1] for i in arxiv_data])
@@ -275,7 +275,7 @@ ax.legend(loc=2,frameon=False,fontsize=21,ncol=4)
 
 
 ##plt.savefig('chart.pdf')
-plt.savefig('june_preprints.png')
+plt.savefig('july_preprints.png')
 #pillow might be needed for the jpg
 ##plt.savefig('chart.jpg')
 plt.show()
@@ -283,7 +283,7 @@ plt.show()
 
 
 ##write the data to a file, exclude last month which is partial
-f=open('june_preprint_data.txt','w')
+f=open('july_preprint_data.txt','w')
 f.write('\t')
 for i in all_dates[:-1]:
     f.write(str(i[0])+'-'+str(i[1]))
