@@ -27,8 +27,12 @@ winnower=[eval(i.strip()) for i in f]
 f=open(os.path.join(BASE_DIR,'wellcome','wellcome.txt'))
 wellcome=[eval(i.strip()) for i in f]
 
-f=open(os.path.join(BASE_DIR,'nature','nature.txt'))
-nature=[eval(i.strip()) for i in f]
+##nature precedings counts were underestimates when scraping by subject, I have a file with counts from advanced search
+f=open('nature_data.txt')
+nature_data=eval(f.read())
+
+##f=open(os.path.join(BASE_DIR,'nature','nature.txt'))
+##nature=[eval(i.strip()) for i in f]
 
 
 import pylab as plt
@@ -137,17 +141,9 @@ for i in all_dates:
         
 wellcome_data=sorted(zip(wellcome_counts.keys(),wellcome_counts.values()))
 
-nature_counts={}
-for i in nature:
-    temp=i[2].split('-')
-    date=[int(temp[0]),int(temp[1])]
-    nature_counts[tuple(date)]=nature_counts.get(tuple(date),0)+1
-
 for i in all_dates:
-    if i not in nature_counts:
-        nature_counts[i]=0
-        
-nature_data=sorted(zip(nature_counts.keys(),nature_counts.values()))
+    if i not in [j[0] for j in nature_data]:
+        nature_data.append([i,0])
 
 
 ###plot the data with pylab
@@ -275,7 +271,7 @@ ax.legend(loc=2,frameon=False,fontsize=21,ncol=4)
 
 
 ##plt.savefig('chart.pdf')
-plt.savefig('august_preprints.png')
+plt.savefig('september_preprints.png')
 #pillow might be needed for the jpg
 ##plt.savefig('chart.jpg')
 plt.show()
@@ -283,7 +279,7 @@ plt.show()
 
 
 ##write the data to a file, exclude last month which is partial
-f=open('august_preprint_data.txt','w')
+f=open('september_preprint_data.txt','w')
 f.write('\t')
 for i in all_dates[:-1]:
     f.write(str(i[0])+'-'+str(i[1]))
