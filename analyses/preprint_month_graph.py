@@ -237,6 +237,7 @@ plt.axhline(y=800, xmin=0, xmax=len(x1), linewidth=2, color = 'k',linestyle=':',
 plt.axhline(y=1000, xmin=0, xmax=len(x1), linewidth=2, color = 'k',linestyle=':',zorder=-1)
 plt.axhline(y=1200, xmin=0, xmax=len(x1), linewidth=2, color = 'k',linestyle=':',zorder=-1)
 plt.axhline(y=1400, xmin=0, xmax=len(x1), linewidth=2, color = 'k',linestyle=':',zorder=-1)
+plt.axhline(y=1600, xmin=0, xmax=len(x1), linewidth=2, color = 'k',linestyle=':',zorder=-1)
 
 ax.fill_between(x1,y1,0,color='#EC5f67',label='arXiv q-bio')
 ax.fill_between(x1[x2_start:x2_end],y1[x2_start:x2_end],y2[x2_start:x2_end],color='#AB7967',label='Nature Precedings')
@@ -263,7 +264,7 @@ ax.yaxis.set_ticks_position('left')
 
 ax.set_xticks([i for i in x1 if i%12==0])
 ax.set_xticklabels(['2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017'])
-ax.set_yticks([200,400,600,800,1000,1200,1400])
+ax.set_yticks([200,400,600,800,1000,1200,1400,1600])
 ax.set_xlim(0,len(x1)-2)
 ax.set_title('Preprints per Month',fontsize=30,y=1.01)
 
@@ -271,7 +272,7 @@ ax.legend(loc=2,frameon=False,fontsize=21,ncol=4)
 
 
 ##plt.savefig('chart.pdf')
-plt.savefig('september_preprints.png')
+plt.savefig('october_preprints.png')
 #pillow might be needed for the jpg
 ##plt.savefig('chart.jpg')
 plt.show()
@@ -279,7 +280,7 @@ plt.show()
 
 
 ##write the data to a file, exclude last month which is partial
-f=open('september_preprint_data.txt','w')
+f=open('october_preprint_data.txt','w')
 f.write('\t')
 for i in all_dates[:-1]:
     f.write(str(i[0])+'-'+str(i[1]))
