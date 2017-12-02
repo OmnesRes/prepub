@@ -272,7 +272,7 @@ ax.legend(loc=2,frameon=False,fontsize=21,ncol=4)
 
 
 ##plt.savefig('chart.pdf')
-plt.savefig('october_preprints.png')
+plt.savefig('november_preprints.png')
 #pillow might be needed for the jpg
 ##plt.savefig('chart.jpg')
 plt.show()
@@ -280,7 +280,7 @@ plt.show()
 
 
 ##write the data to a file, exclude last month which is partial
-f=open('october_preprint_data.txt','w')
+f=open('preprint_data.txt','w')
 f.write('\t')
 for i in all_dates[:-1]:
     f.write(str(i[0])+'-'+str(i[1]))

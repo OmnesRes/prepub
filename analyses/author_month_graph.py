@@ -185,11 +185,11 @@ ax.set_title('New Senior Authors per Month',fontsize=50)
 
 
 ##plt.savefig('figure1.pdf')
-plt.savefig('october_authors.png')
+plt.savefig('november_authors.png')
 plt.show()
 print y[-2]
 
-f=open('october_author_data.txt','w')
+f=open('author_data.txt','w')
 for i in all_dates[:-1]:
     f.write(str(i[0])+'-'+str(i[1]))
     f.write('\t')
