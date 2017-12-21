@@ -129,6 +129,9 @@ def monthly_stats(request):
 def my_help(request):
     return render(request, 'help.html')
 
+def top_preprints(request):
+    return render(request, 'top_preprints.html')
+
 def terms(request):
     return render(request, 'terms.html')
 

@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title> {% block title %}PrePubMed{% endblock %} </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vollkorn">
+    <link rel="shortcut icon" href="https://s3.amazonaws.com/prepubmed/prepub_favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://s3.amazonaws.com/prepubmed/prepub_favicon.ico" type="image/x-icon">
+    <style>
+     body{
+        font-family:"Arial",sans-serif;
+    }
+    #mysite {
+    font-family: "Vollkorn", serif;
+    margin: 0px;
+    padding: 0px;
+    color:black;
+    }
+    a {
+        font-weight: 500;
+        color:#375e97;
+        text-decoration:none;
+    }
+
+    a:hover {
+        font-weight: 500;
+        text-decoration:underline;
+    }
+    div form {
+        position:relative;
+        top:5px;
+
+    }
+    h1, h2, h3 {
+        color:#fb6542
+    }
+    span.tab{
+    padding: 0 30px;
+    position:relative;
+    }
+    img {
+        position:relative;
+        left:10px;
+    }
+    p {
+        font-size:20px
+    }
+    .btn{
+        font-size:24px;
+        border: 0 none;
+
+    }
+    .btn-primary{
+        background-color:#ffbb00;
+        color:#000000;
+
+    }
+    .btn-primary.active.focus, .btn-primary.active:focus, .btn-primary.active:hover, .btn-primary:active.focus,
+    .btn-primary:active:focus, .btn-primary:active:hover,.btn-primary:hover,.btn-primary:active,.btn-primary:focus
+    {
+        background-color:#ffcc40;
+        color:#000000;
+    }
+
+    .entry{
+        position:relative;
+        left:30px;
+    }
+    button{
+        clear:all;
+        position:relative;
+        left:10px;
+    }
+    .form-control{
+        font-size:32px;
+    }
+    .form-inline .form-group{
+        width:90%;
+    }
+    .form-inline .form-group input{
+        width:80%;
+        height:48px;
+    }
+    #help {
+        position:relative;
+        left:75%;
+    }
+    #grad {
+  background: #369; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(left, #369,#19334d, #141927); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(right, #369,#19334d, #141927); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(right, #369,#19334d, #141927); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to right, #369,#19334d, #141927); /* Standard syntax */
+} 
+
+    #search_area{
+        background-color: #b5d998; 
+        min-height: 100px;
+        box-shadow: 0px -1px 3px  #999999 inset;
+
+    }
+
+    </style>
+</head>
+<body>
+    <div class="col-sm-12" style="background-color: #ffbb00">
+        <a id="mysite" href="http://www.omnesres.com/" style="font-size: 24px;padding-left:20px">Omnes Res</a>        
+    </div>
+    <div id="search_area" class="col-sm-12">
+        <div class="col-sm-1" style="margin-top:5px">
+            <a href="/">
+                <img src="https://s3.amazonaws.com/prepubmed/first_logo.png" style="height:90px">
+            </a>
+        </div>
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-10" style="vertical-align:middle;margin-top:15px">
+            <form action="/search_results/" method="get" class="form-inline entry">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="q" maxlength=150>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </form>
+            <div id="links" style="margin-top:6px;font-size:20px">
+                <span style="margin-left:30px"><a href="/advanced_search/">Advanced</a></span>
+                <span id='help'><a href="/help/">Help</a></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12" style="margin-bottom:10px">
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-10" style="margin-top:10px;text-align:justify">
+            <h1>Top 200 PeerJ Preprints</h1>
+            <p>Brian Nosek recently <a href="https://twitter.com/BrianNosek/status/943195852687970306">shared</a> the "top" OSF-hosted preprints of 2017. While I don't believe article metrics have any correlation to quality or importance, it is interesting to see what articles have grabbed the attention of the masses. In addition, there is a narrative out there that preprints are not read, so it is nice to see that there are a lot of preprints that are read more than most journal articles. The data below is accurate as of December 21st, 2017.</p>
+        </div>
+        <div class="col-sm-1">
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class='col-sm-1'>
+        </div>
+        <div class='col-sm-10'>
+        <table class="table table-striped" style="font-size:24px">
+            <colgroup>
+                <col class="col-md-10">
+                <col class="col-md-1">
+                <col class="col-md-1">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Views</th>
+                    <th>Downloads</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1733/">Gender differences and bias in open source: Pull request acceptance of women versus men</a></td>
+                    <td>98798</td>
+                    <td>61528</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3100/">Sci-Hub provides access to nearly all scholarly literature</a></td>
+                    <td>43818</td>
+                    <td>13746</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2748/">Statistical heartburn: An attempt to digest four pizza publications from the Cornell Food and Brand Lab</a></td>
+                    <td>24626</td>
+                    <td>6365</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/16/">The role of Twitter in the life cycle of a scientific publication</a></td>
+                    <td>17769</td>
+                    <td>6441</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3119/">The State of OA: A large-scale analysis of the prevalence and impact of Open Access articles</a></td>
+                    <td>17522</td>
+                    <td>6250</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1515/">Software development: do good manners matter?</a></td>
+                    <td>16458</td>
+                    <td>1620</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/826/">An empirical study of goto in C code</a></td>
+                    <td>15628</td>
+                    <td>8345</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1817/">Zika virus impairs growth in human neurospheres and brain organoids</a></td>
+                    <td>14357</td>
+                    <td>3712</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/7/">Nine simple ways to make it easier to (re)use your data</a></td>
+                    <td>13797</td>
+                    <td>5743</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2064/">The GRIM test: A simple technique detects numerous anomalies in the reporting of results in psychology</a></td>
+                    <td>10613</td>
+                    <td>2186</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3190/">Forecasting at scale</a></td>
+                    <td>9374</td>
+                    <td>5664</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2484/">CATALISE: a multinational and multidisciplinary Delphi consensus study of problems with language development. Phase 2. Terminology</a></td>
+                    <td>9183</td>
+                    <td>4735</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3347/">Publiphilia Impactfactorius: a new psychiatric syndrome among biomedical scientists?</a></td>
+                    <td>9166</td>
+                    <td>764</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/67/">The neck of Barosaurus: longer, wider and weirder than those of Diplodocus and other diplodocines</a></td>
+                    <td>7538</td>
+                    <td>1292</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1157/">Effects of library size variance, sparsity, and compositionality on the analysis of microbiome data</a></td>
+                    <td>6700</td>
+                    <td>3304</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3411/">Manipulating the alpha level cannot cure significance testing – comments on "Redefine statistical significance"</a></td>
+                    <td>6173</td>
+                    <td>1970</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1233/">What is the Truck Factor of popular GitHub applications? A first assessment</a></td>
+                    <td>5985</td>
+                    <td>9212</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2737/">Testing the hypothesis that routine sea ice coverage of 3-5 mkm2 results in a greater than 30% decline in population size of polar bears (Ursus maritimus)</a></td>
+                    <td>5951</td>
+                    <td>1701</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/336/">scikit-image: Image processing in Python</a></td>
+                    <td>5833</td>
+                    <td>8789</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1080/">The blue-green eggs of dinosaurs: How fossil metabolites provide insights into the evolution of bird reproduction</a></td>
+                    <td>5630</td>
+                    <td>1583</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3174/">The prehistory of biology preprints: a forgotten experiment from the 1960s</a></td>
+                    <td>5462</td>
+                    <td>399</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/447/">A surge of p-values between 0.041 and 0.049 in recent decades (but negative results are increasing rapidly too)</a></td>
+                    <td>5189</td>
+                    <td>27630</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3159/">Excuse me, do you have a moment to talk about version control?</a></td>
+                    <td>5189</td>
+                    <td>1335</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3210/">Opinionated analysis development</a></td>
+                    <td>5141</td>
+                    <td>1099</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2951/">Evidence based pathways to intervention for children with language disorders</a></td>
+                    <td>5114</td>
+                    <td>1630</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2689/">Do you speak open science? Resources and tips to learn the language</a></td>
+                    <td>5096</td>
+                    <td>708</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3183/">Data organization in spreadsheets</a></td>
+                    <td>4970</td>
+                    <td>1359</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2033/">Combined proteome and transcriptome analyses reveal that Zika virus circulating in Brazil alters cell cycle and neurogenic programmes in human neurospheres</a></td>
+                    <td>4803</td>
+                    <td>1252</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2921/">The earth is flat (p>0.05): Significance thresholds and the crisis of unreplicable research</a></td>
+                    <td>4803</td>
+                    <td>1067</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1266/">Problems in using p-curve analysis and text-mining to detect rate of p-hacking and evidential value</a></td>
+                    <td>4792</td>
+                    <td>618</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/21/">Making research data repositories visible: the re3data.org registry</a></td>
+                    <td>4755</td>
+                    <td>1624</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/11/">The four pillars of scholarly publishing: The future and a foundation</a></td>
+                    <td>4671</td>
+                    <td>1086</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/585/">Is the low-cost EyeTribe eye tracker any good for research?</a></td>
+                    <td>4616</td>
+                    <td>10061</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/393/">To crowdfund research, scientists must build an audience for their work</a></td>
+                    <td>4587</td>
+                    <td>3251</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/697/">Achieving human and machine accessibility of cited data in scholarly publications</a></td>
+                    <td>4542</td>
+                    <td>1149</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/837/">Draft sequencing and assembly of the genome of the world’s largest fish, the whale shark: Rhincodon typus Smith 1828</a></td>
+                    <td>4284</td>
+                    <td>1528</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3139/">How to share data for collaboration</a></td>
+                    <td>4262</td>
+                    <td>847</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/719/">Autonomous Sensory Meridian Response (ASMR): A flow-like mental state</a></td>
+                    <td>4192</td>
+                    <td>2398</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3180/">Declutter your R workflow with tidy tools</a></td>
+                    <td>4169</td>
+                    <td>1390</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/812/">Research groups: how big should they be?</a></td>
+                    <td>4121</td>
+                    <td>1216</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/53/">Lack of quantitative training among early-career ecologists: a survey of the problem and potential solutions</a></td>
+                    <td>4118</td>
+                    <td>1690</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2711/">Imagining the ‘open’ university: Sharing scholarship to improve research and education</a></td>
+                    <td>4104</td>
+                    <td>1326</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/554/">CheckM: assessing the quality of microbial genomes recovered from isolates, single cells, and metagenomes</a></td>
+                    <td>4085</td>
+                    <td>2015</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/773/">Dark Research: information content in many modern research papers is not easily discoverable online</a></td>
+                    <td>3827</td>
+                    <td>1158</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/223/">A nested phylogenetic reconstruction approach provides scalable resolution in the eukaryotic Tree Of Life</a></td>
+                    <td>3783</td>
+                    <td>806</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2409/">VSEARCH: a versatile open source tool for metagenomics</a></td>
+                    <td>3771</td>
+                    <td>470</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1672/">Sentieon DNA pipeline for variant detection - Software-only solution, over 20× faster than GATK 3.3 with identical results</a></td>
+                    <td>3758</td>
+                    <td>1447</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2320/">Angiosperm phylogeny poster (APP) – Flowering plant systematics, 2017</a></td>
+                    <td>3680</td>
+                    <td>1673</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/587/">Lung cancer incidence decreases with elevation: evidence for oxygen as an inhaled carcinogen</a></td>
+                    <td>3623</td>
+                    <td>389</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2554/">Revised geochronology, correlation, and dinosaur stratigraphic ranges of the Santonian-Maastrichtian (Late Cretaceous) formations of the Western Interior of North America</a></td>
+                    <td>3533</td>
+                    <td>462</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2400/">The GRIMMER test: A method for testing the validity of reported measures of variability</a></td>
+                    <td>3459</td>
+                    <td>455</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/260/">Strain- and plasmid-level deconvolution of a synthetic metagenome by sequencing proximity ligation products</a></td>
+                    <td>3438</td>
+                    <td>603</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/185/">Accessing biological data in R with semantic web technologies</a></td>
+                    <td>3423</td>
+                    <td>1382</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1986/">CATALISE: a multinational and multidisciplinary Delphi consensus study. Identifying language impairments in children</a></td>
+                    <td>3410</td>
+                    <td>981</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2574/">OncoRank: A pan-cancer method of combining survival correlations and its application to mRNAs, miRNAs, and lncRNAs</a></td>
+                    <td>3373</td>
+                    <td>447</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1448/">Ten simple rules for digital data storage</a></td>
+                    <td>3294</td>
+                    <td>1519</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1695/">Identifying contamination with advanced visualization and analysis practices: metagenomic approaches for eukaryotic genome assemblies</a></td>
+                    <td>3213</td>
+                    <td>1167</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2044/">Validation and development of COI metabarcoding primers for freshwater macroinvertebrate bioassessment</a></td>
+                    <td>3161</td>
+                    <td>1370</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/542/">On the intrinsic sterility of 3D printing</a></td>
+                    <td>3145</td>
+                    <td>1584</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2746/">The first reported ceratopsid dinosaur from eastern North America (Owl Creek Formation, Upper Cretaceous, Mississippi, USA)</a></td>
+                    <td>3122</td>
+                    <td>390</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/778/">Sequencing 16S rRNA gene fragments using the PacBio SMRT DNA sequencing system</a></td>
+                    <td>3104</td>
+                    <td>4418</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/209/">Preliminary evidence of a new microbial species capable of sustainable intracellular survival and transfer in mammalian cell lines</a></td>
+                    <td>3097</td>
+                    <td>2215</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3195/">The democratization of data science education</a></td>
+                    <td>3075</td>
+                    <td>1140</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1171/">The impact of Docker containers on the performance of genomic pipelines</a></td>
+                    <td>3065</td>
+                    <td>828</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2008/">OSoMe: The IUNI observatory on social media</a></td>
+                    <td>3057</td>
+                    <td>444</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/386/">Swarm: robust and fast clustering method for amplicon-based studies</a></td>
+                    <td>3045</td>
+                    <td>874</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/453/">Swabs to genomes: a comprehensive workflow</a></td>
+                    <td>2989</td>
+                    <td>1668</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1075/">Mining usage patterns for the Android API</a></td>
+                    <td>2966</td>
+                    <td>657</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3113/">Best practice in mixed effects modelling and multi-model inference in ecology</a></td>
+                    <td>2946</td>
+                    <td>1177</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/890/">Crossing the streams: a framework for streaming analysis of short DNA sequencing reads</a></td>
+                    <td>2885</td>
+                    <td>563</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3307/">Cannabis chemovar classification: terpenes hyper-classes and targeted genetic markers for accurate discrimination of flavours and effects</a></td>
+                    <td>2861</td>
+                    <td>300</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2588/">Reproducible and reusable research: Are journal data sharing policies meeting the mark?</a></td>
+                    <td>2840</td>
+                    <td>251</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3287/">In silico identification of off-target pesticidal dsRNA binding in honey bees (Apis mellifera)</a></td>
+                    <td>2808</td>
+                    <td>86</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/549/">The Tao of Open Science for Ecology</a></td>
+                    <td>2762</td>
+                    <td>860</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3182/">How R helps Airbnb make the most of its data</a></td>
+                    <td>2735</td>
+                    <td>13178</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/56/">Characterization of RNA in exosomes secreted by human breast cancer cell lines using next-generation sequencing</a></td>
+                    <td>2731</td>
+                    <td>1022</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/97/">A linear sigmoid colon passage method by left twisting</a></td>
+                    <td>2727</td>
+                    <td>315</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1570/">The furculae of the dromaeosaurid dinosaur Dakotaraptor steini are trionychid turtle entoplastra</a></td>
+                    <td>2720</td>
+                    <td>1091</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1785/">True´s beaked whale (Mesoplodon mirus) in Macaronesia</a></td>
+                    <td>2709</td>
+                    <td>339</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/15/">GenGIS 2: Geospatial analysis of traditional and genetic biodiversity, with new gradient algorithms and an extensible plugin framework</a></td>
+                    <td>2693</td>
+                    <td>664</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/409/">GroopM: An automated tool for the recovery of population genomes from related metagenomes</a></td>
+                    <td>2681</td>
+                    <td>829</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/433/">Sequencing at sea: Challenges and experiences in Ion Torrent PGM sequencing during the 2013 Southern Line Islands Research Expedition</a></td>
+                    <td>2660</td>
+                    <td>368</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2669/">Ten simple rules for considering preprints</a></td>
+                    <td>2642</td>
+                    <td>438</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1275/">Anvi’o: An advanced analysis and visualization platform for ‘omics data</a></td>
+                    <td>2616</td>
+                    <td>1626</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3205/">Teaching stats for data science</a></td>
+                    <td>2616</td>
+                    <td>719</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1426/">Tiling the genome into consistently named subsequences enables precision medicine and machine learning with millions of complex individual data-sets</a></td>
+                    <td>2615</td>
+                    <td>603</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1968/">A mathematical theory of knowledge, science, bias and pseudoscience</a></td>
+                    <td>2598</td>
+                    <td>638</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2065/">mockrobiota: a public resource for microbiome bioinformatics benchmarking</a></td>
+                    <td>2582</td>
+                    <td>333</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/934/">A standardized, extensible framework for optimizing classification improves marker-gene taxonomic assignments</a></td>
+                    <td>2570</td>
+                    <td>1065</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3163/">Wrangling categorical data in R</a></td>
+                    <td>2534</td>
+                    <td>829</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3192/">Packaging data analytical work reproducibly using R (and friends)</a></td>
+                    <td>2513</td>
+                    <td>712</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/535/">A linear sigmoid colon passage method in colonoscopy</a></td>
+                    <td>2507</td>
+                    <td>704</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/411/">Consistent, comprehensive and computationally efficient OTU definitions</a></td>
+                    <td>2501</td>
+                    <td>1128</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/236/">Counterinsurgency Doctrine Applied to Infectious Disease</a></td>
+                    <td>2498</td>
+                    <td>1391</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2540/">Relative toxicity of herbicide use in the United States 1990 to 2015</a></td>
+                    <td>2489</td>
+                    <td>383</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1731/">Sympathy for the devil: a conservation strategy for devil and manta rays</a></td>
+                    <td>2483</td>
+                    <td>808</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3090/">A world of opportunities with nanopore sequencing</a></td>
+                    <td>2477</td>
+                    <td>1395</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/373/">BALSA: Integrated secondary analysis for whole-genome and whole-exome sequencing, accelerated by GPU</a></td>
+                    <td>2466</td>
+                    <td>810</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1482/">Spider phylogenomics: untangling the Spider Tree of Life</a></td>
+                    <td>2451</td>
+                    <td>793</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3005/">Can editors save peer review from peer reviewers?</a></td>
+                    <td>2418</td>
+                    <td>235</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2237/">Why respiratory viruses or bacteria have the highest probability to be deposited in the respiratory tract in flu seasons</a></td>
+                    <td>2390</td>
+                    <td>228</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1347/">Were the necks of Apatosaurus and Brontosaurus adapted for combat?</a></td>
+                    <td>2383</td>
+                    <td>258</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/116/">LecoS - A QGIS plugin for automated landscape ecology analysis</a></td>
+                    <td>2361</td>
+                    <td>5597</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/68/">An effective rectal administration method in the left semiprone position</a></td>
+                    <td>2360</td>
+                    <td>158</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/110/">Zeta potential of bacterial cells: Effect of wash buffers</a></td>
+                    <td>2336</td>
+                    <td>1228</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1596/">Reevaluation of the largest published morphological data matrix for phylogenetic analysis of Paleozoic limbed vertebrates</a></td>
+                    <td>2310</td>
+                    <td>793</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/176/">­Geometric morphometric analysis of snout shape in extant ruminants (Ungulata, Artiodactyla)</a></td>
+                    <td>2265</td>
+                    <td>606</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2169/">Software Citation Principles</a></td>
+                    <td>2259</td>
+                    <td>388</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1238/">Angiosperm Phylogeny Group (APG) in jeopardy – Where have the flowers gone?</a></td>
+                    <td>2249</td>
+                    <td>3541</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/39/">Formalized synthesis opportunities for ecology: systematic reviews and meta-analyses</a></td>
+                    <td>2241</td>
+                    <td>505</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/369/">Women are underrepresented on the editorial boards of journals in environmental biology and natural resource management</a></td>
+                    <td>2241</td>
+                    <td>240</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2988/">The Chinese colossus: an evaluation of the phylogeny of Ruyangosaurus giganteus and its implications for titanosaur evolution</a></td>
+                    <td>2236</td>
+                    <td>514</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/838/">The fragile legacy of Amphicoelias fragillimus (Dinosauria: Sauropoda; Morrison Formation - Latest Jurassic)</a></td>
+                    <td>2234</td>
+                    <td>2301</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1472/">ANGSD-wrapper: utilities for analyzing next generation sequencing data</a></td>
+                    <td>2203</td>
+                    <td>841</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/146/">Enzyme characterisation and kinetic modelling of the pentose phosphate pathway in yeast</a></td>
+                    <td>2185</td>
+                    <td>1625</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1450/">A macroecological theory of microbial biodiversity</a></td>
+                    <td>2175</td>
+                    <td>890</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/423/">What’s for dinner?: Undescribed species of porcini in a commercial packet</a></td>
+                    <td>2165</td>
+                    <td>710</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1957/">Harmine stimulates neurogenesis of human neural cells in vitro</a></td>
+                    <td>2143</td>
+                    <td>782</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1471/">rotl, an R package to interact with the Open Tree of Life data</a></td>
+                    <td>2142</td>
+                    <td>478</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/13/">Signatures of rapid evolution in urban and rural transcriptomes of white-footed mice (Peromyscus leucopus) in the New York metropolitan area</a></td>
+                    <td>2137</td>
+                    <td>605</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/45/">On the relationship between native grouper and invasive lionfish in the Caribbean</a></td>
+                    <td>2122</td>
+                    <td>2132</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1781/">Zika virus: A newly emergent vector-borne public health threat in the Americas</a></td>
+                    <td>2111</td>
+                    <td>634</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/54/">BioNames: linking taxonomy, texts, and trees</a></td>
+                    <td>2041</td>
+                    <td>450</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1779/">A preliminary case study of the effect of shoe-wearing on the biomechanics of a horse’s foot</a></td>
+                    <td>2034</td>
+                    <td>423</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3137/">The science behind Smarter Lunchrooms</a></td>
+                    <td>2033</td>
+                    <td>393</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1241/">A survey of secure middleware for the Internet of Things</a></td>
+                    <td>2028</td>
+                    <td>3528</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1318/">A method for simultaneous measurement of soil bacterial abundances and community composition via 16S rRNA gene sequencing</a></td>
+                    <td>2026</td>
+                    <td>1532</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1541/">DICOM for quantitative imaging biomarker development: A standards based approach to sharing clinical data and structured PET/CT analysis results in head and neck cancer research</a></td>
+                    <td>2019</td>
+                    <td>328</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/38/">How to critically read ecological meta-analyses.</a></td>
+                    <td>2010</td>
+                    <td>1238</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1780/">OncoLnc: Linking TCGA survival data to mRNAs, miRNAs, and lncRNAs</a></td>
+                    <td>2008</td>
+                    <td>323</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1626/">Treating patients with compounds or biological agents that pass the safety-test</a></td>
+                    <td>1993</td>
+                    <td>75</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3188/">Extending R with C++: A Brief Introduction to Rcpp</a></td>
+                    <td>1984</td>
+                    <td>674</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/331/">The Shape of Color: Retinal Cones and Spectral Dispersion</a></td>
+                    <td>1982</td>
+                    <td>477</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/852/">Evidence points out that "Nanotyrannus" is a juvenile Tyrannosaurus rex</a></td>
+                    <td>1966</td>
+                    <td>957</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/398/">Setting the record straight on invasive lionfish control: Culling works</a></td>
+                    <td>1964</td>
+                    <td>1290</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3356/">Good Practice for Conference Abstracts and Presentations: GP-CAP</a></td>
+                    <td>1962</td>
+                    <td>893</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2204/">Hotspot analysis: a first prototype Python plugin enabling exploratory spatial data analysis into QGIS</a></td>
+                    <td>1952</td>
+                    <td>593</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3331/">Male aggressiveness as intrasexual contest competition in 78 societies.</a></td>
+                    <td>1950</td>
+                    <td>175</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/501/">SUPERSMART: ecology and evolution in the era of big data</a></td>
+                    <td>1947</td>
+                    <td>937</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/540/">Multitrophic functional diversity predicts ecosystem functioning in experimental assemblages of estuarine consumers</a></td>
+                    <td>1918</td>
+                    <td>1544</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2144/">Minimum soil nutrient guidelines for turfgrass developed from Mehlich 3 soil test results</a></td>
+                    <td>1905</td>
+                    <td>653</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1900/">The enveomics collection: a toolbox for specialized analyses of microbial genomes and metagenomes</a></td>
+                    <td>1899</td>
+                    <td>571</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/963/">Reef growth and limestone erosion</a></td>
+                    <td>1876</td>
+                    <td>196</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/824/">New insights into the lifestyle of Allosaurus (Dinosauria: Theropoda) based on another specimen with multiple pathologies</a></td>
+                    <td>1834</td>
+                    <td>508</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2083/">SymPy: Symbolic computing in Python</a></td>
+                    <td>1831</td>
+                    <td>1126</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/19/">Coral reef baselines: how much macroalgae is natural?</a></td>
+                    <td>1824</td>
+                    <td>994</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/469/">A genetic manipulation of motor neuron excitability does not alter locomotor output in Drosophila larvae</a></td>
+                    <td>1817</td>
+                    <td>544</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/583/">CauseMap: Fast inference of causality from complex time series</a></td>
+                    <td>1813</td>
+                    <td>889</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/886/">What do programmers know about the energy consumption of software?</a></td>
+                    <td>1813</td>
+                    <td>791</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/92/">Common mistakes in data presentation and statistical analysis: how can the BioStat Decision Tool help?</a></td>
+                    <td>1801</td>
+                    <td>1876</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/755/">Morphological evidence supports Dryolestoid affinities for the living Australian marsupial mole Notoryctes</a></td>
+                    <td>1764</td>
+                    <td>1199</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/588/">Quantifying the effect of intervertebral cartilage on neutral posture in the necks of sauropod dinosaurs</a></td>
+                    <td>1758</td>
+                    <td>380</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/422/">The pupillary light response reflects exogenous attention and inhibition of return</a></td>
+                    <td>1756</td>
+                    <td>2059</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1954/">A review of KDD99 dataset usage in intrusion detection and machine learning between 2010 and 2015</a></td>
+                    <td>1740</td>
+                    <td>2346</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2522/">Interoperability and FAIRness through a novel combination of Web technologies</a></td>
+                    <td>1735</td>
+                    <td>321</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/472/">Non invasive analysis of metabolic changes following nutrient input into diverse fish species, as investigated by metabolic and microbial profiling approaches</a></td>
+                    <td>1730</td>
+                    <td>192</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1984/">Oops, my tests broke the build: An analysis of Travis CI builds with GitHub</a></td>
+                    <td>1720</td>
+                    <td>2191</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/46/">Restore: An R of sustainability that can tame the “conundrum”</a></td>
+                    <td>1710</td>
+                    <td>377</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2336/">Randomised Badger Culling Trial: Impact, based on more extensive data</a></td>
+                    <td>1704</td>
+                    <td>295</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/88/">Whale shark (Rhincodon typus) behavior: A multi-year analysis of individuals at Georgia Aquarium</a></td>
+                    <td>1703</td>
+                    <td>170</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/921/">Conducting perception research over the Internet: a tutorial review</a></td>
+                    <td>1692</td>
+                    <td>447</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1418/">Almost all known sauropod necks are incomplete and distorted</a></td>
+                    <td>1689</td>
+                    <td>578</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2911/">Accelerating the XGBoost algorithm using GPU computing</a></td>
+                    <td>1687</td>
+                    <td>749</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1553/">Genome-wide analyses reveal clustering in Cannabis cultivars: the ancient domestication trilogy of a panacea</a></td>
+                    <td>1685</td>
+                    <td>518</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1106/">Ghost-tree: creating hybrid-gene phylogenetic trees for diversity analyses</a></td>
+                    <td>1674</td>
+                    <td>460</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/985/">Runtime metric meets developer - Building better cloud applications using feedback</a></td>
+                    <td>1671</td>
+                    <td>1739</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2278/">MetaCRAST: Reference-guided extraction of CRISPR spacers from unassembled metagenomes</a></td>
+                    <td>1655</td>
+                    <td>281</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1097/">The tolerability of transcranial electrical stimulation used across extended periods in a naturalistic context by healthy individuals</a></td>
+                    <td>1651</td>
+                    <td>1916</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3160/">Lessons from between the white lines for isolated data scientists</a></td>
+                    <td>1644</td>
+                    <td>420</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2648/">Formatting Open Science: agilely creating multiple document formats for academic manuscripts with Pandoc Scholar</a></td>
+                    <td>1629</td>
+                    <td>325</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2287/">Diversity is the question, not the answer</a></td>
+                    <td>1627</td>
+                    <td>359</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3442/">Paleontology of the Bears Ears National Monument: history of exploration and designation of the monument</a></td>
+                    <td>1615</td>
+                    <td>276</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/273/">A call for virtual experiments: accelerating the scientific process</a></td>
+                    <td>1614</td>
+                    <td>387</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1818/">Preventing Zika virus infection during pregnancy by timing conception seasonally</a></td>
+                    <td>1613</td>
+                    <td>477</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/488/">Advances and limits of using population genetics to understand local adaptation</a></td>
+                    <td>1599</td>
+                    <td>2475</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1911/">A framework for smartphone-enabled, patient-generated health data analysis</a></td>
+                    <td>1596</td>
+                    <td>169</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/249/">Marine biodiversity and ecosystem functioning: what’s known and what’s next?</a></td>
+                    <td>1571</td>
+                    <td>1358</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/8/">Magic Strategies: the basic biology of multilevel, multiscale, health promotion</a></td>
+                    <td>1571</td>
+                    <td>744</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/445/">Journal title abbreviations should be eliminated in the digital age</a></td>
+                    <td>1570</td>
+                    <td>716</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1950/">Predicting trophic discrimination factor using Bayesian inference and phylogenetic, ecological and physiological data. DEsIR: Discrimination Estimation in R.</a></td>
+                    <td>1554</td>
+                    <td>399</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1642/">Distributions of p-values smaller than .05 in Psychology: What is going on?</a></td>
+                    <td>1538</td>
+                    <td>592</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/50/">When is an ecological network complex? Connectance drives degree distribution and emerging network properties</a></td>
+                    <td>1538</td>
+                    <td>535</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/250/">Overload injuries in barefoot/minimal footwear running: evidence from crowd sourcing</a></td>
+                    <td>1536</td>
+                    <td>1145</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/126/">Cancer as a script and possible implications on workings of genome</a></td>
+                    <td>1530</td>
+                    <td>398</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/576/">Self-generated morphology in lagoon reefs</a></td>
+                    <td>1528</td>
+                    <td>250</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/3392/">If funders and libraries subscribed to open access: The case of eLife, PLOS, and BioOne</a></td>
+                    <td>1519</td>
+                    <td>597</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2561/">Sorting things out - assessing effects of unequal specimen biomass on DNA metabarcoding</a></td>
+                    <td>1519</td>
+                    <td>387</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/482/">Culture-independent detection and characterisation of Mycobacterium tuberculosis and M. africanum in sputum samples using shotgun metagenomics on a benchtop sequencer</a></td>
+                    <td>1519</td>
+                    <td>378</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/27/">DNA methylation marks inter-nucleosome linker regions throughout the human genome</a></td>
+                    <td>1517</td>
+                    <td>786</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2402/">The man-machine integration era</a></td>
+                    <td>1502</td>
+                    <td>298</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/115/">Development of a semi-defined medium for high cell density cultivation of Escherichia coli in shake flasks: Part 1</a></td>
+                    <td>1497</td>
+                    <td>356</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2475/">A scaled-down workflow for Illumina shotgun sequencing library preparation: lower input and improved performance at small fraction of the cost</a></td>
+                    <td>1494</td>
+                    <td>472</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/506/">Ethylene induces soil microbes to delay fruit ripening</a></td>
+                    <td>1491</td>
+                    <td>850</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/120/">By-catch in a recreational fishery: an unmonitored source of mortality.</a></td>
+                    <td>1486</td>
+                    <td>313</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/505/">Evaluating a lightweight transcriptome assembly pipeline on two closely related ascidian species</a></td>
+                    <td>1479</td>
+                    <td>837</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2308/">Redescription of Arundel formation Ornithomimosaur material and a reinterpretation of Nedcolbertia justinhofmanni as an “Ostrich Dinosaur”: Biogeographic implications</a></td>
+                    <td>1475</td>
+                    <td>384</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/57/">Free flow of sweat due to loss of surface tension at sweat droplets causes water-induced skin wrinkling</a></td>
+                    <td>1463</td>
+                    <td>1235</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2759/">Assessing strengths and weaknesses of DNA metabarcoding based macroinvertebrate identification for routine stream monitoring</a></td>
+                    <td>1458</td>
+                    <td>576</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/1023/">Can DNA-based ecosystem assessments quantify species abundance? Testing primer bias and biomass - sequence relationships with an innovative metabarcoding protocol</a></td>
+                    <td>1455</td>
+                    <td>719</td>
+                </tr>
+                <tr>
+                    <td><a href="https://peerj.com/preprints/2946/">Defending scientific integrity in conservation policy processes: lessons from Canada, Australia, and the United States</a></td>
+                    <td>1443</td>
+                    <td>101</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-sm-1">
+    </div>
+    </div>
+</body>
+</html>
