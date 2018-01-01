@@ -730,53 +730,36 @@ tags=[]
 error=False
 
 
+try:
+    X=True
+    for index in range(1,10):
+        if X==False:
+            break
+        r=requests.get("https://f1000research.com/browse/articles??selectedDomain=articles&show=20&page="+str(index))
 
-subject_areas={'387':'Genomics, Computational & Systems Biology','394':'Immunology, Microbiology & Infectious Diseases',\
-               '396':'Neuroscience, Neurology & Psychiatry','395':'Molecular, Cellular & Structural Biology',\
-               '398':'Physiology, Pharmacology & Drug Discovery','401':'Public Health & Epidemiology',\
-               '399':'Plant Biology, Ecology & Environmental Sciences','400':'Publishing, Education & Communication',\
-               '386':'Cardiopulmonary & Vascular Disorders','391':'Endocrinology & Gastroenterology',\
-               '397':'Oncology & Hematology','388':'Critical Care & Emergency Medicine',\
-               '402':'Urology, Gynecology & Obstetrics','390':'Development & Evolution',\
-               '393':'Hepatology & Nephrology','385':'Bone Disorders',\
-               '389':'Dermatology','392':'Eye Disorders & ENT'}
+        soup=BeautifulSoup(r.content)
+        
+        if soup.find_all('div',{'class':'search-result-message-text search-results-empty browse'}):
+            break
+        for i in soup.find_all("span", {"class":"article-title"}):
+            titles.append(i.text.strip())
+            tags.append([])
 
+        for i in soup.find_all('div',{'class':'article-detail-text'}):
+            temp=[]
+            for j in i.find_all('span',{'class':'author-listing-formatted'}):
+                name=j.text.split('\n')[1].strip().strip(',')
+                temp.append(unicodedata.normalize('NFKD',name).encode('ascii','ignore'))
+            authors.append(temp)
+                            
+        for i in soup.find_all('div',{'class':'article-title-text'}):
+            links.append(i.find('a').get('href').strip().split('https://f1000research.com')[1])
 
-try: 
-    for subject in subject_areas:
-        X=True
-##        print subject
-        for index in range(1,10):
-            if X==False:
-                break
-##            print index
-            templinks=[]
-            r=requests.get("http://f1000research.com/subjects/"+subject+"?selectedDomain=articles&show=20&page="+str(index))
-
-            soup=BeautifulSoup(r.content)
-            
-            if soup.find_all('div',{'class':'search-result-message-text search-results-empty browse'}):
-                break
-            for i in soup.find_all("span", {"class":"article-title"}):
-                titles.append(i.text.strip())
-                tags.append([subject_areas[subject]])
-
-            for i in soup.find_all('div',{'class':'article-detail-text'}):
-                temp=[]
-                for j in i.find_all('span',{'class':'author-listing-formatted'}):
-                    name=j.text.split('\n')[1].strip().strip(',')
-                    temp.append(unicodedata.normalize('NFKD',name).encode('ascii','ignore'))
-                authors.append(temp)
-                                
-            for i in soup.find_all('div',{'class':'article-title-text'}):
-                links.append(i.find('a').get('href').strip().split('https://f1000research.com')[1])
-                templinks.append(i.find('a').get('href').strip().split('https://f1000research.com')[1])
-
-            for i in soup.find_all("div",{'class':"article-bottom-bar"}):
-                dates.append(i.text.replace("PUBLISHED ","").split("\n")[1].strip())
-            for i in templinks:
-                if i in all_links:
-                    X=False
+        for i in soup.find_all("div",{'class':"article-bottom-bar"}):
+            dates.append(i.text.replace("PUBLISHED ","").split("\n")[1].strip())
+        for i in links:
+            if i in all_links:
+                X=False
 except Exception as e:
     error=True
     f=open(os.path.join(BASE_DIR,'f1000research','error_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
@@ -784,25 +767,14 @@ except Exception as e:
     f.close()     
 
 temp_data=zip(titles,authors,dates,links,tags)
-
-unique_tags={}
+temp_newdata=[]
 for i in temp_data:
     if i[3].split('/')[-2] not in unique_links:
-        unique_tags[i[3].split('/')[-2]]=unique_tags.get(i[3].split('/')[-2],[])+i[-1]
-
-
-temp_newdata=[]
-temp_unique={}
-for i in temp_data:
-    if i[3].split('/')[-2] not in temp_unique:
-        if i[3].split('/')[-2] in unique_tags:
-            temp_newdata.append(list(i)[:-1]+[unique_tags[i[3].split('/')[-2]]])
-            temp_unique[i[3].split('/')[-2]]=''
+        temp_newdata.append(i)
 
 
 try:
     for index,i in enumerate(temp_newdata):
-##        print index,i[3]
         r=requests.get('http://f1000research.com'+i[3])
         soup=BeautifulSoup(r.content)
         abstract=soup.find('div',{'class':"abstract-text is-expanded"}).text.strip()
