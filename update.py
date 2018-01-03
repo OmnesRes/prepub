@@ -783,7 +783,7 @@ try:
         for index,j in enumerate(affiliation_source):
             if re.search('^[0-9]+$',j.strip()):
                 temp.append(affiliation_source[index+1].strip())
-        newdata.append(i[:3]+[abstract]+[i[3]]+[i[-1]]+[temp])
+        newdata.append(list(i)[:3]+[abstract]+[i[3]]+[i[-1]]+[temp])
 except Exception as e:
     error=True
     f=open(os.path.join(BASE_DIR,'f1000research','error_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
