@@ -263,7 +263,7 @@ ax.xaxis.set_ticks_position('bottom')
 ax.yaxis.set_ticks_position('left')
 
 ax.set_xticks([i for i in x1 if i%12==0])
-ax.set_xticklabels(['2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017'])
+ax.set_xticklabels(['2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017','2018'])
 ax.set_yticks([200,400,600,800,1000,1200,1400,1600])
 ax.set_xlim(0,len(x1)-2)
 ax.set_title('Preprints per Month',fontsize=30,y=1.01)
@@ -272,7 +272,7 @@ ax.legend(loc=2,frameon=False,fontsize=21,ncol=4)
 
 
 ##plt.savefig('chart.pdf')
-plt.savefig('december_preprints.png')
+plt.savefig('january_preprints.png')
 #pillow might be needed for the jpg
 ##plt.savefig('chart.jpg')
 plt.show()
