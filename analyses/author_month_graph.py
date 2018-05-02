@@ -148,7 +148,7 @@ for i in all_dates:
 fig=plt.figure(figsize=(22.62372, 12))
 ax = fig.add_subplot(111)
 fig.subplots_adjust(bottom=.05)
-fig.subplots_adjust(left=.04)
+fig.subplots_adjust(left=.05)
 fig.subplots_adjust(right=.98)
 fig.subplots_adjust(top=.9)
 
@@ -185,7 +185,7 @@ ax.set_title('New Senior Authors per Month',fontsize=50)
 
 
 ##plt.savefig('figure1.pdf')
-plt.savefig('march_authors.png')
+plt.savefig('april_authors.png')
 plt.show()
 print y[-2]
 

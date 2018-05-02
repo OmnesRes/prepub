@@ -276,7 +276,7 @@ ax.legend(loc=2,frameon=False,fontsize=21,ncol=4)
 
 
 ##plt.savefig('chart.pdf')
-plt.savefig('march_preprints.png')
+plt.savefig('april_preprints.png')
 #pillow might be needed for the jpg
 ##plt.savefig('chart.jpg')
 plt.show()
