@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title> {% block title %}PrePubMed{% endblock %} </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vollkorn">
+    <link rel="shortcut icon" href="https://s3.amazonaws.com/prepubmed/prepub_favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://s3.amazonaws.com/prepubmed/prepub_favicon.ico" type="image/x-icon">
+    <style>
+     body{
+        font-family:"Arial",sans-serif;
+    }
+    #mysite {
+    font-family: "Vollkorn", serif;
+    margin: 0px;
+    padding: 0px;
+    color: black;
+    font-size: 24px;
+    }
+    a {
+        font-weight: 500;
+        color:#375e97;
+        text-decoration:none;
+    }
+
+    a:hover {
+        font-weight: 500;
+        text-decoration:underline;
+    }
+    #home {
+    margin-bottom: 0px;
+    padding: 0px;
+    color: black;
+    font-size: 20px;
+    }
+
+    p {
+        font-size:20px
+    }
+    h2 {
+        color:#fb6542;
+        font-weight: 600;
+        margin:0px;
+        padding:0px;
+    }
+
+    input[type=text] {
+        border: 2px solid #7EB351;
+        text-align:center;
+    }
+    
+    input[type=text]:focus {
+        border: 2px solid #3f681c;
+    }
+
+    .btn-default {
+        background-color:#fb6542;
+        color:white;
+    }
+
+    .btn-default.active.focus, .btn-default.active:focus, .btn-default.active:hover, .btn-default:active.focus,
+    .btn-default:active:focus, .btn-default:active:hover,.btn-default:hover,.btn-default:active,.btn-default:focus
+    {
+        background-color:#fd8c71;
+        color:white;
+    }
+
+    #calculate {
+        position:relative;
+        top:36px;
+        right:50px;
+    }
+    .form-group {
+        margin-top:10px;
+    }
+
+    .form-control{
+        font-size:24px;
+    }
+
+    .form-inline .form-group input{
+        width:70%;
+        height:36px;
+    }
+
+    #errors {
+        color:red;
+        margin-top:10px;
+        position:relative;
+        top:10px;
+        right:50px;
+        z-index:-100;
+        font-size:30px;
+    }
+
+    span.tab{
+    padding: 0 8px;
+    }
+
+    </style>
+</head>
+<body>
+    <div class="col-sm-12" style="background-color: #ffbb00; text-align:center">
+        <div class="col-sm-1" style="position:relative;top:2px">
+            <a id="home" href="/">Home</a></span>
+        </div>
+        <div class="col-sm-10">
+            <a id="mysite" href="http://www.omnesres.com/">Omnes Res</a>
+        </div>
+        <div class="col-sm-1">
+        </div>          
+    </div>
+    <div class="col-sm-12" style="text-align:center;margin-top:10px">
+        <h2>pSPRITE</h2>
+    <div class="col-sm-12">
+        <form action="/sprite/" method="get" class="form-inline entry" style="text-align:center">
+            <div class="col-sm-12" style="padding:0px,margin:0px">
+                <div style="font-size:20px;margin-top:10px">
+                    <div class="col-sm-12">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="sel1">Do you want to start from random distribution?</label>
+                                <div>
+                                <select class="form-control" id="sel1" name="random_start" size="2">
+                                    {% if random_start == "Yes" %}
+                                    <option selected="Yes">Yes</option>
+                                    {% else %}
+                                    <option value="Yes">Yes</option>
+                                    {% endif %}
+                                    {% if random_start == "No" %}
+                                    <option selected="No">No</option>
+                                    {% else %}
+                                    <option value="No">No</option>
+                                    {% endif %}
+                                </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="sel2">Do you want to round Up, Down, or use Bankers'?</label>
+                                <div>
+                                <select class="form-control" id="sel2" name="direction" size="3">
+                                    {% if direction == "Up" %}
+                                    <option selected="Up">Up</option>
+                                    {% else %}
+                                    <option value="Up">Up</option>
+                                    {% endif %}
+                                    {% if direction == "Down" %}
+                                    <option selected="Down">Down</option>
+                                    {% else %}
+                                    <option value="Down">Down</option>
+                                    {% endif %}
+                                    {% if direction == "Bankers'" %}
+                                    <option selected="Bankers'" value="Bankers'">Bankers'</option>
+                                    {% else %}
+                                    <option value="Bankers'">Bankers'</option>
+                                    {% endif %}
+                                </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label for="seed">Random Seed (optional)</label>
+                            <div>
+                                <input type="text" class="form-control" name="seed" maxlength=6 id="seed" value={{seed}}>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12" style="padding=0px;margin-top:30px">
+                        <div class="form-group col-sm-12">
+                            <label for="Restrictions">Restrictions (optional) List numbers you want in the solution separated by commas or spaces. If you want the solution to contain exactly 3 5's type in 5,5,5</label>
+                            <div>
+                                <input type="text" class="form-control" name="restrictions" maxlength=100 id="restrictions" value={{restrictions}}>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12" style="padding=0px;margin-top:30px">
+                        <div class="form-group col-sm-2">
+                            <label for="sd">SD</label>
+                            <div>
+                                <input type="text" class="form-control" name="sd" maxlength=8 id="sd" value={{sd}}>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="mean">Mean</label>
+                            <div>
+                                <input type="text" class="form-control" name="mean" maxlength=8 id="mean" value={{mean}}>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="size">Sample Size</label>
+                            <div>
+                                <input type="text" class="form-control" name="size" maxlength=3 id="size" value={{size}}>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="size">Scale Min</label>
+                            <div>
+                                <input type="text" class="form-control" name="min" maxlength=3 id="min" value={{min}}>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="size">Scale Max</label>
+                            <div>
+                                <input type="text" class="form-control" name="max" maxlength=3 id="max" value={{max}}>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <button id="calculate" type="submit" class="btn btn-default" style="font-size:24px">Calculate</button>
+                        </div>
+                        <div class="col-sm-2">
+                        </div>
+                    </div>
+                    <div class="col-sm-12" style="padding=0px">
+                        {% if unicode %}
+                        <p id="errors">
+                        Please no unicode values
+                        </p>
+                        {% elif numbers %}
+                        <p id="errors">
+                        Please enter a positive integer for size and random seed and integers for min and max.
+                        </p>
+                        {% elif size_wrong %}
+                        <p id="errors">
+                        Please sizes between 2-1000 for size.
+                        </p>
+                        {% elif scale_wrong %}
+                        <p id="errors">
+                        Min should be less than max.
+                        </p>
+                        {% elif scale_small %}
+                        <p id="errors">
+                        Scale needs to have a range of at least 3.
+                        </p>
+                        {% elif restriction_error %}
+                        <p id="errors">
+                        Please input your restrictions in the correct format.
+                        </p>
+                        {% elif restriction_length %}
+                        <p id="errors">
+                        You have too many restrictions.
+                        </p>
+                        {% elif restriction_impossible %}
+                        <p id="errors">
+                        Your restrictions are impossible.
+                        </p>
+                        {% elif restriction_problems %}
+                        <p id="errors">
+                        Your restrictions are causing the program problems.
+                        </p>
+                        {% elif mean_number %}
+                        <p id="errors">
+                        Please provide a mean with at least 1 decimal.
+                        </p>
+                        {% elif mean_scale %}
+                        <p id="errors">
+                        Your mean is outside the scale.
+                        </p>
+                        {% elif sd_number %}
+                        <p id="errors">
+                        Please enter a SD with at least one decimal.
+                        </p>
+                        {% elif sd_large %}
+                        <p id="errors">
+                        That's a large standard deviation. Please keep your standard deviations below 100.
+                        </p>
+                        {% elif sd_neg %}
+                        <p id="errors">
+                        Negative SDs are impossible.
+                        </p>
+                        {% elif grim %}
+                        <p id="errors">
+                        You failed the GRIM test so SPRITE was unable to run.
+                        </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    {% if not home %}
+    {% if no_error %}
+    <div class="col-sm-12" style="margin-top:20px;margin-bottom:20px;font-size:30px">
+       <!--  Random distribution:{{random}}
+        <br>
+        Flat distribution:{{flat}}
+        <br>
+        Skew distribution:{{skew}}
+        <br>
+        <br>
+        Started with this sample:{{initial}}
+        <br>
+        <br> -->
+        <div class="col-sm-2">
+        </div>
+            {% if solution %}
+            <div class="col-sm-8 alert alert-success">
+                Solution found:
+                <br>
+                {% for key, value in start.items %}
+                {{key}}: {{value}} <span class="tab"></span>
+                {% endfor %}
+            </div>
+            {% else %}
+                {% if grimmer_test %}
+                    {% if grimmer %}
+                        <div class="col-sm-8 alert alert-warning">
+                            No solution was found, but one may exist. Closest solution was:
+                            <br>
+                            {% for key, value in closest.items %}
+                            {{key}}: {{value}} <span class="tab"></span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="col-sm-8 alert alert-danger">
+                            You failed the GRIMMER test so a solution was impossible. Closest solution was:
+                            <br>
+                            {% for key, value in closest.items %}
+                            {{key}}: {{value}} <span class="tab"></span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="col-sm-8 alert alert-warning">
+                        No solution was found, but one may exist. Closest solution was:
+                        <br>
+                        {% for key, value in closest.items %}
+                        {{key}}: {{value}} <span class="tab"></span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="col-sm-2">
+        </div>
+    </div>
+    {% endif %}
+    {% endif %}
+  <!--   <div class="col-sm-12" style="font-size:20px;text-align:left">
+        <br>
+        {{results}}
+        <br>
+        Below will be values used for debugging purposes:
+        <br>
+        population_count= {{all.0}}
+        <br>
+        sample_count= {{all.1}}
+        <br>
+        mean= {{all.2}}
+        <br>
+        size= {{all.3}}
+        <br>
+        Type= {{all.4}}
+        <br>
+        sd= {{all.5}}
+        <br>
+        population variances tested:
+        <br>
+        {% for i in possibilities %}
+        {{i}}
+        <br>
+        {% endfor %}
+    </div> -->
+</body>
+</html>

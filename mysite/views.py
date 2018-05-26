@@ -303,6 +303,561 @@ def general_grim(request):
         return render(request, 'general_grim.html',{'home':True,})
 
 
+def sprite(request):
+    def deviation(data,u):
+        return (sum([(i-u)**2 for i in data])/(len(data)-1))**.5
+    def deviation_dict(data,u):
+        return(sum([((i-u)**2)*data[i] for i in data])/(sum(data.values())-1))**.5
+    
+    if request.META.get('HTTP_REFERER',False):
+        if 'size' in request.GET:
+            import numpy as np
+            import re
+            import math
+            try:
+                direction=str(request.GET['direction']).strip()
+            except:
+                direction='Up'
+            seed=False
+            try:
+                mean=str(request.GET['mean']).strip()
+                size=str(request.GET['size']).strip()
+                sd=str(request.GET['sd']).strip()
+                min_scale=str(request.GET['min']).strip()
+                max_scale=str(request.GET['max']).strip()
+                if 'seed' in request.GET:
+                    seed=str(request.GET['seed']).strip()
+            except:
+                return render(request,'sprite.html', {'unicode':True})
+            if re.search('^[0-9]+$',size) and re.search('^-?[0-9]+$',min_scale) and re.search('^-?[0-9]+$',max_scale):
+                size=int(size)
+                n=int(size)
+                min_scale=int(min_scale)
+                max_scale=int(max_scale)
+            else:
+                return render(request,'sprite.html', {'numbers':True})
+            if seed:
+                if re.search('^[0-9]+$',seed):
+                    seed=int(seed)
+                    np.random.seed(seed)
+                else:
+                    return render(request,'sprite.html', {'numbers':True})
+            restrictions=request.GET['restrictions']
+            if restrictions=='':
+                restrictions=[]
+            else:
+                if ',' in restrictions:
+                    try:
+                        restrictions=[int(i.strip()) for i in restrictions.split(',') if i.strip()!='']
+                    except:
+                        return render(request,'sprite.html', {'restriction_error':True})
+                else:
+                    try:
+                        restrictions=[int(i) for i in restrictions.split() if i.strip()!='']
+                    except:
+                        return render(request,'sprite.html', {'restriction_error':True})
+            if len(restrictions)>=n-1:
+                return render(request,'sprite.html', {'restriction_length':True})
+                    
+            if 2<=size<=1000:
+                pass
+            else:
+                return render(request,'sprite.html', {'size_wrong':True})
+            if min_scale<max_scale:
+                pass
+            else:
+                return render(request,'sprite.html', {'scale_wrong':True})
+            if max_scale-min_scale+1<3:
+                return render(request,'sprite.html', {'scale_small':True})
+            random_start='Yes'
+            if 'random_start' in request.GET:
+                random_start=str(request.GET['random_start']).strip()
+            scale=range(min_scale,max_scale+1)
+            if '.' in mean:
+                try:
+                    float(mean)
+                except:
+                    return render(request,'sprite.html', {'mean_number':True})
+            else:
+                return render(request,'sprite.html', {'mean_number':True})
+            mean_decimals=len(mean.split('.')[1])
+            mean=float(mean)
+            u=float(mean)                
+            if u>max_scale or u<min_scale:
+                return render(request,'sprite.html', {'mean_scale':True})
+            if '.' in sd:
+                try:
+                    float(sd)
+                except:
+                    return render(request,'sprite.html', {'sd_number':True})
+                sd_decimals=len(sd.split('.')[1])
+                sd=float(sd)
+                if sd>100:
+                    return render(request,'sprite.html', {'sd_large':True,})
+                if sd<0:
+                    return render(request,'sprite.html', {'sd_neg':True,})
+            else:
+                return render(request,'sprite.html', {'sd_number':True,})
+            
+            if my_round(round(mean*size,0)/size,mean_decimals,direction)==mean:
+                pass
+            else:
+                return render(request,'sprite.html',{'size':size,
+                                                         'min':min_scale,
+                                                         'max':max_scale,
+                                                         'grim':True,
+                                                        'direction':direction,
+                                                        'sd':("%."+str(sd_decimals)+"f") % round(sd,sd_decimals),
+                                                        'mean':("%."+str(mean_decimals)+"f") % round(mean,mean_decimals)})
+
+
+            grimmer_test=False
+            grimmer=False
+            if 5<=size<=99:
+                import importlib
+                grimmer_test=True
+                mod=importlib.import_module('mysite.patterns.'+str(size))
+                pattern_zero=mod.pattern_zero[:]
+                pattern_even=mod.pattern_even[:]
+                pattern_odd=mod.pattern_odd[:]
+                averages_even=sorted(zip(mod.averages_even.copy().keys(),mod.averages_even.copy().values()))
+                averages_odd=sorted(zip(mod.averages_odd.copy().keys(),mod.averages_odd.copy().values()))
+                pattern_zero_rounded=[round_up('.'+repr(n).split('.')[1],5) for n in pattern_zero]
+                averages_zero={round_up('.'+repr(n).split('.')[1],5):mod.averages_even.copy()[n] for n in mod.averages_even.copy() if round_up('.'+repr(n).split('.')[1],5) in pattern_zero_rounded}
+                averages_zero=sorted(zip(averages_zero.copy().keys(),averages_zero.copy().values()))
+                def loop(low,high):
+                    possibilities=[]
+                    if low==0:
+                        for index,i in enumerate(pattern_zero):
+                            possibilities.append([i,index])
+                        low=1
+                    loop=0
+                    X=True
+                    if low%2==0:
+                        pattern_1=pattern_even
+                        pattern_2=pattern_odd
+                    else:
+                        pattern_1=pattern_odd
+                        pattern_2=pattern_even
+                    while True:
+                        if X==True:
+                            for index,i in enumerate(pattern_1):
+                                value=low+i+loop
+                                possibilities.append([value,index])
+                                if value>=high:
+                                    X=False
+                                    break
+                            loop+=1
+                            if X==False:
+                                break
+                            for index,i in enumerate(pattern_2):
+                                value=low+i+loop
+                                possibilities.append([value,index])
+                                if value>=high:
+                                    X=False
+                                    break
+                            loop+=1
+                        else:
+                            break
+                    return possibilities
+                
+                lower=sd-.5/(10**sd_decimals)
+                higher=sd+.5/(10**sd_decimals)
+                low=math.floor(lower**2)
+                high=math.ceil(higher**2)
+                sample_count=0
+                low=math.floor(low*(size-1)/size)
+                high=math.ceil(high*(size-1)/size)
+                possibilities=loop(low,high)
+                for j in possibilities:
+                    if int(j[0])==0:
+                        if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [my_round(ave,mean_decimals,direction) for ave in averages_zero[j[1]][1]]:
+                            if my_round((j[0]*size/(size-1))**.5,sd_decimals,direction)==sd:
+                                sample_count+=1
+                    elif int(j[0])%2==0:
+                        if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [my_round(ave,mean_decimals,direction) for ave in averages_even[j[1]][1]]:
+                            if my_round((j[0]*size/(size-1))**.5,sd_decimals,direction)==sd:
+                                sample_count+=1
+                    else:
+                        if round_up('.'+repr(mean).split('.')[1],mean_decimals) in [my_round(ave,mean_decimals,direction) for ave in averages_odd[j[1]][1]]:
+                            if my_round((j[0]*size/(size-1))**.5,sd_decimals,direction)==sd:
+                                sample_count+=1
+                if sample_count==0:
+                    grimmer=False
+                else:
+                    grimmer=True
+            else:
+                pass
+            #n is getting overwritten in grimmer function
+            n=size
+            lower=u-.5/(10**mean_decimals)
+            upper=u+.5/(10**mean_decimals)
+            l_bound=int(math.ceil(lower*n))
+            if lower<0:
+                l_bound=int(lower*n)
+            u_bound=int(upper*n)
+            if upper<0:
+                u_bound=int(math.floor(upper*n))
+            if restrictions:
+                for i in scale:
+                    if i not in restrictions:
+                        break
+                start=np.array((n-len(restrictions))*[i])
+                random_sum=np.random.choice(range(l_bound,u_bound+1))
+                loop_count=0
+                if sum(start)+sum(restrictions)==random_sum:
+                    random=start
+                elif sum(start)+sum(restrictions)>random_sum:
+                    return render(request,'sprite.html', {'restriction_impossible':True})
+                else:
+                    escape=False
+                    while True:
+                        if escape:
+                            break
+                        step=np.random.permutation([0]*(n-1-len(restrictions))+[1])
+                        while True:
+                            loop_count+=1
+                            temp=start+step
+                            if loop_count>10000:
+                                return render(request,'sprite.html', {'restriction_problems':True})
+                            if max(temp)>max(scale):
+                                break
+                            while True:
+                                X=True
+                                for i in restrictions:
+                                    if i in temp:
+                                        X=False
+                                if X==True:
+                                    break
+                                temp=temp+step
+                            if max(temp)>max(scale):
+                                break
+                            if sum(temp)+sum(restrictions)>random_sum:
+                                break
+
+                            start=temp
+                            if sum(start)+sum(restrictions)==random_sum:
+                                escape=True
+                                random=start
+                                break
+                            break
+            else:
+                if random_start=='No':
+                    ##find max/min sds and distributions
+                    #max
+                    if l_bound==u_bound:
+                        local_u=l_bound/float(n)
+                        if max(scale)-local_u<local_u-min(scale):
+                            skew=[max(scale)]
+                        else:
+                            skew=[min(scale)]
+                        for i in range(n-1):
+                            if np.mean(skew)<=local_u:
+                                skew.append(max(scale))
+                            else:
+                                skew.append(min(scale))
+
+                        skew.sort()
+                        if sum(skew)==l_bound:
+                            pass
+                        else:
+                            diff=l_bound-sum(skew)
+                            if diff<0:
+                                skew[-1]=skew[-1]+diff
+                            else:
+                                skew[0]=skew[0]+diff
+                    else:
+                        max_sd=0
+                        max_skew=[]
+                        for i in range(l_bound,u_bound+1):
+                            local_u=i/float(n)
+                            if max(scale)-local_u<local_u-min(scale):
+                                temp_skew=[max(scale)]
+                            else:
+                                temp_skew=[min(scale)]
+                            for ii in range(n-1):
+                                if np.mean(temp_skew)<=local_u:
+                                    temp_skew.append(max(scale))
+                                else:
+                                    temp_skew.append(min(scale))
+
+                            temp_skew.sort()
+                            if sum(temp_skew)==i:
+                                if deviation(temp_skew,local_u)>max_sd:
+                                    max_sd=deviation(temp_skew,local_u)
+                                    max_skew=temp_skew
+                            else:
+                                diff=i-sum(temp_skew)
+                                if diff<0:
+                                    temp_skew[-1]=temp_skew[-1]+diff
+                                else:
+                                    temp_skew[0]=temp_skew[0]+diff
+                                if deviation(temp_skew,local_u)>max_sd:
+                                    max_sd=deviation(temp_skew,local_u)
+                                    max_skew=temp_skew
+                            skew=max_skew
+
+                    #min
+                    if l_bound==u_bound:
+                        local_u=l_bound/float(n)
+                        flat=n*[int(local_u)]
+                        if l_bound>0:
+                            while sum(flat)<l_bound:
+                                flat.sort()
+                                flat[0]=flat[0]+1
+                        else:
+                            while sum(flat)>l_bound:
+                                flat.sort(reverse=True)
+                                flat[0]=flat[0]-1
+                    else:
+                        min_sd=1000
+                        min_skew=[]
+                        for i in range(l_bound,u_bound+1):
+                            local_u=i/float(n)
+                            temp_flat=n*[int(local_u)]
+                            if l_bound>0:
+                                while sum(temp_flat)<i:
+                                    temp_flat.sort()
+                                    temp_flat[0]=temp_flat[0]+1
+                            else:
+                                while sum(temp_flat)>i:
+                                    temp_flat.sort(reverse=True)
+                                    temp_flat[0]=temp_flat[0]-1
+                            if deviation(temp_flat,local_u)<min_sd:
+                                min_sd=deviation(temp_flat,local_u)
+                                min_skew=temp_flat
+                        flat=min_skew
+                #random
+                random_sum=np.random.choice(range(l_bound,u_bound+1))
+                random=np.array(n*[min(scale)])
+                if sum(random)==random_sum:
+                    pass
+                else:
+                    while True:
+                        temp_random=random+np.random.permutation([0]*(n-1)+[1])
+                        if max(temp_random)>max(scale):
+                            continue
+                        random=temp_random
+                        if sum(random)==random_sum:
+                            break
+            if not restrictions:
+                if random_start=='No':
+                    differences=[abs(deviation(flat,np.mean(skew))-sd),abs(deviation(random,np.mean(random))-sd),abs(deviation(skew,np.mean(skew))-sd)]
+                    closest=[flat,random,skew][differences.index(min(differences))]
+                    closest_sd=deviation(closest,np.mean(closest))
+                    initial=closest
+                else:
+                    initial=random
+                    closest_sd=deviation(random,np.mean(random))
+                    closest=random
+                    flat=False
+                    skew=False
+            else:
+                initial=random
+                flat=False
+                skew=False
+            data={}
+            for i in range(min(scale),max(scale)+1):
+                data[i]=0
+            for i in initial:
+                data[i]=data.get(i)+1
+            for i in restrictions:
+                data[i]=data.get(i,0)+1
+            count=0
+            true_u=sum([i*data[i] for i in data])/float(sum(data.values()))
+            solution=False
+            data_sd=deviation_dict(data,true_u)
+            if restrictions:
+                closest_sd=data_sd
+                closest=data
+##            return HttpResponse(str(closest))
+            if my_round(data_sd,sd_decimals,direction)==sd:
+                solution=True
+                return render(request,'sprite.html',{'size':size,
+                                                         'min':min_scale,
+                                                         'max':max_scale,
+                                                         'solution':solution,
+                                                         'initial':data,
+                                                         'random':sorted(random),
+                                                         'flat':flat,
+                                                         'skew':skew,
+                                                         'count':count,
+                                                         'start':data,
+                                                        'direction':direction,
+                                                         'seed':seed,
+                                                         'random_start':random_start,
+                                                        'sd':("%."+str(sd_decimals)+"f") % round(sd,sd_decimals),
+                                                     'restrictions':''.join([str(i)+j for i,j in zip(restrictions,[',']*len(restrictions))])[:-1],
+                                                        'no_error':True,
+                                                        'mean':("%."+str(mean_decimals)+"f") % round(mean,mean_decimals)})
+                
+            while True:
+                count+=1
+                if count>2000:
+                    return render(request,'sprite.html',{'size':size,
+                                                         'min':min_scale,
+                                                         'max':max_scale,
+                                                         'solution':solution,
+                                                         'grimmer_test':grimmer_test,
+                                                         'grimmer':grimmer,
+                                                         'initial':sorted(initial),
+                                                         'random':sorted(random),
+                                                         'flat':flat,
+                                                         'skew':skew,
+                                                         'count':count,
+                                                         'closest':data,
+                                                        'direction':direction,
+                                                         'seed':seed,
+                                                         'random_start':random_start,
+                                                        'sd':("%."+str(sd_decimals)+"f") % round(sd,sd_decimals),
+                                                         'restrictions':''.join([str(i)+j for i,j in zip(restrictions,[',']*len(restrictions))])[:-1],
+                                                        'no_error':True,
+                                                        'mean':("%."+str(mean_decimals)+"f") % round(mean,mean_decimals)})
+               
+                if data_sd>sd:
+                    if np.random.random()>.5:
+                        for first in np.random.permutation(scale[:-2]):
+                            if data[first]!=0:
+                                break
+                        if data[first]==0:
+                            return "first selection error"
+                        for second in np.random.permutation(scale[scale.index(first)+2:]):
+                            if data[second]!=0:
+                                break
+                        if data[second]==0:
+                            continue
+                        while True:
+                            if first+1 not in restrictions and second-1 not in restrictions\
+                               and first not in restrictions and second not in restrictions\
+                               and data[first]>0 and data[second]>0:
+                                data[first]=data[first]-1
+                                data[first+1]=data[first+1]+1
+                                data[second]=data[second]-1
+                                data[second-1]=data[second-1]+1
+                                break
+                            
+                            else:
+                                first=first-1
+                                second=second+1
+                                if data.get(first)>=0 and data.get(second)>=0:
+                                    continue
+                                else:
+                                    break
+                        
+                    else:
+                        for first in np.random.permutation(scale[2:]):
+                            if data[first]!=0:
+                                break
+                        if data[first]==0:
+                            return "first selection error"
+                        for second in np.random.permutation(scale[:scale.index(first)-1]):
+                            if data[second]!=0:
+                                break
+                        if data[second]==0:
+                            continue
+                        while True:
+                            if first-1 not in restrictions and second+1 not in restrictions\
+                               and first not in restrictions and second not in restrictions\
+                               and data[first]>0 and data[second]>0:
+                                data[first]=data[first]-1
+                                data[first-1]=data[first-1]+1
+                                data[second]=data[second]-1
+                                data[second+1]=data[second+1]+1
+                                break
+                            else:
+                                first=first+1
+                                second=second-1
+                                if data.get(first)>=0 and data.get(second)>=0:
+                                    continue
+                                else:
+                                    break
+                else:
+                    for first in np.random.permutation(scale[1:-1]):
+                        if data[first]!=0:
+                            break
+                    if data[first]==0:
+                        return "first selection error"
+                    for second in np.random.permutation(scale[1:-1]):
+                        if data[second]!=0:
+                            if first==second:
+                                if data[first]>1:
+                                    break
+                                else:
+                                    continue
+                            else:
+                                break
+                    if first==second:
+                        if data[first]>1:
+                            pass
+                        else:
+                            continue
+                    if data[second]==0:
+                        continue
+                    if first>=second:
+                        while True:
+                            if first+1 not in restrictions and second-1 not in restrictions\
+                               and first not in restrictions and second not in restrictions\
+                               and data[first]>0 and data[second]>0:
+                                data[first]=data[first]-1
+                                data[first+1]=data[first+1]+1
+                                data[second]=data[second]-1
+                                data[second-1]=data[second-1]+1
+                                break
+                            else:
+                                first=first+1
+                                second=second-1
+                                if data.get(first)>=0 and data.get(second)>=0 and data.has_key(first+1) and data.has_key(second-1):
+                                    continue
+                                else:
+                                    break
+                            
+                    else:
+                        while True:
+                            if first-1 not in restrictions and second+1 not in restrictions\
+                               and first not in restrictions and second not in restrictions\
+                               and data[first]>0 and data[second]>0:
+                                data[first]=data[first]-1
+                                data[first-1]=data[first-1]+1
+                                data[second]=data[second]-1
+                                data[second+1]=data[second+1]+1
+                                break
+                            else:
+                                first=first-1
+                                second=second+1
+                                if data.get(first)>=0 and data.get(second)>=0 and data.has_key(first-1) and data.has_key(second+1):
+                                    continue
+                                else:
+                                    break
+                                
+                data_sd=deviation_dict(data,true_u)
+                if abs(sd-data_sd)<abs(sd-closest_sd):
+                    closest=data
+                    closest_sd=data_sd
+                if my_round(data_sd,sd_decimals,direction)==sd:
+                    solution=True
+                    return render(request,'sprite.html',{'size':size,
+                                                         'min':min_scale,
+                                                         'max':max_scale,
+                                                         'solution':solution,
+                                                         'random':sorted(random),
+                                                         'initial':sorted(initial),
+                                                         'flat':flat,
+                                                         'skew':skew,
+                                                         'count':count,
+                                                         'start':data,
+                                                         'seed':seed,
+                                                         'random_start':random_start,
+                                                        'direction':direction,
+                                                        'sd':("%."+str(sd_decimals)+"f") % round(sd,sd_decimals),
+                                                         'restrictions':''.join([str(i)+j for i,j in zip(restrictions,[',']*len(restrictions))])[:-1],
+                                                        'no_error':True,
+                                                        'mean':("%."+str(mean_decimals)+"f") % round(mean,mean_decimals)})
+ 
+        else:
+            return render(request,'sprite.html', {'home':True,})
+    else:
+        return render(request,'sprite.html', {'home':True,})
+
 
 def grimmer_sd(request):
     import re

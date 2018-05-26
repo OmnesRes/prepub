@@ -39,5 +39,6 @@ urlpatterns = [
     url(r'^rss_feed/$',views.rss_feed),
     url(r'^articles/(.{1,50})/rss/',views.RSSFeed()),
     url(r'^terms/$',views.terms),
+    url(r'^sprite/$',views.sprite),
     
 ]
