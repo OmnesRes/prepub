@@ -528,7 +528,20 @@ for attempt in range(3):
                 else:
                     X=False
                     break
-                
+        duplicates=[]
+        while len(titles)!=len(set(titles)):
+            count={}
+            for i in titles:
+                count[i]=count.get(i,0)+1
+            for i in count:
+                if count[i]>1:
+                    duplicate=i
+                    duplicates.append(i)
+                    break
+            index=titles.index(duplicate)
+            titles=titles[:index]+titles[index+1:]
+            authors=authors[:index]+authors[index+1:]
+            links=links[:index]+links[index+1:]   
         for index2,i in enumerate(links):
     ##        print index2
             r=requests.get('http://biorxiv.org'+i)
@@ -562,25 +575,21 @@ for attempt in range(3):
         break
     time.sleep(60)
     
-
-
-
 if error==False:
-    if len(titles)==len(set(titles)):
-        f=open(os.path.join(BASE_DIR,'biorxiv','update_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
-        for title,author,date,abstract,link,tag,author_af in zip(titles,authors,dates,abstracts,links,tags,author_aff):
-            if link.split('/')[-1].split('.')[0] not in unique:
-                f.write(str([title,author,date,abstract,link,tag,author_af]))
-                f.write('\n')
-                newdata.append([title,author,date,abstract,link,tag,author_af])
-        f.close()
-    else:
-        f=open(os.path.join(BASE_DIR,'biorxiv','error_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
-        f.write('duplicate error')
-        f.close()
+    f=open(os.path.join(BASE_DIR,'biorxiv','update_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
+    for title,author,date,abstract,link,tag,author_af in zip(titles,authors,dates,abstracts,links,tags,author_aff):
+        if link.split('/')[-1].split('.')[0] not in unique:
+            f.write(str([title,author,date,abstract,link,tag,author_af]))
+            f.write('\n')
+            newdata.append([title,author,date,abstract,link,tag,author_af])
+    f.close()
 else:
     pass
 
+if duplicates!=[]
+    f=open(os.path.join(BASE_DIR,'biorxiv','error_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
+    f.write(str(duplicates))
+    f.close()
 
 f=open(os.path.join(BASE_DIR,'biorxiv','biorxiv.txt'),'a')
 for i in newdata:
