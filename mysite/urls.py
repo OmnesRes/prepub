@@ -40,5 +40,6 @@ urlpatterns = [
     url(r'^articles/(.{1,50})/rss/',views.RSSFeed()),
     url(r'^terms/$',views.terms),
     url(r'^sprite/$',views.sprite),
+    url(r'^data_thugging/$',views.data_thugging),
     
 ]

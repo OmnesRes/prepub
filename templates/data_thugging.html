@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title> {% block title %}PrePubMed{% endblock %} </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vollkorn">
+    <link rel="shortcut icon" href="https://s3.amazonaws.com/prepubmed/prepub_favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://s3.amazonaws.com/prepubmed/prepub_favicon.ico" type="image/x-icon">
+    <style>
+     body{
+        font-family:"Arial",sans-serif;
+    }
+    #mysite {
+    font-family: "Vollkorn", serif;
+    margin: 0px;
+    padding: 0px;
+    color: black;
+    font-size: 24px;
+    }
+    a {
+        font-weight: 500;
+        color:#375e97;
+        text-decoration:none;
+    }
+
+    a:hover {
+        font-weight: 500;
+        text-decoration:underline;
+    }
+
+    #home {
+    margin-bottom: 0px;
+    padding: 0px;
+    color: black;
+    font-size: 20px;
+    }
+
+    p {
+        font-size:20px
+    }
+    h2 {
+        color:#fb6542;
+        font-weight: 600;
+        margin:0px;
+        padding:0px;
+    }
+
+    input[type=text] {
+        border: 2px solid #7EB351;
+        text-align:center;
+    }
+    
+    input[type=text]:focus {
+        border: 2px solid #3f681c;
+    }
+
+    .btn-default {
+        background-color:#fb6542;
+        color:black;
+    }
+
+    .btn-default.active.focus, .btn-default.active:focus, .btn-default.active:hover, .btn-default:active.focus,
+    .btn-default:active:focus, .btn-default:active:hover,.btn-default:hover,.btn-default:active,.btn-default:focus
+    {
+        background-color:#fd8c71;
+        color:#000000;
+    }
+
+    #calculate {
+        position:relative;
+        top:36px;
+        right:50px;
+    }
+    .form-group {
+        margin-top:10px;
+    }
+
+    .form-control{
+        font-size:24px;
+    }
+
+    .form-inline .form-group input{
+        width:80%;
+        height:36px;
+    }
+    #errors {
+        color:red;
+        margin-top:10px;
+        position:relative;
+        top:10px;
+        right:50px;
+        z-index:-100;
+    }
+
+    </style>
+</head>
+<body>
+    <div class="col-sm-12" style="background-color: #ffbb00; text-align:center">
+        <div class="col-sm-1" style="position:relative;top:2px">
+            <a id="home" href="/">Home</a></span>
+        </div>
+        <div class="col-sm-10">
+            <a id="mysite" href="http://www.omnesres.com/">Omnes Res</a>
+        </div>
+        <div class="col-sm-1">
+        </div>          
+    </div>
+    <div class="col-sm-12" style="text-align:center">
+        <h2>Tools for Data Thugging</h2>
+        <div class="col-sm-12">
+            <div class="col-sm-5">
+            </div>
+            <div class="col-sm-2">
+                <a href="/">
+                    <img src="https://s3.amazonaws.com/prepubmed/first_logo.png" style="height:90px;margin-top:10px" class="img-responsive center-block"   >
+                </a>
+            </div>
+            <div class="col-sm-5">
+            </div>
+        </div>
+    <div class="col-sm-12">
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-9" style="margin-top:10px;text-align:justify">
+            <p>So you want to be a data thug?  These tools will help.  Although designed for integer data, as long as the data has a consistent granularity sometimes a simple transformation is all that is needed to get the tools to work with your data.</p>
+            <br>
+            <h2>GRIM Test</h2>
+            <p>Use this <a href="/grim_test/">test</a> if you want to check means to two decimals and your sample size is less than 100.</p>
+            <br>
+            <h2>General GRIM Test</h2>
+            <p>Have means reported to a different decimal precision?  Have a composite measure?  Then this <a href="/general_grim/">test</a> is for you.</p>
+            <br>
+            <h2>GRIMMER Test</h2>
+            <p>Want to check standard deviations, standard errors, or variances?  Then go <a href="/grimmer/">here</a>.</p>
+            <br>
+            <h2>pSPRITE</h2>
+            <p>Want to reconstruct the data?  Then go <a href="/sprite/">here</a>.</p>
+        </div>
+        <div class="col-sm-2">
+        </div>
+    </div>
+</body>
+</html>

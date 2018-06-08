@@ -240,6 +240,7 @@ plt.axhline(y=1400, xmin=0, xmax=len(x1), linewidth=2, color = 'k',linestyle=':'
 plt.axhline(y=1600, xmin=0, xmax=len(x1), linewidth=2, color = 'k',linestyle=':',zorder=-1)
 plt.axhline(y=1800, xmin=0, xmax=len(x1), linewidth=2, color = 'k',linestyle=':',zorder=-1)
 plt.axhline(y=2000, xmin=0, xmax=len(x1), linewidth=2, color = 'k',linestyle=':',zorder=-1)
+plt.axhline(y=2200, xmin=0, xmax=len(x1), linewidth=2, color = 'k',linestyle=':',zorder=-1)
 
 
 ax.fill_between(x1,y1,0,color='#EC5f67',label='arXiv q-bio')
@@ -267,16 +268,16 @@ ax.yaxis.set_ticks_position('left')
 
 ax.set_xticks([i for i in x1 if i%12==0])
 ax.set_xticklabels(['2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017','2018'])
-ax.set_yticks([200,400,600,800,1000,1200,1400,1600,1800,2000])
+ax.set_yticks([200,400,600,800,1000,1200,1400,1600,1800,2000,2200])
 ax.set_xlim(0,len(x1)-2)
-ax.set_ylim(0,2100)
+ax.set_ylim(0,2450)
 ax.set_title('Preprints per Month',fontsize=30,y=1.01)
 
 ax.legend(loc=2,frameon=False,fontsize=21,ncol=4)
 
 
 ##plt.savefig('chart.pdf')
-plt.savefig('april_preprints.png')
+plt.savefig('may_preprints.png')
 #pillow might be needed for the jpg
 ##plt.savefig('chart.jpg')
 plt.show()

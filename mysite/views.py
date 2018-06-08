@@ -129,6 +129,9 @@ def monthly_stats(request):
 def my_help(request):
     return render(request, 'help.html')
 
+def data_thugging(request):
+    return render(request, 'data_thugging.html')
+
 def top_preprints(request):
     return render(request, 'top_preprints.html')
 
