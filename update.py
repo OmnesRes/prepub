@@ -586,7 +586,7 @@ if error==False:
 else:
     pass
 
-if duplicates!=[]
+if duplicates!=[]:
     f=open(os.path.join(BASE_DIR,'biorxiv','error_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
     f.write(str(duplicates))
     f.close()
