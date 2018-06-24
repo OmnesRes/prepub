@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title> {% block title %}PrePubMed{% endblock %} </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vollkorn">
+    <link rel="shortcut icon" href="https://s3.amazonaws.com/prepubmed/prepub_favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://s3.amazonaws.com/prepubmed/prepub_favicon.ico" type="image/x-icon">
+    <style>
+     body{
+        font-family:"Arial",sans-serif;
+    }
+    #mysite {
+    font-family: "Vollkorn", serif;
+    margin: 0px;
+    padding: 0px;
+    color: black;
+    font-size: 24px;
+    }
+    a {
+        font-weight: 500;
+        color:#375e97;
+        text-decoration:none;
+    }
+
+    a:hover {
+        font-weight: 500;
+        text-decoration:underline;
+    }
+
+    #home {
+    margin-bottom: 0px;
+    padding: 0px;
+    color: black;
+    font-size: 20px;
+    }
+
+    p {
+        font-size:20px
+    }
+    h2 {
+        color:#fb6542;
+        font-weight: 600;
+        margin:0px;
+        padding:0px;
+    }
+
+    input[type=text] {
+        border: 2px solid #7EB351;
+        text-align:center;
+    }
+    
+    input[type=text]:focus {
+        border: 2px solid #3f681c;
+    }
+
+
+
+    .btn-default {
+        background-color:#fb6542;
+        color:black;
+    }
+
+    .btn-default.active.focus, .btn-default.active:focus, .btn-default.active:hover, .btn-default:active.focus,
+    .btn-default:active:focus, .btn-default:active:hover,.btn-default:hover,.btn-default:active,.btn-default:focus
+    {
+        background-color:#fd8c71;
+        color:#000000;
+    }
+
+    #calculate {
+        position:relative;
+        top:36px;
+        right:50px;
+    }
+    .form-group {
+        margin-top:10px;
+    }
+
+    .form-control{
+        font-size:24px;
+    }
+
+    .form-inline .form-group input{
+        width:80%;
+        height:36px;
+    }
+    #errors {
+        color:red;
+        margin-top:10px;
+        position:relative;
+        top:10px;
+        right:50px;
+        z-index:-100;
+    }
+
+    </style>
+</head>
+<body>
+    <div class="col-sm-12" style="background-color: #ffbb00; text-align:center">
+        <div class="col-sm-1" style="position:relative;top:2px">
+            <a id="home" href="/">Home</a></span>
+        </div>
+        <div class="col-sm-10">
+            <a id="mysite" href="http://www.omnesres.com/">Omnes Res</a>
+        </div>
+        <div class="col-sm-1">
+        </div>          
+    </div>
+    <div class="col-sm-12" style="text-align:center">
+        <h2>One Way ANOVA</h2>
+        <div class="col-sm-12">
+            <div class="col-sm-5">
+            </div>
+            <div class="col-sm-2">
+                <a href="/">
+                    <img src="https://s3.amazonaws.com/prepubmed/first_logo.png" style="height:90px;margin-top:10px" class="img-responsive center-block"   >
+                </a>
+            </div>
+            <div class="col-sm-5">
+            </div>
+        </div>
+    <div class="col-sm-12">
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-9" style="margin-top:10px;text-align:justify">
+            <p>The test below will recalculate One Way ANOVAs allowing for rounding uncertainty. Fill out as many columns as you need.  Note that an ANOVA with only two conditions is just a t test, so you can also check t tests here.</p>
+        </div>
+        <div class="col-sm-2">
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <form action="/anova/" method="get" class="form-inline entry" style="text-align:center">
+            <div class="col-sm-12">
+                <div style="font-size:20px;margin-top:0px">
+                    <div class="col-sm-12" style="padding=0px">
+                        <div class="col-sm-2" style="font-size:24px;margin-top:40px;text-align:right">
+                            Sample sizes
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="size1">Condition 1</label>
+                            <div>
+                                <input type="text" class="form-control" name="size1" maxlength=12 id="size1" value={{size1}}>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="size2">Condition 2</label>
+                            <div>
+                                <input type="text" class="form-control" name="size2" maxlength=10 id="size2" value={{size2}}>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="size3">Condition 3</label>
+                            <div>
+                                <input type="text" class="form-control" name="size3" maxlength=10 id="size3" value={{size3}}>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="size3">Condition 4</label>
+                            <div>
+                                <input type="text" class="form-control" name="size4" maxlength=10 id="size4" value={{size4}}>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                        </div>
+                    </div>
+                    <div class="col-sm-12" style="padding=0px">
+                        <div class="col-sm-2" style="font-size:24px;margin-top:10px;text-align:right">
+                            Means
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <div>
+                                <input type="text" class="form-control" name="mean1" maxlength=12 id="mean1" value={{mean1}}>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <div>
+                                <input type="text" class="form-control" name="mean2" maxlength=10 id="mean2" value={{mean2}}>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <div>
+                                <input type="text" class="form-control" name="mean3" maxlength=10 id="mean3" value={{mean3}}>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <div>
+                                <input type="text" class="form-control" name="mean4" maxlength=10 id="mean4" value={{mean4}}>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                        </div>
+                    </div>
+                    <div class="col-sm-12" style="padding=0px">
+                        <div class="col-sm-2" style="font-size:24px;margin-top:10px;text-align:right">
+                            SDs
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <div>
+                                <input type="text" class="form-control" name="sd1" maxlength=12 id="sd1" value={{sd1}}>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <div>
+                                <input type="text" class="form-control" name="sd2" maxlength=10 id="sd2" value={{sd2}}>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <div>
+                                <input type="text" class="form-control" name="sd3" maxlength=10 id="sd3" value={{sd3}}>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <div>
+                                <input type="text" class="form-control" name="sd4" maxlength=10 id="sd4" value={{sd4}}>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                        </div>
+                    </div>
+                    {% if unicode %}
+                    <p id="errors">
+                    Please no unicode values
+                    </p>
+                    {% elif decimal %}
+                    <p id="errors">
+                    Please enter a number with decimal places for mean/sd
+                    </p>
+                    {% elif conditions %}
+                    <p id="errors">
+                    Please fill out more than one column
+                    </p>
+                    {% elif mean_decimals %}
+                    <p id="errors">
+                    Please enter the same number of decimals for each mean
+                    </p>
+                    {% elif sd_decimals %}
+                    <p id="errors">
+                    Please enter the same number of decimals for each sd
+                    </p>
+                    {% elif size_number %}
+                    <p id="errors">
+                    Please enter a whole number for size
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+        <button id="calculate" type="submit" class="btn btn-default" style="font-size:24px;color:white;margin-left:100px">Calculate</button>
+        </form>
+    </div>
+    {% if not home %}
+    {% if no_error %}
+    <div class="col-sm-12" style="margin-top:60px;font-size:24px">
+        F statistic can be anywhere between
+        <br>
+        {{result}}
+    </div>
+    {% endif %}
+    {% endif %}
+</body>
+</html>

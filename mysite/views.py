@@ -16,6 +16,13 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 import re
 
+def one_way(means,sds,sizes):
+    x=sum([u*n for u,n in zip(means,sizes)])/sum(sizes)
+    sb=sum([n*(u-x)**2 for u,n in zip(means,sizes)])/(len(means)-1)
+    sw=sum([(n-1)*s**2 for s,n in zip(sds,sizes)])/(sum(sizes)-len(means))
+    return sb/sw
+
+
 def ad_au_query(first,middle,last):
     and_query = None
     if first:
@@ -131,6 +138,207 @@ def my_help(request):
 
 def data_thugging(request):
     return render(request, 'data_thugging.html')
+
+def anova(request):
+    if request.META.get('HTTP_REFERER',False):
+        sizes=[]
+        means=[]
+        sds=[]
+        if 'size1' in request.GET:
+            if str(request.GET['size1']).strip()!='':
+                try:
+                    size1=str(request.GET['size1']).strip()
+                    mean1=str(request.GET['mean1']).strip()
+                    sd1=str(request.GET['sd1']).strip()
+                except:
+                    return render(request, 'anova.html', {'unicode':True})
+                if '.' in mean1:
+                    try:
+                        float(mean1)
+                    except:
+                        return render(request, 'anova.html', {'decimal':True})
+                    if re.search('^[0-9]+$',size1):
+                        size1=int(size1)
+                    else:
+                        return render(request, 'anova.html', {'size_number':True})
+                    if '.' in sd1:
+                        try:
+                            float(sd1)
+                        except:
+                            return render(request, 'anova.html', {'decimal':True})
+                    else:
+                        return render(request, 'anova.html', {'decimal':True})
+                else:
+                    return render(request, 'anova.html', {'decimal':True})
+                sizes.append(size1)
+                means.append(mean1)
+                sds.append(sd1)
+            else:
+                size1=''
+                mean1=''
+                sd1=''
+            if str(request.GET['size2']).strip()!='':
+                try:
+                    size2=str(request.GET['size2']).strip()
+                    mean2=str(request.GET['mean2']).strip()
+                    sd2=str(request.GET['sd2']).strip()
+                except:
+                    return render(request, 'anova.html', {'unicode':True})
+                if '.' in mean2:
+                    try:
+                        float(mean2)
+                    except:
+                        return render(request, 'anova.html', {'decimal':True})
+                    if re.search('^[0-9]+$',size2):
+                        size2=int(size2)
+                    else:
+                        return render(request, 'anova.html', {'size_number':True})
+                    if '.' in sd2:
+                        try:
+                            float(sd2)
+                        except:
+                            return render(request, 'anova.html', {'decimal':True})
+                    else:
+                        return render(request, 'anova.html', {'decimal':True})
+                else:
+                    return render(request, 'anova.html', {'decimal':True})
+                sizes.append(size2)
+                means.append(mean2)
+                sds.append(sd2)
+            else:
+                size2=''
+                mean2=''
+                sd2=''
+            if str(request.GET['size3']).strip()!='':
+                try:
+                    size3=str(request.GET['size3']).strip()
+                    mean3=str(request.GET['mean3']).strip()
+                    sd3=str(request.GET['sd3']).strip()
+                except:
+                    return render(request, 'anova.html', {'unicode':True})
+                if '.' in mean3:
+                    try:
+                        float(mean3)
+                    except:
+                        return render(request, 'anova.html', {'decimal':True})
+                    if re.search('^[0-9]+$',size3):
+                        size3=int(size3)
+                    else:
+                        return render(request, 'anova.html', {'size_number':True})
+                    if '.' in sd3:
+                        try:
+                            float(sd3)
+                        except:
+                            return render(request, 'anova.html', {'decimal':True})
+                    else:
+                        return render(request, 'anova.html', {'decimal':True})
+                else:
+                    return render(request, 'anova.html', {'decimal':True})
+                sizes.append(size3)
+                means.append(mean3)
+                sds.append(sd3)
+            else:
+                size3=''
+                mean3=''
+                sd3=''
+            if str(request.GET['size4']).strip()!='':
+                try:
+                    size4=str(request.GET['size4']).strip()
+                    mean4=str(request.GET['mean4']).strip()
+                    sd4=str(request.GET['sd4']).strip()
+                except:
+                    return render(request, 'anova.html', {'unicode':True})
+                if '.' in mean4:
+                    try:
+                        float(mean4)
+                    except:
+                        return render(request, 'anova.html', {'decimal':True})
+                    if re.search('^[0-9]+$',size4):
+                        size4=int(size4)
+                    else:
+                        return render(request, 'anova.html', {'size_number':True})
+                    if '.' in sd4:
+                        try:
+                            float(sd4)
+                        except:
+                            return render(request, 'anova.html', {'decimal':True})
+                    else:
+                        return render(request, 'anova.html', {'decimal':True})
+                else:
+                    return render(request, 'anova.html', {'decimal':True})
+                sizes.append(size4)
+                means.append(mean4)
+                sds.append(sd4)
+            else:
+                size4=''
+                mean4=''
+                sd4=''
+        else:
+            return render(request, 'anova.html',{'home':True})
+        if len(sizes)<=1:
+            return render(request, 'anova.html', {'conditions':True})
+        else:
+            mean_decimals=len(means[0].split('.')[1])
+            for i in means:
+                if len(i.split('.')[1])!=mean_decimals:
+                    return render(request, 'anova.html', {'mean_decimals':True,\
+                                                          'mean1':mean1,\
+                                                          'mean2':mean2,\
+                                                          'mean3':mean3,\
+                                                          'mean4':mean4,\
+                                                          'sd1':sd1,\
+                                                          'sd2':sd2,\
+                                                          'sd3':sd3,\
+                                                          'sd4':sd4,\
+                                                          'size1':str(size1),'size2':str(size2),'size3':str(size3),'size4':str(size4)})
+            means=map(float,means)
+            sd_decimals=len(sds[0].split('.')[1])
+            for i in sds:
+                if len(i.split('.')[1])!=mean_decimals:
+                    return render(request, 'anova.html', {'sd_decimals':True,\
+                                                          'mean1':mean1,\
+                                                          'mean2':mean2,\
+                                                          'mean3':mean3,\
+                                                          'mean4':mean4,\
+                                                          'sd1':sd1,\
+                                                          'sd2':sd2,\
+                                                          'sd3':sd3,\
+                                                          'sd4':sd4,\
+                                                          'size1':str(size1),'size2':str(size2),'size3':str(size3),'size4':str(size4)})
+            sds=map(float,sds)
+            from itertools import combinations_with_replacement
+            from itertools import permutations
+            import numpy as np
+            combos={}
+            for combo in combinations_with_replacement([0,.5/10**mean_decimals,-.5/10**mean_decimals],len(means)):
+                for permut in permutations(combo):
+                    combos[permut]=''
+            means=np.array(means)
+            sds=np.array(sds)
+            min_sds=sds+.5/10**sd_decimals
+            mins=[]
+            for combination in combos:
+                mins.append(one_way(means+combination,min_sds,sizes))
+            min_test=sorted(mins)[0]
+            max_sds=sds-.5/10**sd_decimals
+            maxs=[]
+            for combination in combos:
+                maxs.append(one_way(means+combination,max_sds,sizes))
+            max_test=sorted(maxs)[-1]
+            result=("%.5f") % round(min_test,5)+' to '+("%.5f") % round(max_test,5)
+            return render(request, 'anova.html', {'no_error':True,\
+                                                  'mean1':mean1,\
+                                                  'mean2':mean2,\
+                                                  'mean3':mean3,\
+                                                  'mean4':mean4,\
+                                                  'sd1':sd1,\
+                                                  'sd2':sd2,\
+                                                  'sd3':sd3,\
+                                                  'sd4':sd4,\
+                                                  'size1':str(size1),'size2':str(size2),'size3':str(size3),'size4':str(size4),\
+                                                  'result':result})
+    else:
+        return render(request, 'anova.html',{'home':True,})
 
 def top_preprints(request):
     return render(request, 'top_preprints.html')
