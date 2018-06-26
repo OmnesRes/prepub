@@ -16,11 +16,29 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 import re
 
+def variance(data,u):
+    return sum([(i-u)**2 for i in data])/len(data)
+
 def one_way(means,sds,sizes):
     x=sum([u*n for u,n in zip(means,sizes)])/sum(sizes)
     sb=sum([n*(u-x)**2 for u,n in zip(means,sizes)])/(len(means)-1)
     sw=sum([(n-1)*s**2 for s,n in zip(sds,sizes)])/(sum(sizes)-len(means))
     return sb/sw
+
+def two_way(n,u,s):
+    '''n,u, and s are numpy matrices containing floats'''
+    sizes=[float(x) for b in n.tolist() for x in b]
+    sds=[float(x) for b in s.tolist() for x in b]
+    means=[float(x) for b in u.tolist() for x in b]
+    Nh=len(sizes)**2/sum([1/i for i in sizes])
+    MSw=sum([(i-1)*j**2 for i,j in zip(sizes,sds)])/(sum(sizes)-len(sizes))
+    SSbc=Nh*variance(means,sum(means)/len(means))
+    row_ms=[i.sum()/len(i.tolist()[0]) for i in u]
+    SSr=Nh*variance(row_ms,sum(row_ms)/len(row_ms))
+    col_ms=[i.sum()/len(i.tolist()[0]) for i in u.T]
+    SSc=Nh*variance(col_ms,sum(col_ms)/len(col_ms))
+    SSint=SSbc-SSr-SSc
+    return SSr/MSw/(n.shape[0]-1),SSc/MSw/(n.shape[1]-1),SSint/MSw/((n.shape[0]-1)*(n.shape[1]-1))
 
 
 def ad_au_query(first,middle,last):
@@ -339,6 +357,122 @@ def anova(request):
                                                   'result':result})
     else:
         return render(request, 'anova.html',{'home':True,})
+
+
+def anova_2way(request):
+    if request.META.get('HTTP_REFERER',False):
+        if 'sizea1b1' in request.GET:
+            try:
+                sizea1b1=str(request.GET['sizea1b1']).strip()
+                sizea1b2=str(request.GET['sizea1b2']).strip()
+                sizea2b1=str(request.GET['sizea2b1']).strip()
+                sizea2b2=str(request.GET['sizea2b2']).strip()
+                meana1b1=str(request.GET['meana1b1']).strip()
+                meana1b2=str(request.GET['meana1b2']).strip()
+                meana2b1=str(request.GET['meana2b1']).strip()
+                meana2b2=str(request.GET['meana2b2']).strip()
+                sda1b1=str(request.GET['sda1b1']).strip()
+                sda1b2=str(request.GET['sda1b2']).strip()
+                sda2b1=str(request.GET['sda2b1']).strip()
+                sda2b2=str(request.GET['sda2b2']).strip()
+            except:
+                return render(request, 'anova_2way.html', {'unicode':True})
+            if '.' in meana1b1 and '.' in meana1b2 and '.' in meana2b1 and '.' in meana2b2:
+                try:
+                    float(meana1b1)
+                    float(meana1b2)
+                    float(meana2b1)
+                    float(meana2b2)
+                except:
+                    return render(request, 'anova_2way.html', {'decimal':True})
+                if re.search('^[0-9]+$',sizea1b1) and re.search('^[0-9]+$',sizea1b2)\
+                   and re.search('^[0-9]+$',sizea2b1) and re.search('^[0-9]+$',sizea2b2):
+                    sizea1b1=int(sizea1b1)
+                    sizea1b2=int(sizea1b2)
+                    sizea2b1=int(sizea2b1)
+                    sizea2b2=int(sizea2b2)
+                else:
+                    return render(request, 'anova_2way.html', {'size_number':True})
+                if '.' in sda1b1 and '.' in sda1b2 and '.' in sda2b1 and '.' in sda2b2:
+                    try:
+                        float(sda1b1)
+                        float(sda1b2)
+                        float(sda2b1)
+                        float(sda2b2)
+                    except:
+                        return render(request, 'anova_2way.html', {'decimal':True})
+                else:
+                    return render(request, 'anova_2way.html', {'decimal':True})
+            else:
+                return render(request, 'anova_2way.html', {'decimal':True})
+            sizes=[sizea1b1,sizea1b2,sizea2b1,sizea2b2]
+            means=[meana1b1,meana1b2,meana2b1,meana2b2]
+            sds=[sda1b1,sda1b2,sda2b1,sda2b2]
+            mean_decimals=len(means[0].split('.')[1])
+            for i in means:
+                if len(i.split('.')[1])!=mean_decimals:
+                    return render(request, 'anova_2way.html', {'mean_decimals':True,\
+                                                          'meana1b1':meana1b1,\
+                                                          'meana1b2':meana1b2,\
+                                                          'meana2b1':meana2b1,\
+                                                          'meana2b2':meana2b2,\
+                                                          'sda1b1':sda1b1,\
+                                                          'sda1b2':sda1b2,\
+                                                          'sda2b1':sda2b1,\
+                                                          'sda2b2':sda2b2,\
+                                                          'sizea1b1':str(sizea1b1),'sizea1b2':str(sizea1b2),'sizea2b1':str(sizea2b1),'sizea2b2':str(sizea2b2)})
+            means=map(float,means)
+            sd_decimals=len(sds[0].split('.')[1])
+            for i in sds:
+                if len(i.split('.')[1])!=sd_decimals:
+                    return render(request, 'anova_2way.html', {'sd_decimals':True,\
+                                                          'meana1b1':meana1b1,\
+                                                          'meana1b2':meana1b2,\
+                                                          'meana2b1':meana2b1,\
+                                                          'meana2b2':meana2b2,\
+                                                          'sda1b1':sda1b1,\
+                                                          'sda1b2':sda1b2,\
+                                                          'sda2b1':sda2b1,\
+                                                          'sda2b2':sda2b2,\
+                                                          'sizea1b1':str(sizea1b1),'sizea1b2':str(sizea1b2),'sizea2b1':str(sizea2b1),'sizea2b2':str(sizea2b2)})
+            sds=map(float,sds)
+            from itertools import combinations_with_replacement
+            from itertools import permutations
+            import numpy as np
+            n=np.matrix([sizes[:2],sizes[2:]])
+            u=np.matrix([means[:2],means[2:]])
+            s=np.matrix([sds[:2],sds[2:]])
+            combos={}
+            for combo in combinations_with_replacement([0,.5/10**mean_decimals,-.5/10**mean_decimals],4):
+                for permut in permutations(combo):
+                    combos[permut]=''
+            min_sds=s+.5/10**sd_decimals
+            mins=[]
+            for combination in combos:
+                mins.append(two_way(n,u+[combination[:2],combination[2:]],min_sds))
+            min_test=sorted(mins)[0]
+            max_sds=s-.5/10**sd_decimals
+            maxs=[]
+            for combination in combos:
+                maxs.append(two_way(n,u+[combination[:2],combination[2:]],max_sds))
+            max_test=sorted(maxs)[-1]
+            result=['Factor A: '+("%.5f") % round(min_test[0],5)+' to '+("%.5f") % round(max_test[0],5),\
+                    'Factor B: '+("%.5f") % round(min_test[1],5)+' to '+("%.5f") % round(max_test[1],5),\
+                    'Between: '+("%.5f") % round(min_test[2],5)+' to '+("%.5f") % round(max_test[2],5)]
+            return render(request, 'anova_2way.html', {'no_error':True,\
+                                                          'meana1b1':meana1b1,\
+                                                          'meana1b2':meana1b2,\
+                                                          'meana2b1':meana2b1,\
+                                                          'meana2b2':meana2b2,\
+                                                          'sda1b1':sda1b1,\
+                                                          'sda1b2':sda1b2,\
+                                                          'sda2b1':sda2b1,\
+                                                          'sda2b2':sda2b2,\
+                                                          'sizea1b1':str(sizea1b1),'sizea1b2':str(sizea1b2),'sizea2b1':str(sizea2b1),'sizea2b2':str(sizea2b2),\
+                                                        'result':result})
+        else:
+            return render(request, 'anova_2way.html',{'home':True})
+    return render(request, 'anova_2way.html')
 
 def top_preprints(request):
     return render(request, 'top_preprints.html')
