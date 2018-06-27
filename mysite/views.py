@@ -333,6 +333,8 @@ def anova(request):
                     combos[permut]=''
             means=np.array(means)
             sds=np.array(sds)
+            test=one_way(means,sds,sizes)
+            exact=("%.5f") % round(test,5)
             min_sds=sds+.5/10**sd_decimals
             mins=[]
             for combination in combos:
@@ -354,7 +356,7 @@ def anova(request):
                                                   'sd3':sd3,\
                                                   'sd4':sd4,\
                                                   'size1':str(size1),'size2':str(size2),'size3':str(size3),'size4':str(size4),\
-                                                  'result':result})
+                                                  'result':result,'exact':exact})
     else:
         return render(request, 'anova.html',{'home':True,})
 
@@ -442,6 +444,10 @@ def anova_2way(request):
             n=np.matrix([sizes[:2],sizes[2:]])
             u=np.matrix([means[:2],means[2:]])
             s=np.matrix([sds[:2],sds[2:]])
+            test=two_way(n,u,s)
+            exact=['Factor A:   '+("%.5f") % round(test[0],5),\
+                   'Factor B:   '+("%.5f") % round(test[1],5),\
+                   'Between:   '+("%.5f") % round(test[2],5)]
             combos={}
             for combo in combinations_with_replacement([0,.5/10**mean_decimals,-.5/10**mean_decimals],4):
                 for permut in permutations(combo):
@@ -450,15 +456,16 @@ def anova_2way(request):
             mins=[]
             for combination in combos:
                 mins.append(two_way(n,u+[combination[:2],combination[2:]],min_sds))
-            min_test=sorted(mins)[0]
+            ##sort fucked
+            min_test=[sorted([i[0] for i in mins])[0],sorted([i[1] for i in mins])[0],sorted([i[2] for i in mins])[0]]
             max_sds=s-.5/10**sd_decimals
             maxs=[]
             for combination in combos:
                 maxs.append(two_way(n,u+[combination[:2],combination[2:]],max_sds))
-            max_test=sorted(maxs)[-1]
-            result=['Factor A: '+("%.5f") % round(min_test[0],5)+' to '+("%.5f") % round(max_test[0],5),\
-                    'Factor B: '+("%.5f") % round(min_test[1],5)+' to '+("%.5f") % round(max_test[1],5),\
-                    'Between: '+("%.5f") % round(min_test[2],5)+' to '+("%.5f") % round(max_test[2],5)]
+            max_test=[sorted([i[0] for i in maxs])[-1],sorted([i[1] for i in maxs])[-1],sorted([i[2] for i in maxs])[-1]]
+            result=['Factor A:   '+("%.5f") % round(min_test[0],5)+' to '+("%.5f") % round(max_test[0],5),\
+                    'Factor B:   '+("%.5f") % round(min_test[1],5)+' to '+("%.5f") % round(max_test[1],5),\
+                    'Between:   '+("%.5f") % round(min_test[2],5)+' to '+("%.5f") % round(max_test[2],5)]
             return render(request, 'anova_2way.html', {'no_error':True,\
                                                           'meana1b1':meana1b1,\
                                                           'meana1b2':meana1b2,\
@@ -469,7 +476,7 @@ def anova_2way(request):
                                                           'sda2b1':sda2b1,\
                                                           'sda2b2':sda2b2,\
                                                           'sizea1b1':str(sizea1b1),'sizea1b2':str(sizea1b2),'sizea2b1':str(sizea2b1),'sizea2b2':str(sizea2b2),\
-                                                        'result':result})
+                                                        'result':result,'exact':exact})
         else:
             return render(request, 'anova_2way.html',{'home':True})
     return render(request, 'anova_2way.html')
