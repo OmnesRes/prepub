@@ -112,7 +112,7 @@
         </div>          
     </div>
     <div class="col-sm-12" style="text-align:center">
-        <h2>One-Way ANOVA</h2>
+        <h2>Two-Way ANOVA</h2>
         <div class="col-sm-12">
             <div class="col-sm-5">
             </div>
@@ -128,68 +128,82 @@
         <div class="col-sm-1">
         </div>
         <div class="col-sm-9" style="margin-top:10px;text-align:justify">
-            <p>The test below will recalculate one-way ANOVAs allowing for rounding uncertainty in the means and SDs. Fill out as many columns as you need.  Note that an ANOVA with only two conditions is just a t test, so you can also check t statistics here if you take the square root of the F statistic.</p>
+            <p>The test below will recalculate Type 3 SS two-way ANOVAs allowing for rounding uncertainty in the reported means and SDs.</p>
         </div>
         <div class="col-sm-2">
         </div>
     </div>
-    <div class="col-sm-12">
-        <form action="/anova/" method="get" class="form-inline entry" style="text-align:center">
+    <div class="col-sm-12" style="margin-top:10px">
+        <form action="/anova_2way/" method="get" class="form-inline entry" style="text-align:center">
             <div class="col-sm-12">
                 <div style="font-size:20px;margin-top:0px">
-                    <div class="col-sm-12" style="padding=0px">
-                        <div class="col-sm-2" style="font-size:24px;margin-top:40px;text-align:right">
+                    <div class="col-sm-12">
+                        <div class="col-sm-2" style="font-size:24px;margin-top:100px;text-align:right">
                             Sample sizes
                         </div>
-                        <div class="form-group col-sm-2">
-                            <label for="size1">Condition 1</label>
-                            <div>
-                                <input type="text" class="form-control" name="size1" maxlength=12 id="size1" value={{size1}}>
+                        <div class="col-sm-4">
+                            <div class="col-sm-12">
+                                <b>Factor A, Condition 1</b>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="sizea1b1">Factor B, Condition 1</label>
+                                <div>
+                                    <input type="text" class="form-control" name="sizea1b1" maxlength=12 id="sizea1b1" value={{sizea1b1}}>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <label for="sizea1b2">Factor B, Condition 2</label>
+                                <div>
+                                    <input type="text" class="form-control" name="sizea1b2" maxlength=10 id="sizea1b2" value={{sizea1b2}}>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group col-sm-2">
-                            <label for="size2">Condition 2</label>
-                            <div>
-                                <input type="text" class="form-control" name="size2" maxlength=10 id="size2" value={{size2}}>
+                        <div class="col-sm-4">
+                            <div class="col-sm-12">
+                                <b>Factor A, Condition 2</b>
                             </div>
-                        </div>
-                        <div class="form-group col-sm-2">
-                            <label for="size3">Condition 3</label>
-                            <div>
-                                <input type="text" class="form-control" name="size3" maxlength=10 id="size3" value={{size3}}>
+                            <div class="form-group col-sm-6">
+                                <label for="sizea2b1">Factor B, Condition 1</label>
+                                <div>
+                                    <input type="text" class="form-control" name="sizea2b1" maxlength=10 id="sizea2b1" value={{sizea2b1}}>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group col-sm-2">
-                            <label for="size3">Condition 4</label>
-                            <div>
-                                <input type="text" class="form-control" name="size4" maxlength=10 id="size4" value={{size4}}>
+                            <div class="form-group col-sm-6">
+                                <label for="sizea2b2">Factor B, Condition 2</label>
+                                <div>
+                                    <input type="text" class="form-control" name="sizea2b2" maxlength=10 id="sizea2b2" value={{sizea2b2}}>
+                                </div>
                             </div>
                         </div>
                         <div class="col-sm-2">
                         </div>
                     </div>
-                    <div class="col-sm-12" style="padding=0px">
+                    <div class="col-sm-12">
                         <div class="col-sm-2" style="font-size:24px;margin-top:10px;text-align:right">
                             Means
                         </div>
-                        <div class="form-group col-sm-2">
-                            <div>
-                                <input type="text" class="form-control" name="mean1" maxlength=12 id="mean1" value={{mean1}}>
+                        <div class="col-sm-4">
+                            <div class="form-group col-sm-6">
+                                <div>
+                                    <input type="text" class="form-control" name="meana1b1" maxlength=12 id="meana1b1" value={{meana1b1}}>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <div>
+                                    <input type="text" class="form-control" name="meana1b2" maxlength=10 id="meana1b2" value={{meana1b2}}>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group col-sm-2">
-                            <div>
-                                <input type="text" class="form-control" name="mean2" maxlength=10 id="mean2" value={{mean2}}>
+                        <div class="col-sm-4">
+                            <div class="form-group col-sm-6">
+                                <div>
+                                    <input type="text" class="form-control" name="meana2b1" maxlength=10 id="meana2b1" value={{meana2b1}}>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group col-sm-2">
-                            <div>
-                                <input type="text" class="form-control" name="mean3" maxlength=10 id="mean3" value={{mean3}}>
-                            </div>
-                        </div>
-                        <div class="form-group col-sm-2">
-                            <div>
-                                <input type="text" class="form-control" name="mean4" maxlength=10 id="mean4" value={{mean4}}>
+                            <div class="form-group col-sm-6">
+                                <div>
+                                    <input type="text" class="form-control" name="meana2b2" maxlength=10 id="meana2b2" value={{meana2b2}}>
+                                </div>
                             </div>
                         </div>
                         <div class="col-sm-2">
@@ -199,24 +213,28 @@
                         <div class="col-sm-2" style="font-size:24px;margin-top:10px;text-align:right">
                             SDs
                         </div>
-                        <div class="form-group col-sm-2">
-                            <div>
-                                <input type="text" class="form-control" name="sd1" maxlength=12 id="sd1" value={{sd1}}>
+                        <div class="col-sm-4">
+                            <div class="form-group col-sm-6">
+                                <div>
+                                    <input type="text" class="form-control" name="sda1b1" maxlength=12 id="sda1b1" value={{sda1b1}}>
+                                </div>
+                            </div>
+                            <div class="form-group col-sm-6">
+                                <div>
+                                    <input type="text" class="form-control" name="sda1b2" maxlength=10 id="sda1b2" value={{sda1b2}}>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group col-sm-2">
-                            <div>
-                                <input type="text" class="form-control" name="sd2" maxlength=10 id="sd2" value={{sd2}}>
+                        <div class="col-sm-4">
+                            <div class="form-group col-sm-6">
+                                <div>
+                                    <input type="text" class="form-control" name="sda2b1" maxlength=10 id="sda2b1" value={{sda2b1}}>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group col-sm-2">
-                            <div>
-                                <input type="text" class="form-control" name="sd3" maxlength=10 id="sd3" value={{sd3}}>
-                            </div>
-                        </div>
-                        <div class="form-group col-sm-2">
-                            <div>
-                                <input type="text" class="form-control" name="sd4" maxlength=10 id="sd4" value={{sd4}}>
+                            <div class="form-group col-sm-6">
+                                <div>
+                                    <input type="text" class="form-control" name="sda2b2" maxlength=10 id="sda2b2" value={{sda2b2}}>
+                                </div>
                             </div>
                         </div>
                         <div class="col-sm-2">
@@ -254,14 +272,16 @@
     </div>
     {% if not home %}
     {% if no_error %}
-    <div class="col-sm-12" style="margin-top:20px;font-size:24px">
+    <div class="col-sm-12" style="margin-top:20px;font-size:20px">
         <div class="col-sm-2">
         </div>
         <div class="col-sm-4" style="margin-top:0px;white-space:pre-wrap">
-Exact:  {{exact}}
+Exact
+{% for i in exact %}{{i}}<br>{% endfor %}
         </div>
         <div class="col-sm-4" style="margin-top:0px;white-space:pre-wrap">
-Range:  {{result}}
+Range
+{% for i in result %}{{i}}<br>{% endfor %}
         </div>
         <div class="col-sm-2">
         </div>
