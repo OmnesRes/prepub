@@ -548,9 +548,15 @@ for attempt in range(3):
             soup=BeautifulSoup(r.content)
             dates.append(soup.find('li',{'class':"published"}).text.strip('Posted').strip())
             try:
-                abstracts.append(soup.find('p',{'id':"p-2"}).text.strip())
+                try:
+                    abstracts.append(soup.find('p',{'id':"p-2"}).text.strip())
+                except:
+                    abstracts.append(soup.find('p',{'id':"p-1"}).text.strip())
             except:
-                abstracts.append(soup.find('p',{'id':"p-1"}).text.strip())
+                for l in soup.find_all('meta'):
+                    if l.get('name')=='DC.Description':
+                        abstracts.append(l.get('content'))
+                        break
             temp=[]
             unique_aff={}
             for j in soup.find_all('span',{'class':'nlm-aff'}):
