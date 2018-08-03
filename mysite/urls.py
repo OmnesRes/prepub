@@ -43,4 +43,5 @@ urlpatterns = [
     url(r'^data_thugging/$',views.data_thugging),
     url(r'^anova/$',views.anova),
     url(r'^anova_2way/$',views.anova_2way),
+    url(r'^shame/$',views.shame),
 ]

@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title> {% block title %}PrePubMed{% endblock %} </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Vollkorn">
+    <link rel="shortcut icon" href="https://s3.amazonaws.com/prepubmed/prepub_favicon.ico" type="image/x-icon">
+    <link rel="icon" href="https://s3.amazonaws.com/prepubmed/prepub_favicon.ico" type="image/x-icon">
+    <style>
+     body{
+        font-family:"Arial",sans-serif;
+    }
+    #mysite {
+    font-family: "Vollkorn", serif;
+    margin: 0px;
+    padding: 0px;
+    color:black;
+    }
+    a {
+        font-weight: 500;
+        color:#375e97;
+        text-decoration:none;
+    }
+
+    a:hover {
+        font-weight: 500;
+        text-decoration:underline;
+    }
+    div form {
+        position:relative;
+        top:5px;
+
+    }
+
+
+    h1, h2, h3 {
+        color:#ff0000;
+        padding:0px;
+        margin-bottom:5px;
+        margin-top:10px;
+    }
+
+
+    span.tab{
+    padding: 0 30px;
+    position:relative;
+    }
+    img {
+        position:relative;
+        left:10px;
+    }
+    p {
+        font-size:20px
+    }
+    .btn{
+        font-size:24px;
+        border: 0 none;
+
+    }
+    .btn-primary{
+        background-color:#ffbb00;
+        color:#000000;
+
+    }
+    .btn-primary.active.focus, .btn-primary.active:focus, .btn-primary.active:hover, .btn-primary:active.focus,
+    .btn-primary:active:focus, .btn-primary:active:hover,.btn-primary:hover,.btn-primary:active,.btn-primary:focus
+    {
+        background-color:#ffcc40;
+        color:#000000;
+    }
+
+    .entry{
+        position:relative;
+        left:30px;
+    }
+    button{
+        clear:all;
+        position:relative;
+        left:10px;
+    }
+    .form-control{
+        font-size:32px;
+    }
+    .form-inline .form-group{
+        width:90%;
+    }
+    .form-inline .form-group input{
+        width:80%;
+        height:48px;
+    }
+    #help {
+        position:relative;
+        left:75%;
+    }
+    #grad {
+  background: #369; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(left, #369,#19334d, #141927); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(right, #369,#19334d, #141927); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(right, #369,#19334d, #141927); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to right, #369,#19334d, #141927); /* Standard syntax */
+} 
+
+    #search_area{
+        background-color: #b5d998; 
+        min-height: 100px;
+        box-shadow: 0px -1px 3px  #999999 inset;
+
+    }
+
+    </style>
+</head>
+<body>
+    <div class="col-sm-12" style="background-color: #ffbb00">
+        <a id="mysite" href="http://www.omnesres.com/" style="font-size: 24px;padding-left:20px">Omnes Res</a>        
+    </div>
+    <div id="search_area" class="col-sm-12">
+        <div class="col-sm-1" style="margin-top:5px">
+            <a href="/">
+                <img src="https://s3.amazonaws.com/prepubmed/first_logo.png" style="height:90px">
+            </a>
+        </div>
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-10" style="vertical-align:middle;margin-top:15px">
+            <form action="/search_results/" method="get" class="form-inline entry">
+                <div class="form-group">
+                    <input type="text" class="form-control" name="q" maxlength=150>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </form>
+            <div id="links" style="margin-top:6px;font-size:20px">
+                <span style="margin-left:30px"><a href="/advanced_search/">Advanced</a></span>
+                <span id='help'><a href="/help/">Help</a></span>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12" style="margin-bottom:200px">
+        <div class="col-sm-1">
+        </div>
+        <div class="col-sm-9" style="margin-top:10px;text-align:justify">
+            <h1 align="center">Wall of Shame</h1>
+            <p>The following bioRxiv preprints appear to have been posted after acceptance, which is not only deceptive and bad practice, but against bioRxiv policies.  Unfortunately these are not the only preprints deserving of shame.  Michael Eisen has <a href="https://www.the-scientist.com/news-analysis/do-preprints-require-more-rigorous-screening-31147">said</a> that preprints without methods should just be called "ads".  John Didion has <a href="https://twitter.com/jdidion/status/1022584375257518080">suggested</a> that these be called "TEDprints".  I would also include preprints which don't have data or code in these categories, but I don't have a means for systematically finding "TEDprints", so I can't include them in this list.</p>
+            <p style="margin-bottom:50px">The information presented here can be easily confirmed by following the links. I double checked it but if you notice any errors let me know.  One note: I'm using the date of the first preprint version if there are multiple versions.
+           <h3>Long Range Force Transmission in Fibrous Matrices Enabled by Tension-Driven Alignment of Fibers</h3>
+<a href="https://doi.org/10.1016/j.bpj.2014.09.044" style="font-size:16px">Accepted: September 18, 2014</a><br><a href="https://doi.org/10.1101/048579" style="font-size:16px">Posted April 13, 2016.</a>
+<h3>Tree inference for single-cell data</h3>
+<a href="https://doi.org/10.1186/s13059-016-0936-x" style="font-size:16px">Accepted: 8 April 2016</a><br><a href="https://doi.org/10.1101/047795" style="font-size:16px">Posted April 9, 2016.</a>
+<h3>Structural and kinetic analysis of the COP9-Signalosome activation and the cullin-RING ubiquitin ligase deneddylation cycle</h3>
+<a href="https://doi.org/10.7554/eLife.12102" style="font-size:16px">Accepted: March 30, 2016</a><br><a href="https://doi.org/10.1101/046367" style="font-size:16px">Posted March 30, 2016</a>
+<h3>Mechanical signals inhibit growth of a grafted tumor in vivo: Proof of Concept</h3>
+<a href="https://doi.org/10.1371/journal.pone.0152885" style="font-size:16px">Accepted: March 21, 2016</a><br><a href="https://doi.org/10.1101/045534" style="font-size:16px">Posted March 24, 2016</a>
+<h3>Has the time come for preprints in biology?</h3>
+<a href="https://doi.org/10.1091/mbc.E16-02-0123" style="font-size:16px">Accepted: 18 March 2016</a><br><a href="https://doi.org/10.1101/045799" style="font-size:16px">Posted March 26, 2016</a>
+<h3>AuPairWise: a method to estimate RNA-seq replicability through co-expression</h3>
+<a href="https://doi.org/10.1371/journal.pcbi.1004868" style="font-size:16px">Accepted: March 14, 2016</a><br><a href="https://doi.org/10.1101/044669" style="font-size:16px">Posted March 21, 2016</a>
+<h3>Engineered kinesin motor proteins amenable to small molecule inhibition</h3>
+<a href="https://doi.org/10.1038/ncomms11159" style="font-size:16px">Accepted: 26 February 2016</a><br><a href="https://doi.org/10.1101/042663" style="font-size:16px">Posted March 7, 2016</a>
+<h3>Structure, inhibition and regulation of two-pore channel TPC1 from Arabidopsis thaliana</h3>
+<a href="https://doi.org/10.1038/nature17194" style="font-size:16px">Accepted: 02 February 2016</a><br><a href="https://doi.org/10.1101/041400" style="font-size:16px">Posted February 26, 2016</a>
+<h3>Reconstruction of ancestral genomes in presence of gene gain and loss.</h3>
+<a href="https://doi.org/10.1089/cmb.2015.0160" style="font-size:16px">Online Ahead of Print: February 17, 2016</a><br><a href="https://doi.org/10.1101/040196" style="font-size:16px">Posted February 19, 2016</a>
+<h3>Phenotypic plasticity promotes balanced polymorphism in periodic environments by a genomic storage effect</h3>
+<a href="https://doi.org/10.1534/genetics.115.185702" style="font-size:16px">Accepted January 29, 2016</a><br><a href="https://doi.org/10.1101/038497" style="font-size:16px">Posted February 2, 2016</a>
+<h3>On the Importance of Hydrodynamic Interactions in the Stepping Kinetics of Kinesin</h3>
+<a href="https://doi.org/10.1021/acs.jpcb.5b11153" style="font-size:16px">Publication Date (Web): December 24, 2015</a><br><a href="https://doi.org/10.1101/037408" style="font-size:16px">Posted January 28, 2016</a>
+<h3>How do metal ions direct ribozyme folding?</h3>
+<a href="https://doi.org/10.1038/nchem.2330" style="font-size:16px">Accepted: 20 July 2015</a><br><a href="https://doi.org/10.1101/037895" style="font-size:16px">Posted January 26, 2016</a>
+<h3>On Binocular Vision: The Geometric Horopter and Cyclopean Eye</h3>
+<a href="https://doi.org/10.1016/j.visres.2015.11.001" style="font-size:16px">Accepted 4 November 2015</a><br><a href="https://doi.org/10.1101/037069" style="font-size:16px">Posted January 18, 2016</a>
+<h3>Genome Sequences of Populus tremula Chloroplast and Mitochondrion: Implications for Holistic Poplar Breeding</h3>
+<a href="https://doi.org/10.1371/journal.pone.0147209" style="font-size:16px">Accepted: December 30, 2015</a><br><a href="https://doi.org/10.1101/035899" style="font-size:16px">Posted January 4, 2016</a>
+<h3>Diversity in Clinical and Biomedical Research: A Promise Yet to Be Fulfilled</h3>
+<a href="https://doi.org/10.1371/journal.pmed.1001918" style="font-size:16px">Published: December 15, 2015</a><br><a href="https://doi.org/10.1101/034538" style="font-size:16px">Posted December 16, 2015</a>
+<h3>Evidence of adoption, monozygotic twinning, and low inbreeding rates in a large genetic pedigree of polar bears</h3>
+<a href="https://doi.org/10.1007/s00300-015-1871-0" style="font-size:16px">Accepted: 15 December 2015</a><br><a href="https://doi.org/10.1101/034009" style="font-size:16px">Posted December 15, 2015</a>
+<h3>Proprioceptive feedback determines visuomotor gain inDrosophila</h3>
+<a href="https://doi.org/10.1098/rsos.150562" style="font-size:16px">Accepted December 4, 2015</a><br><a href="https://doi.org/10.1101/034371" style="font-size:16px">Posted December 15, 2015</a>
+<h3>Modeling error in experimental assays using the bootstrap principle: Understanding discrepancies between assays using different dispensing technologies</h3>
+<a href="https://doi.org/10.1007/s10822-015-9888-6" style="font-size:16px">Accepted: 7 December 2015</a><br><a href="https://doi.org/10.1101/033985" style="font-size:16px">Posted December 9, 2015</a>
+<h3>Evolution arrests invasions of cooperative populations</h3>
+<a href="https://doi.org/10.1103/PhysRevLett.115.208104" style="font-size:16px">Published 13 November 2015</a><br><a href="https://doi.org/10.1101/033902" style="font-size:16px">Posted December 7, 2015</a>
+<h3>Fitness effects of new mutations in Chlamydomonas reinhardtii across two stress gradients</h3>
+<a href="https://doi.org/10.1111/jeb.12807" style="font-size:16px">Manuscript accepted: 02 December 2015</a><br><a href="https://doi.org/10.1101/033886" style="font-size:16px">Posted December 7, 2015</a>
+<h3>A reductionist approach to model photosynthetic self-regulation in eukaryotes in response to light</h3>
+<a href="https://doi.org/10.1042/BST20150136" style="font-size:16px">Published online November 27, 2015</a><br><a href="https://doi.org/10.1101/033894" style="font-size:16px">Posted December 7, 2015</a>
+<h3>The limitations of in vitro experimentation in understanding biofilms and chronic infection</h3>
+<a href="https://doi.org/10.1016/j.jmb.2015.09.002" style="font-size:16px">Accepted 1 September 2015</a><br><a href="https://doi.org/10.1101/032987" style="font-size:16px">Posted November 26, 2015</a>
+<h3>Frequency-dependent representation of reinforcement-related information in the human medial and lateral prefrontal cortex</h3>
+<a href="https://doi.org/10.1523/JNEUROSCI.1864-15.2015" style="font-size:16px">Accepted October 19, 2015</a><br><a href="https://doi.org/10.1101/029058" style="font-size:16px">Posted November 21, 2015</a>
+<h3>BRANE Cut: Biologically-Related A priori Network Enhancement with Graph cuts for Gene Regulatory Network Inference</h3>
+<a href="https://doi.org/10.1186/s12859-015-0754-2" style="font-size:16px">Accepted: 29 September 2015</a><br><a href="https://doi.org/10.1101/032383" style="font-size:16px">Posted November 20, 2015</a>
+<h3>Coevolutionary landscape inference and the context-dependence of mutations in beta-lactamase TEM-1</h3>
+<a href="https://doi.org/10.1093/molbev/msv211" style="font-size:16px">Published: 06 October 2015</a><br><a href="https://doi.org/10.1101/028902" style="font-size:16px">Posted October 13, 2015</a>
+<h3>Exact solutions of coupled multispecies linear reaction-diffusion equations on a uniformly growing domain</h3>
+<a href="https://doi.org/10.1371/journal.pone.0138894" style="font-size:16px">Accepted: September 4, 2015</a><br><a href="https://doi.org/10.1101/026229" style="font-size:16px">Posted September 7, 2015</a>
+<h3>Cationic Peptides Facilitate Iron-induced Mutagenesis in Bacteria</h3>
+<a href="https://doi.org/10.1371/journal.pgen.1005546" style="font-size:16px">Accepted: September 1, 2015</a><br><a href="https://doi.org/10.1101/026112" style="font-size:16px">Posted September 3, 2015</a>
+<h3>Statistical Colocalization of Genetic Risk Variants for Related Autoimmune Diseases in the Context of Common Controls</h3>
+<a href="https://doi.org/10.1038/ng.3330" style="font-size:16px">Accepted: 08 May 2015</a><br><a href="https://doi.org/10.1101/020651" style="font-size:16px">Posted June 8, 2015</a>
+<h3>Worldwide population structure, long term demography, and local adaptation of Helicobacter pylori</h3>
+<a href="https://doi.org/10.1534/genetics.115.176404" style="font-size:16px">Accepted May 15, 2015</a><br><a href="https://doi.org/10.1101/019430" style="font-size:16px">Posted May 18, 2015</a>
+<h3>Open science resources for the discovery and analysis of Tara Oceans Data</h3>
+<a href="https://doi.org/10.1038/sdata.2015.23" style="font-size:16px">Accepted: 27 April 2015</a><br><a href="https://doi.org/10.1101/019117" style="font-size:16px">Posted May 8, 2015</a>
+<h3>Pathway based factor analysis of gene expression data produces highly heritable phenotypes that associate with age</h3>
+<a href="https://doi.org/10.1534/g3.114.011411" style="font-size:16px">Accepted March 5, 2015</a><br><a href="https://doi.org/10.1101/016154" style="font-size:16px">Posted March 6, 2015</a>
+<h3>Phen-Gen: Combining Phenotype and Genotype to Analyze Rare Disorders</h3>
+<a href="https://doi.org/10.1038/nmeth.3046" style="font-size:16px">Accepted: 16 June 2014</a><br><a href="https://doi.org/10.1101/015727" style="font-size:16px">Posted February 26, 2015</a>
+<h3>A Pleiotropy-Informed Bayesian False Discovery Rate adapted to a Shared Control Design Finds New Disease Associations From GWAS Summary Statistics</h3>
+<a href="https://doi.org/10.1371/journal.pgen.1004926" style="font-size:16px">Accepted: November 25, 2014</a><br><a href="https://doi.org/10.1101/014886" style="font-size:16px">Posted February 4, 2015</a>
+<h3>A mechanistic link between cellular trade-offs, gene expression and growth</h3>
+<a href="https://doi.org/10.1073/pnas.1416533112" style="font-size:16px">Approved January 20, 2015</a><br><a href="https://doi.org/10.1101/014787" style="font-size:16px">Posted February 3, 2015</a>
+<h3>Folding of Aquaporin 1: Multiple evidence that helix 3 can shift out of the membrane core</h3>
+<a href="https://doi.org/10.1002/pro.2483" style="font-size:16px">Manuscript accepted: 24 April 2014</a><br><a href="https://doi.org/10.1101/014167" style="font-size:16px">Posted January 23, 2015</a>
+<h3>The positive inside rule is stronger when followed by a transmembrane helix.</h3>
+<a href="https://doi.org/10.1016/j.jmb.2014.06.002" style="font-size:16px">Accepted 3 June 2014</a><br><a href="https://doi.org/10.1101/014175" style="font-size:16px">Posted January 23, 2015</a>
+<h3>SWS2 visual pigment evolution as a test of historically contingent patterns of plumage color evolution in Warblers</h3>
+<a href="https://doi.org/10.1111/evo.12572" style="font-size:16px">Manuscript accepted: 19 November 2014</a><br><a href="https://doi.org/10.1101/013573" style="font-size:16px">Posted January 9, 2015</a>
+<h3>Multi -omics and metabolic modelling pipelines: challenges and tools for systems microbiology</h3>
+<a href="https://doi.org/10.1016/j.micres.2015.01.003" style="font-size:16px">Accepted 3 January 2015</a><br><a href="https://doi.org/10.1101/013532" style="font-size:16px">Posted January 7, 2015</a>
+<h3>Genetic landscape of populations along the Silk Road: admixture and migration patterns</h3>
+<a href="https://doi.org/10.1186/s12863-014-0131-6" style="font-size:16px">Accepted: 19 November 2014</a><br><a href="https://doi.org/10.1101/011759" style="font-size:16px">Posted November 24, 2014</a>
+<h3>Triticeae resources in Ensembl Plants</h3>
+<a href="https://doi.org/10.1093/pcp/pcu183" style="font-size:16px">Accepted: 12 November 2014</a><br><a href="https://doi.org/10.1101/011585" style="font-size:16px">Posted November 18, 2014</a>
+<h3>Human Cytomegalovirus Intrahost Evolution--A New Avenue for Understanding and Controlling Herpesvirus Infections</h3>
+<a href="https://doi.org/10.1016/j.coviro.2014.08.001" style="font-size:16px">Accepted 2 August 2014</a><br><a href="https://doi.org/10.1101/009571" style="font-size:16px">Posted September 25, 2014</a>
+<h3>WFABC: a Wright-Fisher ABC-based approach for inferring effective population sizes and selection coefficients from time-sampled data</h3>
+<a href="https://doi.org/10.1111/1755-0998.12280" style="font-size:16px">Manuscript accepted: 04 May 2014</a><br><a href="https://doi.org/10.1101/009696" style="font-size:16px">Posted September 26, 2014</a>
+<h3>Quantitative Genetics and Modularity in cranial and mandibular morphology of Calomys expulsus</h3>
+<a href="https://doi.org/10.1007/s11692-014-9293-4" style="font-size:16px">Accepted: 11 August 2014</a><br><a href="https://doi.org/10.1101/008151" style="font-size:16px">Posted August 19, 2014</a>
+<h3>Ontogeny of aerial righting and wing flapping in juvenile birds</h3>
+<a href="https://doi.org/10.1098/rsbl.2014.0497" style="font-size:16px">Accepted August 6, 2014</a><br><a href="https://doi.org/10.1101/007708" style="font-size:16px">Posted August 6, 2014</a>
+<h3>Characterization of the Peer Review Network at the Center for Scientific Review, National Institutes of Health</h3>
+<a href="https://doi.org/10.1371/journal.pone.0104244" style="font-size:16px">Accepted: July 7, 2014</a><br><a href="https://doi.org/10.1101/007377" style="font-size:16px">Posted July 26, 2014</a>
+<h3>Concerning RNA-Guided Gene Drives for the Alteration of Wild Populations</h3>
+<a href="https://doi.org/10.7554/eLife.03401" style="font-size:16px">Accepted: July 9, 2014</a><br><a href="https://doi.org/10.1101/007203" style="font-size:16px">Posted July 17, 2014</a>
+<h3>The dynamics of sperm cooperation in a competitive environment</h3>
+<a href="https://doi.org/10.1098/rspb.2014.0296" style="font-size:16px">Accepted June 25, 2014</a><br><a href="https://doi.org/10.1101/006890" style="font-size:16px">Posted July 3, 2014</a>
+<h3>Some plants dont play games: An ideal free distribution explains the root production of plants that do not engage in a tragedy of the commons game.</h3>
+<a href="https://doi.org/10.1111/1365-2745.12259" style="font-size:16px">Manuscript accepted: 08 April 2014</a><br><a href="https://doi.org/10.1101/004820" style="font-size:16px">Posted May 6, 2014</a>
+<h3>MOSAIC EPIGENETIC DYSREGULATION OF ECTODERMAL CELLS IN AUTISM SPECTRUM DISORDER</h3>
+<a href="https://doi.org/10.1371/journal.pgen.1004402" style="font-size:16px">Accepted: April 9, 2014</a><br><a href="https://doi.org/10.1101/004853" style="font-size:16px">Posted May 6, 2014</a>
+<h3>Evolutionary Multiplayer Games</h3>
+<a href="https://doi.org/10.1007/s13235-014-0106-2" style="font-size:16px">First Online: 27 March 2014</a><br><a href="https://doi.org/10.1101/003939" style="font-size:16px">Posted April 15, 2014</a>
+<h3>Comparison of the theoretical and real-world evolutionary potential of a genetic circuit.</h3>
+<a href="https://doi.org/10.1088/1478-3975/11/2/026005" style="font-size:16px">Accepted 5 March 2014</a><br><a href="https://doi.org/10.1101/003772" style="font-size:16px">Posted April 2, 2014</a>
+<h3>Hydrogen peroxide thermochemical oscillator as driver for primordial RNA replication</h3>
+<a href="https://doi.org/10.1098/rsif.2013.1052" style="font-size:16px">Accepted February 25, 2014</a><br><a href="https://doi.org/10.1101/003368" style="font-size:16px">Posted March 17, 2014</a>
+<h3>The emergence of the rescue effect from explicit within- and between-patch dynamics in a metapopulation</h3>
+<a href="https://doi.org/10.1098/rspb.2013.3127" style="font-size:16px">Accepted January 14, 2014</a><br><a href="https://doi.org/10.1101/001842" style="font-size:16px">Posted January 15, 2014</a>
+<h3>Genetic drift opposes mutualism during spatial population expansion</h3>
+<a href="https://doi.org/10.1073/pnas.1313285111" style="font-size:16px">Approved November 30, 2013</a><br><a href="https://doi.org/10.1101/003012" style="font-size:16px">Posted February 25, 2014</a>
+<h3>Genetic drift suppresses bacterial conjugation in spatially structured populations</h3>
+<a href="https://doi.org/10.1016/j.bpj.2014.01.012" style="font-size:16px">Accepted: January 10, 2014</a><br><a href="https://doi.org/10.1101/002980" style="font-size:16px">Posted February 24, 2014</a>
+<h3>Broadly tuned and respiration-independent inhibition in the olfactory bulb of awake mice</h3>
+<a href="https://doi.org/10.1038/nn.3669" style="font-size:16px">Accepted: 04 February 2014</a><br><a href="https://doi.org/10.1101/002410" style="font-size:16px">Posted February 6, 2014</a>
+<h3>Holsteins Favor Heifers, Not Bulls: Biased Milk Production Programmed during Pregnancy as a Function of Fetal Sex</h3>
+<a href="https://doi.org/10.1371/journal.pone.0086169" style="font-size:16px">Accepted: December 6, 2013</a><br><a href="https://doi.org/10.1101/002063" style="font-size:16px">Posted January 24, 2014</a>
+<h3>A model of flux regulation in the cholesterol biosynthesis pathway: Immune mediated graduated flux reduction versus statin-like led stepped flux reduction</h3>
+<a href="https://doi.org/10.1016/j.biochi.2012.05.024" style="font-size:16px">Accepted 18 May 2012</a><br><a href="https://doi.org/10.1101/000380" style="font-size:16px">Posted November 14, 2013</a>
+<h3>Noise Control In Gene Regulatory Networks With Negative Feedback</h3>
+<a href="https://doi.org/10.1021/acs.jpcb.6b02093" style="font-size:16px">Publication Date (Web): April 19, 2016</a><br><a href="https://doi.org/10.1101/049502" style="font-size:16px">Posted April 20, 2016</a>
+<h3>How life history can sway the fixation probability of mutants</h3>
+<a href="https://doi.org/10.1534/genetics.116.188409" style="font-size:16px">Accepted April 22, 2016</a><br><a href="https://doi.org/10.1101/050914" style="font-size:16px">Posted April 28, 2016</a>
+<h3>Stay tuned: active amplification tunes tree cricket ears to track temperature-dependent song frequency</h3>
+<a href="https://doi.org/10.1098/rsbl.2016.0016" style="font-size:16px">Accepted April 4, 2016</a><br><a href="https://doi.org/10.1101/050583" style="font-size:16px">Posted April 27, 2016</a>
+<h3>Rescuing perishable neuroanatomical information from a threatened biodiversity hotspot: Remote field methods for brain tissue preservation validated by cytoarchitectonic analysis, immunohistochemistry, and X-ray microcomputed tomography</h3>
+<a href="https://doi.org/10.1371/journal.pone.0155824" style="font-size:16px">Accepted: May 4, 2016</a><br><a href="https://doi.org/10.1101/052415" style="font-size:16px">Posted May 11, 2016</a>
+<h3>Self-driven jamming in growing microbial populations</h3>
+<a href="https://doi.org/10.1038/nphys3741" style="font-size:16px">Accepted 23 March 2016</a><br><a href="https://doi.org/10.1101/052480" style="font-size:16px">Posted May 11, 2016</a>
+<h3>3D perception of maximum density zone on Ramachandran plots for Zika virus protein structures</h3>
+<a href="https://doi.org/10.21474/IJAR01/546" style="font-size:16px">Final Accepted: 26 April 2016</a><br><a href="https://doi.org/10.1101/053074" style="font-size:16px">Posted May 12, 2016</a>
+<h3>Large scale chromosome folding is stable against local changes in chromatin structure</h3>
+<a href="https://doi.org/10.1371/journal.pcbi.1004987" style="font-size:16px">Accepted: May 17, 2016</a><br><a href="https://doi.org/10.1101/054056" style="font-size:16px">Posted May 18, 2016</a>
+<h3>Isolation and characterization of electrochemically active subsurface Delftia and Azonexus species</h3>
+<a href="https://doi.org/10.3389/fmicb.2016.00756" style="font-size:16px">Accepted: 05 May 2016</a><br><a href="https://doi.org/10.1101/046979" style="font-size:16px">Posted May 21, 2016</a>
+<h3>Prospects of genomic prediction in the USDA Soybean Germplasm Collection: Historical data creates robust models for enhancing selection of accessions.</h3>
+<a href="https://doi.org/10.1534/g3.116.031443" style="font-size:16px">Accepted May 23, 2016</a><br><a href="https://doi.org/10.1101/055038" style="font-size:16px">Posted May 24, 2016</a>
+<h3>Structure of complement C3(H2O) revealed by quantitative cross-linking/mass spectrometry and modeling</h3>
+<a href="https://doi.org/10.1074/mcp.M115.056473" style="font-size:16px">First Published on June 1, 2016</a><br><a href="https://doi.org/10.1101/056457" style="font-size:16px">Posted June 1, 2016</a>
+<h3>FF12MC: A revised AMBER forcefield and new protein simulation protocol</h3>
+<a href="https://doi.org/10.1002/prot.25094" style="font-size:16px">Manuscript accepted: 18 June 2016</a><br><a href="https://doi.org/10.1101/061184" style="font-size:16px">Posted June 29, 2016</a>
+<h3>ADPriboDB: The Database of ADP-ribosylated Proteins</h3>
+<a href="https://doi.org/10.1093/nar/gkw706" style="font-size:16px">Accepted: 13 July 2016</a><br><a href="https://doi.org/10.1101/063768" style="font-size:16px">Posted July 13, 2016</a>
+<h3>Quantitative, image-based phenotyping methods provide insight into spatial and temporal dimensions of plant disease</h3>
+<a href="https://doi.org/10.1104/pp.16.00984" style="font-size:16px">Accepted July 19, 2016</a><br><a href="https://doi.org/10.1101/064980" style="font-size:16px">Posted July 22, 2016</a>
+<h3>Sensitivity in binding free energies due to protein reorganization</h3>
+<a href="https://doi.org/10.1021/acs.jctc.6b00532" style="font-size:16px">Publication Date (Web): 27 Jul 2016</a><br><a href="https://doi.org/10.1101/066621" style="font-size:16px">Posted July 28, 2016</a>
+<h3>PathScore: a web tool for identifying altered pathways in cancer data</h3>
+<a href="https://doi.org/10.1093/bioinformatics/btw512" style="font-size:16px">Accepted: 21 June 2016</a><br><a href="https://doi.org/10.1101/067090" style="font-size:16px">Posted August 1, 2016</a>
+<h3>Ultraslow water-mediated transmembrane interactions regulate the activation of A2Aadenosine receptor</h3>
+<a href="https://doi.org/10.1016/j.bpj.2016.08.002" style="font-size:16px">Accepted: August 2, 2016</a><br><a href="https://doi.org/10.1101/067751" style="font-size:16px">Posted August 4, 2016</a>
+<h3>Emergent rules for codon choice elucidated by editing rare arginine codons in Escherichia coli</h3>
+<a href="https://doi.org/10.1073/pnas.1605856113" style="font-size:16px">Approved July 29, 2016</a><br><a href="https://doi.org/10.1101/069385" style="font-size:16px">Posted August 14, 2016</a>
+<h3>Molecular signatures associated with ZIKV exposure in human cortical neural progenitors</h3>
+<a href="https://doi.org/10.1093/nar/gkw765" style="font-size:16px">Accepted: 22 August 2016</a><br><a href="https://doi.org/10.1101/071183" style="font-size:16px">Posted August 23, 2016</a>
+<h3>HiChIP: Efficient and sensitive analysis of protein-directed genome architecture</h3>
+<a href="https://doi.org/10.1038/nmeth.3999" style="font-size:16px">Accepted: 10 August 2016</a><br><a href="https://doi.org/10.1101/073619" style="font-size:16px">Posted September 8, 2016</a>
+<h3>ATX-2, the C. elegans Ortholog of Human Ataxin-2, Regulates Centrosome Size and Microtubule Dynamics</h3>
+<a href="https://doi.org/10.1371/journal.pgen.1006370" style="font-size:16px">Accepted: September 16, 2016</a><br><a href="https://doi.org/10.1101/076604" style="font-size:16px">Posted September 21, 2016</a>
+<h3>Genome-wide association study of HIV whole genome sequences validated using drug resistance</h3>
+<a href="https://doi.org/10.1371/journal.pone.0163746" style="font-size:16px">Accepted: September 13, 2016</a><br><a href="https://doi.org/10.1101/076216" style="font-size:16px">Posted September 20, 2016</a>
+<h3>Using predictive specificity to determine when gene set analysis is biologically meaningful</h3>
+<a href="https://doi.org/10.1093/nar/gkw957" style="font-size:16px">Accepted: 10 October 2016</a><br><a href="https://doi.org/10.1101/080127" style="font-size:16px">Posted October 10, 2016</a>
+<h3>Hi-C-constrained physical models of human chromosomes recover functionally-related properties of genome organization</h3>
+<a href="https://doi.org/10.1038/srep35985" style="font-size:16px">Accepted 30 September 2016</a><br><a href="https://doi.org/10.1101/079558" style="font-size:16px">Posted October 17, 2016</a>
+<h3>Tomographic docking suggests the mechanism of auxin receptor TIR1 selectivity</h3>
+<a href="https://doi.org/10.1098/rsob.160139" style="font-size:16px">Accepted September 22, 2016</a><br><a href="https://doi.org/10.1101/081794" style="font-size:16px">Posted October 18, 2016</a>
+<h3>Inhibition of microbial biofuel production in drought stressed switchgrass hydrolysate</h3>
+<a href="https://doi.org/10.1186/s13068-016-0657-0" style="font-size:16px">Accepted: 25 October 2016</a><br><a href="https://doi.org/10.1101/083758" style="font-size:16px">Posted October 26, 2016</a>
+<h3>Unexpected diversity in socially synchronized rhythms of shorebirds</h3>
+<a href="https://doi.org/10.1038/nature20563" style="font-size:16px">Accepted 21 October 2016</a><br><a href="https://doi.org/10.1101/084806" style="font-size:16px">Posted November 1, 2016</a>
+<h3>Engineering Genetically-Encoded Mineralization and Magnetism via Directed Evolution</h3>
+<a href="https://doi.org/10.1038/srep38019" style="font-size:16px">Accepted 02 November 2016</a><br><a href="https://doi.org/10.1101/085233" style="font-size:16px">Posted November 2, 2016</a>
+<h3>A mouse model of hereditary hemorrhagic telangiectasia generated by transmammary-delivered immunoblocking of BMP9 and BMP10</h3>
+<a href="https://doi.org/10.1038/srep37366" style="font-size:16px">Accepted 27 October 2016</a><br><a href="https://doi.org/10.1101/084889" style="font-size:16px">Posted November 2, 2016</a>
+<h3>Cell wall remodeling drives engulfment during Bacillus subtilis sporulation</h3>
+<a href="https://doi.org/10.7554/eLife.18657" style="font-size:16px">Accepted: November 14, 2016</a><br><a href="https://doi.org/10.1101/087858" style="font-size:16px">Posted November 15, 2016</a>
+<h3>A computational method for the investigation of multistable systems and its application to genetic switches</h3>
+<a href="https://doi.org/10.1186/s12918-016-0375-z" style="font-size:16px">Accepted: 13 November 2016</a><br><a href="https://doi.org/10.1101/088005" style="font-size:16px">Posted November 16, 2016</a>
+<h3>Chromatin environment, transcriptional regulation, and splicing distinguish lincRNAs and mRNAs</h3>
+<a href="https://doi.org/10.1101/gr.214205.116" style="font-size:16px">Accepted November 9, 2016</a><br><a href="https://doi.org/10.1101/088484" style="font-size:16px">Posted November 17, 2016</a>
+<h3>New single nucleotide polymorphisms (SNPs) in homologous recombination repair genes detected by microarray analysis in Polish breast cancer patients</h3>
+<a href="https://doi.org/10.1007/s10238-016-0441-2" style="font-size:16px">Accepted: 14 November 2016</a><br><a href="https://doi.org/10.1101/088948" style="font-size:16px">Posted November 21, 2016</a>
+<h3>Cell Cycle Constraints and Environmental Control of Local DNA Hypomethylation in Alpha-Proteobacteria</h3>
+<a href="https://doi.org/10.1371/journal.pgen.1006499" style="font-size:16px">Accepted: November 22, 2016</a><br><a href="https://doi.org/10.1101/091785" style="font-size:16px">Posted December 6, 2016</a>
+<h3>Decoding Single Molecule Time Traces with Dynamic Disorder</h3>
+<a href="https://doi.org/10.1371/journal.pcbi.1005286" style="font-size:16px">Accepted: December 7, 2016</a><br><a href="https://doi.org/10.1101/092387" style="font-size:16px">Posted December 8, 2016</a>
+<h3>Microbial Genome-Wide Association Studies: Lessons from Human GWAS</h3>
+<a href="https://doi.org/10.1038/nrg.2016.132" style="font-size:16px">Published: 14 November 2016</a><br><a href="https://doi.org/10.1101/093211" style="font-size:16px">Posted December 11, 2016</a>
+<h3>Quantifying the Heat Dissipation from Molecular Motor's Transport Properties in Nonequilibrium Steady States</h3>
+<a href="https://doi.org/10.1021/acs.jpclett.6b02657" style="font-size:16px">Publication Date (Web): December 16, 2016</a><br><a href="https://doi.org/10.1101/095042" style="font-size:16px">Posted December 17, 2016</a>
+<h3>A SUMO-Ubiquitin Relay Recruits Proteasomes to Chromosome Axes to Regulate Meiotic Recombination</h3>
+<a href="https://doi.org/10.1126/science.aaf6407" style="font-size:16px">Accepted for publication December 14, 2016</a><br><a href="https://doi.org/10.1101/095711" style="font-size:16px">Posted December 21, 2016</a>
+<h3>Histone H3K4 and H3K36 methylation promotes recruitment, but not activity, of the NuA3 histone acetyltransferase complex in S. cerevisiae</h3>
+<a href="https://doi.org/10.1534/genetics.116.199422" style="font-size:16px">Accepted December 23, 2016</a><br><a href="https://doi.org/10.1101/096511" style="font-size:16px">Posted December 23, 2016</a>
+<h3>Highly-efficient Cpf1-mediated gene targeting in mice following high concentration pronuclear injection</h3>
+<a href="https://doi.org/10.1534/g3.116.038091" style="font-size:16px">Accepted December 20, 2016</a><br><a href="https://doi.org/10.1101/097220" style="font-size:16px">Posted December 28, 2016</a>
+<h3>Fine-scale human population structure in southern Africa reflects ecogeographic boundaries</h3>
+<a href="https://doi.org/10.1534/genetics.116.187369" style="font-size:16px">Accepted July 7, 2016</a><br><a href="https://doi.org/10.1101/098095" style="font-size:16px">Posted January 9, 2017</a>
+<h3>Multivariate cross-frequency coupling via generalized eigendecomposition</h3>
+<a href="https://doi.org/10.7554/eLife.21792" style="font-size:16px">Accepted: January 8, 2017</a><br><a href="https://doi.org/10.1101/099184" style="font-size:16px">Posted January 9, 2017</a>
+<h3>Comprehensive characterization of neutrophil genome topology</h3>
+<a href="https://doi.org/10.1101/gad.293910.116" style="font-size:16px">Accepted January 5, 2017</a><br><a href="https://doi.org/10.1101/100198" style="font-size:16px">Posted January 15, 2017</a>
+<h3>Literature Consistency of Bioinformatics Sequence Databases is Effective for Assessing Record Quality</h3>
+<a href="https://doi.org/10.1093/database/bax021" style="font-size:16px">Accepted: 20 February 2017</a><br><a href="https://doi.org/10.1101/101873" style="font-size:16px">Posted February 23, 2017</a>
+<h3>Structure of the Full-length VEGFR-1 Extracellular Domain in Complex with VEGF-A</h3>
+<a href="https://doi.org/10.1016/j.str.2016.12.012" style="font-size:16px">Accepted: December 21, 2016</a><br><a href="https://doi.org/10.1101/102822" style="font-size:16px">Posted January 24, 2017</a>
+<h3>An inducible CRISPR-ON system for controllable gene activation in human pluripotent stem cells</h3>
+<a href="https://doi.org/10.1007/s13238-016-0360-8" style="font-size:16px">Accepted December 1, 2016</a><br><a href="https://doi.org/10.1101/106112" style="font-size:16px">Posted February 5, 2017</a>
+<h3>Genetic basis of melanin pigmentation in butterfly wings</h3>
+<a href="https://doi.org/10.1534/genetics.116.196451" style="font-size:16px">Accepted February 6, 2017</a><br><a href="https://doi.org/10.1101/102632" style="font-size:16px">Posted February 7, 2017</a>
+<h3>A Mixture Copula Bayesian Network Model for Multimodal Genomic Data</h3>
+<a href="https://doi.org/10.1177/1176935117702389" style="font-size:16px">Accepted: February 20, 2017</a><br><a href="https://doi.org/10.1101/110288" style="font-size:16px">Posted February 22, 2017</a>
+<h3>Locomotion induces stimulus-specific response enhancement in adult visual cortex</h3>
+<a href="https://doi.org/10.1523/JNEUROSCI.3760-16.2017" style="font-size:16px">Accepted February 18, 2017</a><br><a href="https://doi.org/10.1101/109660" style="font-size:16px">Posted February 22, 2017</a>
+<h3>Effects of Social Organization, Trap Arrangement and Density, Sampling Scale, and Population Density on Bias in Population Size Estimation Using Some Common Mark-Recapture Estimators</h3>
+<a href="https://doi.org/10.1371/journal.pone.0173609" style="font-size:16px">Accepted: February 22, 2017</a><br><a href="https://doi.org/10.1101/114306" style="font-size:16px">Posted March 6, 2017</a>
+<h3>Embryonic loss of human females with partial trisomy 19 identifies region critical for the single active X</h3>
+<a href="https://doi.org/10.1371/journal.pone.0170403" style="font-size:16px">Accepted: January 4, 2017</a><br><a href="https://doi.org/10.1101/119495" style="font-size:16px">Posted March 22, 2017</a>
+<h3>Physiological Preparation Of Hair Cells From The Sacculus Of The American Bullfrog (Rana catesbeiana)</h3>
+<a href="https://doi.org/10.3791/55380" style="font-size:16px">Published: 3/17/2017</a><br><a href="https://doi.org/10.1101/121582" style="font-size:16px">Posted March 29, 2017</a>
+<h3>Ultrasensitivity and Fluctuations in the Barkai-Leibler Model of Chemotaxis Receptors in Escherichia coli</h3>
+<a href="https://doi.org/10.1371/journal.pone.0175309" style="font-size:16px">Accepted: March 23, 2017</a><br><a href="https://doi.org/10.1101/123018" style="font-size:16px">Posted March 31, 2017</a>
+<h3>Improved Outcome And Cost Effectiveness In Ablation Of Persistent Atrial Fibrillation Under General Anaesthetic</h3>
+<a href="https://doi.org/10.1093/europace/eux057" style="font-size:16px">Accepted: 15 February 2017</a><br><a href="https://doi.org/10.1101/123448" style="font-size:16px">Posted April 3, 2017</a>
+<h3>Tissue adaptation: implications for gut immunity and tolerance</h3>
+<a href="https://doi.org/10.1084/jem.20162014" style="font-size:16px">Accepted: April 4, 2017</a><br><a href="https://doi.org/10.1101/125641" style="font-size:16px">Posted April 8, 2017</a>
+<h3>GlnK facilitates the dynamic regulation of bacterial nitrogen assimilation</h3>
+<a href="https://doi.org/10.1016/j.bpj.2017.04.012" style="font-size:16px">Accepted: April 14, 2017</a><br><a href="https://doi.org/10.1101/127662" style="font-size:16px">Posted April 15, 2017</a>
+<h3>Does tobacco abstinence decrease reward sensitivity? A human laboratory test</h3>
+<a href="https://doi.org/10.1093/ntr/ntw204" style="font-size:16px">Accepted: 02 August 2016</a><br><a href="https://doi.org/10.1101/128744" style="font-size:16px">Posted April 19, 2017</a>
+<h3>Development of a Self-Report Measure of Reward Sensitivity: A Test in Current and Former Smokers</h3>
+<a href="https://doi.org/10.1093/ntr/ntw272" style="font-size:16px">Accepted: 07 October 2016</a><br><a href="https://doi.org/10.1101/128793" style="font-size:16px">Posted April 20, 2017</a>
+<h3>Whole-Brain Serial-Section Electron Microscopy In Larval Zebrafish</h3>
+<a href="https://doi.org/10.1038/nature22356" style="font-size:16px">Accepted 11 April 2017</a><br><a href="https://doi.org/10.1101/134882" style="font-size:16px">Posted May 7, 2017</a>
+<h3>Revealing Complete Complex KIR Haplotypes Phased By Long-Read Sequencing Technology</h3>
+<a href="https://doi.org/10.1038/gene.2017.10" style="font-size:16px">Accepted 31 March 2017</a><br><a href="https://doi.org/10.1101/135426" style="font-size:16px">Posted May 8, 2017</a>
+<h3>Torque and buckling in stretched intertwined double-helix DNAs</h3>
+<a href="https://doi.org/10.1103/PhysRevE.95.052401" style="font-size:16px">Published 1 May 2017</a><br><a href="https://doi.org/10.1101/135905" style="font-size:16px">Posted May 9, 2017</a>
+<h3>Facilitated Dissociation Of Transcription Factors From Single DNA Binding Sites</h3>
+<a href="https://doi.org/10.1073/pnas.1701884114" style="font-size:16px">Published ahead of print March 31, 2017</a><br><a href="https://doi.org/10.1101/135947" style="font-size:16px">Posted May 9, 2017</a>
+<h3>Prominent Lateral Spread Of Imaged Evoked Activity Beyond Cortical Columns In Barrel Cortex Provides Foundation For Coding Whisker Identity</h3>
+<a href="https://doi.org/10.1117/1.NPh.4.3.031218" style="font-size:16px">Accepted: 12 May 2017</a><br><a href="https://doi.org/10.1101/137562" style="font-size:16px">Posted May 12, 2017</a>
+<h3>Genetic Load Makes Cancer Cells More Sensitive To Common Drugs: Evidence From Cancer Cell Line Encyclopedia</h3>
+<a href="https://doi.org/10.1038/s41598-017-02178-1" style="font-size:16px">Accepted 07 April 2017</a><br><a href="https://doi.org/10.1101/139311" style="font-size:16px">Posted May 17, 2017</a>
+<h3>Phosphate Is The Third Nutrient Monitored By TOR In Candida albicans And Provides A Target For Fungal-Specific Indirect TOR Inhibition</h3>
+<a href="https://doi.org/10.1073/pnas.1617799114" style="font-size:16px">Approved April 27, 2017</a><br><a href="https://doi.org/10.1101/142745" style="font-size:16px">Posted May 27, 2017</a>
+<h3>Global biogeography since Pangaea</h3>
+<a href="https://doi.org/10.1098/rspb.2017.0716" style="font-size:16px">Accepted May 9, 2017</a><br><a href="https://doi.org/10.1101/146142" style="font-size:16px">Posted June 7, 2017</a>
+<h3>Addressing current challenges in cancer immunotherapy with mathematical and computational modeling</h3>
+<a href="https://doi.org/10.1098/rsif.2017.0150" style="font-size:16px">Accepted May 31, 2017</a><br><a href="https://doi.org/10.1101/146902" style="font-size:16px">Posted June 9, 2017</a>
+<h3>Space, Time and Episodic Memory: the Hippocampus is all over the Cognitive Map</h3>
+<a href="https://doi.org/10.1002/hipo.22750" style="font-size:16px">Manuscript accepted: 12 June 2017</a><br><a href="https://doi.org/10.1101/150177" style="font-size:16px">Posted June 14, 2017</a>
+<h3>DNA isolation protocol effects on nuclear DNA analysis by microarrays, droplet digital PCR, and whole genome sequencing, and on mitochondrial DNA copy number estimation</h3>
+<a href="https://doi.org/10.1371/journal.pone.0180467" style="font-size:16px">Accepted: June 15, 2017</a><br><a href="https://doi.org/10.1101/151126" style="font-size:16px">Posted June 16, 2017</a>
+<h3>Bridging the dynamics and organization of chromatin domains by mathematical modeling</h3>
+<a href="https://doi.org/10.1080/19491034.2017.1313937" style="font-size:16px">Accepted 28 Mar 2017</a><br><a href="https://doi.org/10.1101/151563" style="font-size:16px">Posted June 18, 2017</a>
+<h3>Functional selectivity for face processing in the temporal voice area of early deaf individuals</h3>
+<a href="https://doi.org/10.1073/pnas.1618287114" style="font-size:16px">Approved May 31, 2017</a><br><a href="https://doi.org/10.1101/154138" style="font-size:16px">Posted June 23, 2017</a>
+<h3>mRNA detection in budding yeast with single fluorophores</h3>
+<a href="https://doi.org/10.1093/nar/gkx568" style="font-size:16px">Accepted: 21 June 2017</a><br><a href="https://doi.org/10.1101/155143" style="font-size:16px">Posted June 24, 2017</a>
+<h3>The independent influences of age and education on functional brain networks and cognition in healthy older adults</h3>
+<a href="https://doi.org/10.1002/hbm.23717" style="font-size:16px">Manuscript accepted: 22 June 2017</a><br><a href="https://doi.org/10.1101/154898" style="font-size:16px">Posted June 25, 2017</a>
+<h3>Enhanced neuronal regeneration in the CAST/Ei mouse strain is linked to expression of differentiation markers after injury</h3>
+<a href="https://doi.org/10.1016/j.celrep.2017.07.010" style="font-size:16px">Accepted: July 6, 2017</a><br><a href="https://doi.org/10.1101/160366" style="font-size:16px">Posted July 6, 2017</a>
+<h3>Printed Droplet Microfluidics for on demand dispensing of picoliter droplets and cells</h3>
+<a href="https://doi.org/10.1073/pnas.1704020114" style="font-size:16px">Approved July 10, 2017</a><br><a href="https://doi.org/10.1101/167163" style="font-size:16px">Posted July 21, 2017</a>
+<h3>Remodeling of ER-exit sites initiates a membrane supply pathway for autophagosome biogenesis</h3>
+<a href="https://doi.org/10.15252/embr.201744559" style="font-size:16px">Accepted June 28, 2017</a><br><a href="https://doi.org/10.1101/168518" style="font-size:16px">Posted July 25, 2017</a>
+<h3>Mathematical modeling of tumor-tumor distant interactions supports a systemic control of tumor growth</h3>
+<a href="https://doi.org/10.1158/0008-5472.CAN-17-0564" style="font-size:16px">Accepted July 11, 2017</a><br><a href="https://doi.org/10.1101/168823" style="font-size:16px">Posted July 26, 2017</a>
+<h3>Functional corticostriatal connection topographies predict goal directed behaviour in humans</h3>
+<a href="https://doi.org/10.1038/s41562-017-0146" style="font-size:16px">Accepted 13 June 2017</a><br><a href="https://doi.org/10.1101/169151" style="font-size:16px">Posted July 27, 2017</a>
+<h3>Suppression of Transposable Elements in Leukemic Stem Cells</h3>
+<a href="https://doi.org/10.1038/s41598-017-07356-9" style="font-size:16px">Accepted 23 June 2017</a><br><a href="https://doi.org/10.1101/169524" style="font-size:16px">Posted July 28, 2017</a>
+<h3>Are allocentric spatial reference frames compatible with theories of Enactivism?</h3>
+<a href="https://doi.org/10.1007/s00426-017-0899-x" style="font-size:16px">Accepted: 25 July 2017</a><br><a href="https://doi.org/10.1101/170316" style="font-size:16px">Posted July 31, 2017</a>
+<h3>Global and local excitation and inhibition shape the dynamics of the cortico-striatal-thalamo-cortical pathway</h3>
+<a href="https://doi.org/10.1038/s41598-017-07527-8" style="font-size:16px">Accepted 19 June 2017</a><br><a href="https://doi.org/10.1101/173658" style="font-size:16px">Posted August 8, 2017</a>
+<h3>Development of Inflammatory Bowel Disease is Linked to a Longitudinal Restructuring of the Gut Metagenome in Mice</h3>
+<a href="https://doi.org/10.1128/mSystems.00036-17" style="font-size:16px">Accepted August 8, 2017</a><br><a href="https://doi.org/10.1101/173823" style="font-size:16px">Posted August 8, 2017</a>
+<h3>Measuring functional connectivity in stroke: approaches and considerations</h3>
+<a href="https://doi.org/10.1177/0271678X17709198" style="font-size:16px">Accepted: March 20, 2017</a><br><a href="https://doi.org/10.1101/177618" style="font-size:16px">Posted August 17, 2017</a>
+<h3>SFMetaDB: A Comprehensive Annotation of Mouse RNA Splicing Factor RNA-Seq Datasets</h3>
+<a href="https://doi.org/10.1093/database/bax071" style="font-size:16px">Accepted: 15 August 2017</a><br><a href="https://doi.org/10.1101/177931" style="font-size:16px">Posted August 18, 2017</a>
+<h3>Non-contact measurement of emotional and physiological changes in heart rate from a webcam</h3>
+<a href="https://doi.org/10.1111/psyp.13005" style="font-size:16px">Manuscript accepted: 09 August 2017</a><br><a href="https://doi.org/10.1101/179812" style="font-size:16px">Posted August 23, 2017</a>
+<h3>An improved ATAC-seq protocol reduces background and enables interrogation of frozen tissues</h3>
+<a href="https://doi.org/10.1038/nmeth.4396" style="font-size:16px">Accepted 11 July 2017</a><br><a href="https://doi.org/10.1101/181206" style="font-size:16px">Posted August 26, 2017</a>
+<h3>Analysis of deep learning methods for blind protein contact prediction in CASP12</h3>
+<a href="https://doi.org/10.1002/prot.25377" style="font-size:16px">Manuscript accepted: 25 August 2017</a><br><a href="https://doi.org/10.1101/181586" style="font-size:16px">Posted August 28, 2017</a>
+<h3>On the Structure and Mechanism of Two-Pore Channels</h3>
+<a href="https://doi.org/10.1111/febs.14154" style="font-size:16px">Manuscript accepted: 23 June 2017</a><br><a href="https://doi.org/10.1101/181578" style="font-size:16px">Posted August 29, 2017</a>
+<h3>Temporal dissociation of salience and prediction error responses to appetitive and aversive taste</h3>
+<a href="https://doi.org/10.1111/psyp.12976" style="font-size:16px">Manuscript accepted: 14 July 2017</a><br><a href="https://doi.org/10.1101/184341" style="font-size:16px">Posted September 7, 2017</a>
+<h3>Crossing enhanced and high fidelity SpCas9 nucleases to optimize specificity and cleavage</h3>
+<a href="https://doi.org/10.1186/s13059-017-1318-8" style="font-size:16px">Accepted: 11 September 2017</a><br><a href="https://doi.org/10.1101/187898" style="font-size:16px">Posted September 12, 2017</a>
+<h3>Pathways of DNA unlinking: A story of stepwise simplification</h3>
+<a href="https://doi.org/10.1038/s41598-017-12172-2" style="font-size:16px">Accepted 01 September 2017</a><br><a href="https://doi.org/10.1101/188722" style="font-size:16px">Posted September 14, 2017</a>
+<h3>Deep learning of the splicing (epi)genetic code reveals a novel candidate mechanism linking histone modifications to ESC fate decision</h3>
+<a href="https://doi.org/10.1093/nar/gkx870" style="font-size:16px">Accepted: 15 September 2017</a><br><a href="https://doi.org/10.1101/189183" style="font-size:16px">Posted September 15, 2017</a>
+<h3>PharmacoDB: an integrative database for mining in vitro anticancer drug screening studies</h3>
+<a href="https://doi.org/10.1093/nar/gkx911" style="font-size:16px">Accepted: 27 September 2017</a><br><a href="https://doi.org/10.1101/195149" style="font-size:16px">Posted September 27, 2017</a>
+<h3>Methods in field chronobiology</h3>
+<a href="https://doi.org/10.1098/rstb.2016.0247" style="font-size:16px">Accepted: 8 January 2017</a><br><a href="https://doi.org/10.1101/197541" style="font-size:16px">Posted October 2, 2017</a>
+<h3>Mechanics and buckling of biopolymeric shells and cell nuclei</h3>
+<a href="https://doi.org/10.1016/j.bpj.2017.08.034" style="font-size:16px">Accepted: August 22, 2017</a><br><a href="https://doi.org/10.1101/197566" style="font-size:16px">Posted October 2, 2017</a>
+<h3>Evolution-informed forecasting of seasonal influenza A (H3N2)</h3>
+<a href="https://doi.org/10.1126/scitranslmed.aan5325" style="font-size:16px">Accepted for publication August 16, 2017</a><br><a href="https://doi.org/10.1101/198168" style="font-size:16px">Posted October 4, 2017</a>
+<h3>Idiosyncratic genome degradation in a bacterial endosymbiont of periodical cicadas</h3>
+<a href="https://doi.org/10.1016/j.cub.2017.10.008" style="font-size:16px">Accepted: October 3, 2017</a><br><a href="https://doi.org/10.1101/199760" style="font-size:16px">Posted October 7, 2017</a>
+<h3>How the human brain introspects about one's own episodes of cognitive control</h3>
+<a href="https://doi.org/10.1016/j.cortex.2017.10.016" style="font-size:16px"></a><br><a href="https://doi.org/10.1101/208637" style="font-size:16px">Accepted 16 October 2017</a>
+<h3>Acute memory deficits in chemotherapy-treated adults</h3>
+<a href="https://doi.org/10.1080/09658211.2017.1300667" style="font-size:16px">Accepted 23 Feb 2017</a><br><a href="https://doi.org/10.1101/215731" style="font-size:16px">Posted November 7, 2017</a>
+<h3>Presence of Atopy Increases the Risk of Asthma Relapse</h3>
+<a href="https://doi.org/10.1136/archdischild-2017-312982" style="font-size:16px">Accepted September 11, 2017</a><br><a href="https://doi.org/10.1101/217547" style="font-size:16px">Posted November 10, 2017</a>
+<h3>On the proportional abundance of species: Integrating population genetics and community ecology</h3>
+<a href="https://doi.org/10.1038/s41598-017-17070-1" style="font-size:16px">Accepted 21 November 2017</a><br><a href="https://doi.org/10.1101/223529" style="font-size:16px">Posted November 21, 2017</a>
+<h3>Analysis of fMRI data using noise-diffusion network models: a new covariance-coding perspective</h3>
+<a href="https://doi.org/10.1007/s00422-017-0741-y" style="font-size:16px">Accepted: 21 November 2017</a><br><a href="https://doi.org/10.1101/223784" style="font-size:16px">Posted November 23, 2017</a>
+<h3>Static and dynamic measures of human brain connectivity predict complementary aspects of human cognitive performance</h3>
+<a href="https://doi.org/10.3389/fnhum.2017.00420" style="font-size:16px">Accepted: 04 August 2017</a><br><a href="https://doi.org/10.1101/224956" style="font-size:16px">Posted November 25, 2017</a>
+<h3>Neuronal glutamate transporters control dopaminergic signaling and compulsive behaviors</h3>
+<a href="https://doi.org/10.1523/JNEUROSCI.1906-17.2017" style="font-size:16px">Accepted December 1, 2017</a><br><a href="https://doi.org/10.1101/224477" style="font-size:16px">Posted December 3, 2017</a>
+<h3>Modeling the Structural Origins of Drug Resistance to Isoniazid via key Mutations in Mycobacterium tuberculosis Catalase-Peroxidase, KatG</h3>
+<a href="https://doi.org/10.1016/j.tube.2017.11.007" style="font-size:16px">Accepted: November 17, 2017</a><br><a href="https://doi.org/10.1101/230482" style="font-size:16px">Posted December 7, 2017</a>
+<h3>Rapid adaptation in large populations with very rare sex: scalings and spontaneous oscillations</h3>
+<a href="https://doi.org/10.1016/j.tpb.2017.11.005" style="font-size:16px">Available online 12 December 2017</a><br><a href="https://doi.org/10.1101/233320" style="font-size:16px">Posted December 13, 2017</a>
+<h3>Shape-related characteristics of age-related differences in subcortical structures</h3>
+<a href="https://doi.org/10.1080/13607863.2017.1421613" style="font-size:16px">Accepted 10 Dec 2017</a><br><a href="https://doi.org/10.1101/232439" style="font-size:16px">Posted December 13, 2017</a>
+<h3>CLIQ-BID: A method to quantify bacteria-induced damage to eukaryotic cells by automated live-imaging of bright nuclei</h3>
+<a href="https://doi.org/10.1038/s41598-017-18501-9" style="font-size:16px">Accepted 07 December 2017</a><br><a href="https://doi.org/10.1101/236091" style="font-size:16px">Posted December 18, 2017</a>
+<h3>B1a B cells require autophagy for metabolic homeostasis and self-renewal</h3>
+<a href="https://doi.org/10.1084/jem.20170771" style="font-size:16px">Accepted: December 12, 2017</a><br><a href="https://doi.org/10.1101/240523" style="font-size:16px">Posted December 28, 2017</a>
+<h3>Identifying and exploiting trait-relevant tissues with multiple functional annotations in genome-wide association studies</h3>
+<a href="https://doi.org/10.1371/journal.pgen.1007186" style="font-size:16px">Accepted: January 4, 2018</a><br><a href="https://doi.org/10.1101/242990" style="font-size:16px">Posted January 4, 2018</a>
+<h3>Dissociation of immediate and delayed effects of emotional arousal on episodic memory</h3>
+<a href="https://doi.org/10.1016/j.nlm.2017.12.007" style="font-size:16px">Accepted 27 December 2017</a><br><a href="https://doi.org/10.1101/242511" style="font-size:16px">Posted January 4, 2018</a>
+<h3>Chromatin configuration affects the dynamics and distribution of a transiently interacting protein</h3>
+<a href="https://doi.org/10.1016/j.bpj.2017.12.037" style="font-size:16px">Accepted: December 27, 2017</a><br><a href="https://doi.org/10.1101/246231" style="font-size:16px">Posted January 10, 2018</a>
+<h3>Quantitative super-resolution single molecule microscopy dataset of YFP-tagged growth factor receptors</h3>
+<a href="https://doi.org/10.1093/gigascience/giy002" style="font-size:16px">Accepted: 10 January 2018</a><br><a href="https://doi.org/10.1101/246488" style="font-size:16px">Posted January 11, 2018</a>
+<h3>Predicting age from cortical structure across the lifespan</h3>
+<a href="https://doi.org/10.1111/ejn.13835" style="font-size:16px">Manuscript accepted: 15 January 2018</a><br><a href="https://doi.org/10.1101/248518" style="font-size:16px">Posted January 16, 2018</a>
+<h3>Enabling the hypothesis-driven prioritization of ligand candidates in big databases: Screenlamp and its application to GPCR inhibitor discovery for invasive species control</h3>
+<a href="https://doi.org/10.1007/s10822-018-0100-7" style="font-size:16px">Accepted: 17 January 2018</a><br><a href="https://doi.org/10.1101/249151" style="font-size:16px">Posted January 17, 2018</a>
+<h3>CITGeneDB: A comprehensive database of human and mouse genes enhancing or suppressing cold-induced thermogenesis validated by perturbation experiments in mice</h3>
+<a href="https://doi.org/10.1093/database/bay012" style="font-size:16px">Accepted: 18 January 2018</a><br><a href="https://doi.org/10.1101/250514" style="font-size:16px">Posted January 19, 2018</a>
+<h3>Key components of the delirium syndrome and mortality: greater impact of acute change and disorganised thinking in a prospective cohort study</h3>
+<a href="https://doi.org/10.1186/s12877-018-0719-1" style="font-size:16px">Accepted: 16 January 2018</a><br><a href="https://doi.org/10.1101/251272" style="font-size:16px">Posted January 22, 2018</a>
+<h3>Exploring Approximate Bayesian Computation for inferring recent demographic history with genomic markers in non-model species</h3>
+<a href="https://doi.org/10.1111/1755-0998.12758" style="font-size:16px">Manuscript accepted: 16 January 2018</a><br><a href="https://doi.org/10.1101/252650" style="font-size:16px">Posted January 24, 2018</a>
+<h3>On the design of CRISPR-based single cell molecular screens</h3>
+<a href="https://doi.org/10.1038/nmeth.4604" style="font-size:16px">Accepted 06 January 2018</a><br><a href="https://doi.org/10.1101/254334" style="font-size:16px">Posted January 29, 2018</a>
+<h3>GEOMetaCuration: A web-based application for accurate manual curation of Gene Expression Omnibus metadata</h3>
+<a href="https://doi.org/10.1093/database/bay019" style="font-size:16px">Accepted: 30 January 2018</a><br><a href="https://doi.org/10.1101/257444" style="font-size:16px">Posted January 31, 2018</a>
+<h3>Zebrafish sp7 mutants show tooth cycling independent of attachment, eruption and poor differentiation of teeth</h3>
+<a href="https://doi.org/10.1016/j.ydbio.2018.01.021" style="font-size:16px">Accepted 30 January 2018</a><br><a href="https://doi.org/10.1101/259085" style="font-size:16px">Posted February 2, 2018</a>
+<h3>Protein-ligand interfaces are polarized: Discovery of a strong trend for intermolecular hydrogen bonds to favor donors on the protein side with implications for predicting and designing ligand complexes</h3>
+<a href="https://doi.org/10.1007/s10822-018-0105-2" style="font-size:16px">Accepted: 5 February 2018</a><br><a href="https://doi.org/10.1101/260612" style="font-size:16px">Posted February 5, 2018</a>
+<h3>Transcranial direct current stimulation over left inferior frontal cortex improves speech fluency in adults who stutter</h3>
+<a href="https://doi.org/10.1093/brain/awy011" style="font-size:16px">Accepted: 01 December 2017</a><br><a href="https://doi.org/10.1101/259796" style="font-size:16px">Posted February 6, 2018</a>
+<h3>Whole genome analysis illustrates global clonal population structure of the ubiquitous dermatophyte pathogen
+          Trichophyton rubrum</h3>
+<a href="https://doi.org/10.1534/genetics.117.300573" style="font-size:16px">Accepted February 7, 2018</a><br><a href="https://doi.org/10.1101/261743" style="font-size:16px">Posted February 8, 2018</a>
+<h3>Identification of piRNA binding sites reveals the Argonaute regulatory landscape of the C. elegans germline</h3>
+<a href="https://doi.org/10.1016/j.cell.2018.02.002" style="font-size:16px">Accepted: January 31, 2018</a><br><a href="https://doi.org/10.1101/262113" style="font-size:16px">Posted February 7, 2018</a>
+<h3>Conserved Roles of C. elegans and Human MANFs in Sulfatide Binding and Cytoprotection</h3>
+<a href="https://doi.org/10.1038/s41467-018-03355-0" style="font-size:16px">Accepted 02 February 2018</a><br><a href="https://doi.org/10.1101/263731" style="font-size:16px">Posted February 11, 2018</a>
+<h3>Torso-like is a component of the hemolymph and regulates the insulin signalling pathway in
+          Drosophila</h3>
+<a href="https://doi.org/10.1534/genetics.117.300601" style="font-size:16px">Accepted February 12, 2018</a><br><a href="https://doi.org/10.1101/264325" style="font-size:16px">Posted February 12, 2018</a>
+<h3>Swedish Nerve Growth Factor Mutation (NGFR100W) Defines a Role for TrkA and p75NTR in Nociception</h3>
+<a href="https://doi.org/10.1523/JNEUROSCI.1686-17.2018" style="font-size:16px">Accepted February 12, 2018</a><br><a href="https://doi.org/10.1101/266643" style="font-size:16px">Posted February 16, 2018</a>
+<h3>Validation of Davson's equation in patients suffering from idiopathic Normal Pressure Hydrocephalus</h3>
+<a href="https://doi.org/10.1007/s00701-018-3497-9" style="font-size:16px">Accepted: 10 February 2018</a><br><a href="https://doi.org/10.1101/268698" style="font-size:16px">Posted February 20, 2018</a>
+<h3>Effect of 5-trans isomer of arachidonic acid on model liposomal membranes studied by a combined simulation and experimental approach</h3>
+<a href="https://doi.org/10.1007/s00232-018-0029-8" style="font-size:16px">Accepted: 8 March 2018</a><br><a href="https://doi.org/10.1101/279422" style="font-size:16px">Posted March 9, 2018</a>
+<h3>Interaction of diabetes and smoking on stroke: A population-based cross-sectional survey in China</h3>
+<a href="https://doi.org/10.1136/bmjopen-2017-017706" style="font-size:16px">Accepted March 1, 2018</a><br><a href="https://doi.org/10.1101/277293" style="font-size:16px">Posted March 9, 2018</a>
+<h3>Positional information specifies the site of organ regeneration and not tissue maintenance in planarians</h3>
+<a href="https://doi.org/10.7554/elife.33680" style="font-size:16px">Accepted: March 15, 2018</a><br><a href="https://doi.org/10.1101/282657" style="font-size:16px">Posted March 15, 2018</a>
+<h3>Ligand binding and conformational changes of SUR1 subunit in pancreatic ATP-sensitive potassium channels</h3>
+<a href="https://doi.org/10.1007/s13238-018-0530-y" style="font-size:16px">Accepted March 14, 2018</a><br><a href="https://doi.org/10.1101/283440" style="font-size:16px">Posted March 16, 2018</a>
+<h3>The expansion in lymphoid organs of IL-4+ BATF+ T follicular helper cells is linked to IgG4 class switching in vivo</h3>
+<a href="https://doi.org/10.26508/lsa.201800050" style="font-size:16px">Accepted March 19, 2018</a><br><a href="https://doi.org/10.1101/284737" style="font-size:16px">Posted March 19, 2018</a>
+<h3>Establishment of signaling interactions with cellular resolution for every cell cycle of embryogenesis</h3>
+<a href="https://doi.org/10.1534/genetics.118.300820" style="font-size:16px">Accepted March 19, 2018</a><br><a href="https://doi.org/10.1101/285007" style="font-size:16px">Posted March 19, 2018</a>
+<h3>SPORTS1.0: a tool for annotating and profiling non-coding RNAs optimized for rRNA- and tRNA- derived small RNAs</h3>
+<a href="https://doi.org/10.1016/j.gpb.2018.04.004" style="font-size:16px">Accepted 7 April 2018</a><br><a href="https://doi.org/10.1101/296970" style="font-size:16px">Posted April 7, 2018</a>
+<h3>MECHANOSENSATION DYNAMICALLY COORDINATES POLAR GROWTH AND CELL WALL ASSEMBLY TO PROMOTE CELL SURVIVAL</h3>
+<a href="https://doi.org/10.1016/j.devcel.2018.03.022" style="font-size:16px">Accepted: March 26, 2018</a><br><a href="https://doi.org/10.1101/299008" style="font-size:16px">Posted April 10, 2018</a>
+<h3>One prophage WO gene rescues cytoplasmic incompatibility in Drosophila melanogaster</h3>
+<a href="https://doi.org/10.1073/pnas.1800650115" style="font-size:16px">Approved March 16, 2018</a><br><a href="https://doi.org/10.1101/300269" style="font-size:16px">Posted April 13, 2018</a>
+<h3>Induction of muscle stem cell quiescence by the secreted niche factor Oncostatin M</h3>
+<a href="https://doi.org/10.1038/s41467-018-03876-8" style="font-size:16px">Accepted 16 March 2018</a><br><a href="https://doi.org/10.1101/303586" style="font-size:16px">Posted April 18, 2018</a>
+<h3>Quantification of biases in predictions of protein stability changes upon mutations</h3>
+<a href="https://doi.org/10.1093/bioinformatics/bty348" style="font-size:16px">Accepted: 25 April 2018</a><br><a href="https://doi.org/10.1101/308239" style="font-size:16px">Posted April 25, 2018</a>
+<h3>Detecting differential transcription factor activity from ATAC-seq data</h3>
+<a href="https://doi.org/10.3390/molecules23051136" style="font-size:16px">Accepted: 6 May 2018</a><br><a href="https://doi.org/10.1101/315622" style="font-size:16px">Posted May 6, 2018</a>
+<h3>Putting hands to rest: efficient deep CNN-RNN architecture for chemical named entity recognition with no hand-crafted rules.</h3>
+<a href="https://doi.org/10.1186/s13321-018-0280-0" style="font-size:16px">Accepted: 14 May 2018</a><br><a href="https://doi.org/10.1101/321224" style="font-size:16px">Posted May 14, 2018</a>
+<h3>A robust ex vivo experimental platform for molecular-genetic dissection of adult human neocortical cell types and circuits</h3>
+<a href="https://doi.org/10.1038/s41598-018-26803-9" style="font-size:16px">Accepted 16 May 2018</a><br><a href="https://doi.org/10.1101/325589" style="font-size:16px">Posted May 18, 2018</a>
+<h3>A data mining paradigm for identifying key factors in biological processes using gene expression data</h3>
+<a href="https://doi.org/10.1038/s41598-018-27258-8" style="font-size:16px">Accepted 21 May 2018</a><br><a href="https://doi.org/10.1101/327478" style="font-size:16px">Posted May 21, 2018</a>
+<h3>Variation of mutational burden in healthy human tissues suggests non-random strand segregation and allows measuring somatic mutation rates</h3>
+<a href="https://doi.org/10.1371/journal.pcbi.1006233" style="font-size:16px">Accepted: May 25, 2018</a><br><a href="https://doi.org/10.1101/332734" style="font-size:16px">Posted May 29, 2018</a>
+<h3>On an algorithmic definition for the components of the minimal cell</h3>
+<a href="https://doi.org/10.1371/journal.pone.0198222" style="font-size:16px">Accepted: May 15, 2018</a><br><a href="https://doi.org/10.1101/333682" style="font-size:16px">Posted May 30, 2018</a>
+<h3>Identification of a novel tetrameric structure for human apolipoprotein-D</h3>
+<a href="https://doi.org/10.1016/j.jsb.2018.05.012" style="font-size:16px">Accepted 30 May 2018</a><br><a href="https://doi.org/10.1101/335232" style="font-size:16px">Posted May 31, 2018</a>
+<h3>Identification of piRNA binding sites reveals the Argonaute regulatory landscape of the C. elegans germline</h3>
+<a href="https://doi.org/10.1016/j.cell.2018.02.002" style="font-size:16px">Accepted: January 31, 2018</a><br><a href="https://doi.org/10.1101/262113" style="font-size:16px">Posted February 7, 2018</a>
+        </div>
+        <div class="col-sm-2">
+        </div>
+    </div>
+</body>
+</html>
