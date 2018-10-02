@@ -110,202 +110,204 @@ BASE_DIR=os.path.dirname(os.path.abspath(__file__))
 ###########################################################################################peerj
 ##
 ##
-titles=[]
-authors=[]
-dates=[]
-abstracts=[]
-links=[]
-tags=[]
-author_aff=[]
-
-
-f=open(os.path.join(BASE_DIR,'peerj','peerj.txt'))
-
-data=[eval(i.strip()) for i in f]
-newdata=[]
-
-
-unique={}
-all_links=[]
-for i in data:
-    unique[(i[2],i[-3])]=''
-    all_links.append(i[-3])
-error=False
-try:
-    X=True
-    for index in range(1,131):
-        if X==True:
+##titles=[]
+##authors=[]
+##dates=[]
+##abstracts=[]
+##links=[]
+##tags=[]
+##author_aff=[]
+##
+##
+##f=open(os.path.join(BASE_DIR,'peerj','peerj.txt'))
+##
+##data=[eval(i.strip()) for i in f]
+##newdata=[]
+##
+##
+##unique={}
+##all_links=[]
+##for i in data:
+##    unique[(i[2],i[-3])]=''
+##    all_links.append(i[-3])
+##error=False
+##try:
+##    X=True
+##    for index in range(1,131):
+##        print X
+##        if X==True:
 ##            print 'index',index
-            r=requests.get("https://peerj.com/search/?q=&t=&type=preprints&subject=&topic=&uid=&sort=&journal=&page="+str(index))
-            templinks=[]
-            soup=BeautifulSoup(r.content,'html.parser')
-            for i in soup.find_all("div", {"class":"search-item-title"}):
-                templinks.append('https://peerj.com'+i.find('a').get('href'))
-                links.append('https://peerj.com'+i.find('a').get('href'))
-            for i in soup.find_all("div", {"class":"search-item-title"}):
-                titles.append(i.text.strip())
-            for i in soup.find_all("div", {"class":"main-search-authors-target"}):
-                temp=[]    
-                for j in i.find_all("a"):
-                    if len(unicodedata.normalize('NFKD',j.text.strip()).encode('ascii','ignore'))==len(j.text.strip()):
-                        temp.append(unicodedata.normalize('NFKD',j.text.strip()).encode('ascii','ignore'))
-                    else:
-                        try:
-                            r2=requests.get("https://peerj.com"+j.get('href'))
-                            soup2=BeautifulSoup(r2.content)
-                            name=soup2.find('h1').find('span').text.strip()
-                            temp.append(unicodedata.normalize('NFKD',name).encode('ascii','ignore'))
-                        except:
-                            temp.append(unicodedata.normalize('NFKD',j.text.strip()).encode('ascii','ignore'))
-                authors.append(temp)
-            for i in soup.find_all("div",{"class":"span7 main-search-item-subjects"}):
-                tags.append(eval(i.text))
-            for index2,i in enumerate(templinks):
-##                print index2
-                r=requests.get(i)
-                soup=BeautifulSoup(r.content,'html.parser')
-                try:
-                    pub_date=soup.find("time", {"data-itemprop":"dateAccepted"}).text.strip()
-                except:
-                    pub_date=soup.find("time", {"itemprop":"datePublished"}).text.strip()
-                if (pub_date,i) not in unique:
-                    dates.append(pub_date)
-                    abstracts.append(soup.find("div", {"class":"abstract"}).text.strip())
-                    temp=[]
-                    for j in soup.find_all("span", {"itemprop":"address"}):
-                        try:
-                            temp.append(j.find("span", {"class":"institution"}).text.strip())
-                        except:
-                            pass
-                    author_aff.append(temp)
-                else:
-                    stop=index*15-(15-index2)
-                    X=False
-                    break
-        else:
-            break
-except Exception as e:
-    error=True
-    f=open(os.path.join(BASE_DIR,'peerj','error_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
-    f.write(str(e))
-    f.close()
-
-
-titles=titles[:stop]
-authors=authors[:stop]
-dates=dates[:stop]
-abstracts=abstracts[:stop]
-links=links[:stop]
-tags=tags[:stop]
-author_aff=author_aff[:stop]
-
-
-
-
-##deal with revised articles here: ignore them
-if error==False:
-    if len(titles)==len(set(titles)):
-        if len(titles)==len(authors)==len(dates)==len(abstracts)==len(links)==len(tags)==len(author_aff):
-            f=open(os.path.join(BASE_DIR,'peerj','update_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
-            for title,author,date,abstract,link,tag,author_af in zip(titles,authors,dates,abstracts,links,tags,author_aff):
-                if link not in all_links:
-                    f.write(str([title,author,date,abstract,link,tag,author_af]))
-                    f.write('\n')
-                    newdata.append([title,author,date,abstract,link,tag,author_af])
-            f.close()
-        else:
-            f=open(os.path.join(BASE_DIR,'peerj','error_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
-            f.write('length error')
-            f.close()
-    else:
-        f=open(os.path.join(BASE_DIR,'peerj','error_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
-        f.write('duplicate error')
-        f.close()
-else:
-    pass
-
-
-
-f=open(os.path.join(BASE_DIR,'peerj','peerj.txt'),'a')
-for i in newdata:
-    f.write(str(i))
-    f.write('\n')
-f.close()
-
-
-
-##deal with updating author dictionaries
-from papers.name_last import name_last
-from papers.name_first import name_first
-from papers.unique_last import unique_last
-from papers.unique_first import unique_first
-
-
-pub_authors=[]
-for i in newdata:
-    for author in i[1]:
-        pub_authors.append(author)
-
-update_authors(pub_authors)
-
-
-##update the database
-for i in newdata:
-    paper=Article(title=i[0],abstract=i[3],link=i[4])
-    temp=i[2].split('-')
-    paper.pub_date=dt(int(temp[0]),int(temp[1]),int(temp[2]))
-    paper.save()
-    temp=[]
-    for author in i[1]:
-        name=author.replace(',','').replace('.','')
-        if name!='':
-            if name[:3].lower()=='jr ':
-                name=name[3:]
-            if name[-3:].lower()==' jr':
-                name=name[:-3]
-            if name[:3].lower()=='sr ':
-                name=name[3:]
-            if name[-3:].lower()==' sr':
-                name=name[:-3]
-            last_name=name.split()[-1]
-            if len(name.split())==1:
-                first_name=''
-                middle_name=''
-            elif len(name.split())==2:
-                first_name=name.split()[0]
-                middle_name=''
-            else:
-                first_name=name.split()[0]
-                middle_name=name.replace(first_name+' ','').replace(' '+last_name,'').strip()
-            if middle_name!='' and first_name!='':
-                temp.append(first_name+' '+middle_name+' '+last_name)
-            elif middle_name=='' and first_name:
-                temp.append(first_name+' '+last_name)
-            else:
-                temp.append(last_name)
-            try:
-                auth=Author.objects.get(first=first_name,middle=middle_name,last=last_name)
-                paper.authors.add(auth)
-            except:
-                auth=Author.objects.create(first=first_name,middle=middle_name,last=last_name)
-                paper.authors.add(auth)
-    paper.author_list=str(temp)
-    for affiliation in i[-1]:
-        try:
-            aff=Affiliation.objects.get(name=affiliation)
-            paper.affiliations.add(aff)
-        except:
-            aff=Affiliation.objects.create(name=affiliation)
-            paper.affiliations.add(aff)
-    for t in i[-2]:
-        try:
-            tag=Tag.objects.get(name=t)
-            paper.tags.add(tag)
-        except:
-            tag=Tag.objects.create(name=t)
-            paper.tags.add(tag)
-    paper.save()
-
+##            r=requests.get("https://peerj.com/search/?q=&t=&type=preprints&subject=&topic=&uid=&sort=&journal=&page="+str(index))
+##            templinks=[]
+##            soup=BeautifulSoup(r.content,'html.parser')
+##            for i in soup.find_all("div", {"class":"search-item-title"}):
+##                templinks.append('https://peerj.com'+i.find('a').get('href'))
+##                links.append('https://peerj.com'+i.find('a').get('href'))
+##            for i in soup.find_all("div", {"class":"search-item-title"}):
+##                titles.append(i.text.strip())
+##            for i in soup.find_all("div", {"class":"main-search-authors-target"}):
+##                temp=[]    
+##                for j in i.find_all("a"):
+##                    if len(unicodedata.normalize('NFKD',j.text.strip()).encode('ascii','ignore'))==len(j.text.strip()):
+##                        temp.append(unicodedata.normalize('NFKD',j.text.strip()).encode('ascii','ignore'))
+##                    else:
+##                        try:
+##                            r2=requests.get("https://peerj.com"+j.get('href'))
+##                            soup2=BeautifulSoup(r2.content)
+##                            name=soup2.find('h1').find('span').text.strip()
+##                            temp.append(unicodedata.normalize('NFKD',name).encode('ascii','ignore'))
+##                        except:
+##                            temp.append(unicodedata.normalize('NFKD',j.text.strip()).encode('ascii','ignore'))
+##                authors.append(temp)
+##            for i in soup.find_all("div",{"class":"span7 main-search-item-subjects"}):
+##                tags.append(eval(i.text))
+##            for index2,i in enumerate(templinks):
+##                print index2,i
+##                r=requests.get(i)
+##                soup=BeautifulSoup(r.content,'html.parser')
+##                try:
+##                    pub_date=soup.find("time", {"data-itemprop":"dateAccepted"}).text.strip()
+##                except:
+##                    pub_date=soup.find("time", {"itemprop":"datePublished"}).text.strip()
+##                if (pub_date,i) not in unique:
+##                    dates.append(pub_date)
+##                    abstracts.append(soup.find("div", {"class":"abstract"}).text.strip())
+##                    temp=[]
+##                    for j in soup.find_all("span", {"itemprop":"address"}):
+##                        try:
+##                            temp.append(j.find("span", {"class":"institution"}).text.strip())
+##                        except:
+##                            pass
+##                    author_aff.append(temp)
+##                else:
+##                    print 'test'
+##                    stop=index*15-(15-index2)
+##                    X=False
+##                    break
+##        else:
+##            break
+##except Exception as e:
+##    error=True
+##    f=open(os.path.join(BASE_DIR,'peerj','error_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
+##    f.write(str(e))
+##    f.close()
+##
+##
+##titles=titles[:stop]
+##authors=authors[:stop]
+##dates=dates[:stop]
+##abstracts=abstracts[:stop]
+##links=links[:stop]
+##tags=tags[:stop]
+##author_aff=author_aff[:stop]
+##
+##
+##
+##
+####deal with revised articles here: ignore them
+##if error==False:
+##    if len(titles)==len(set(titles)):
+##        if len(titles)==len(authors)==len(dates)==len(abstracts)==len(links)==len(tags)==len(author_aff):
+##            f=open(os.path.join(BASE_DIR,'peerj','update_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
+##            for title,author,date,abstract,link,tag,author_af in zip(titles,authors,dates,abstracts,links,tags,author_aff):
+##                if link not in all_links:
+##                    f.write(str([title,author,date,abstract,link,tag,author_af]))
+##                    f.write('\n')
+##                    newdata.append([title,author,date,abstract,link,tag,author_af])
+##            f.close()
+##        else:
+##            f=open(os.path.join(BASE_DIR,'peerj','error_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
+##            f.write('length error')
+##            f.close()
+##    else:
+##        f=open(os.path.join(BASE_DIR,'peerj','error_log',str(datetime.now()).split('.')[0].replace(' ','-').replace(':','-')+'.txt'),'w')
+##        f.write('duplicate error')
+##        f.close()
+##else:
+##    pass
+##
+##
+##
+##f=open(os.path.join(BASE_DIR,'peerj','peerj.txt'),'a')
+##for i in newdata:
+##    f.write(str(i))
+##    f.write('\n')
+##f.close()
+##
+##
+##
+####deal with updating author dictionaries
+##from papers.name_last import name_last
+##from papers.name_first import name_first
+##from papers.unique_last import unique_last
+##from papers.unique_first import unique_first
+##
+##
+##pub_authors=[]
+##for i in newdata:
+##    for author in i[1]:
+##        pub_authors.append(author)
+##
+##update_authors(pub_authors)
+##
+##
+####update the database
+##for i in newdata:
+##    paper=Article(title=i[0],abstract=i[3],link=i[4])
+##    temp=i[2].split('-')
+##    paper.pub_date=dt(int(temp[0]),int(temp[1]),int(temp[2]))
+##    paper.save()
+##    temp=[]
+##    for author in i[1]:
+##        name=author.replace(',','').replace('.','')
+##        if name!='':
+##            if name[:3].lower()=='jr ':
+##                name=name[3:]
+##            if name[-3:].lower()==' jr':
+##                name=name[:-3]
+##            if name[:3].lower()=='sr ':
+##                name=name[3:]
+##            if name[-3:].lower()==' sr':
+##                name=name[:-3]
+##            last_name=name.split()[-1]
+##            if len(name.split())==1:
+##                first_name=''
+##                middle_name=''
+##            elif len(name.split())==2:
+##                first_name=name.split()[0]
+##                middle_name=''
+##            else:
+##                first_name=name.split()[0]
+##                middle_name=name.replace(first_name+' ','').replace(' '+last_name,'').strip()
+##            if middle_name!='' and first_name!='':
+##                temp.append(first_name+' '+middle_name+' '+last_name)
+##            elif middle_name=='' and first_name:
+##                temp.append(first_name+' '+last_name)
+##            else:
+##                temp.append(last_name)
+##            try:
+##                auth=Author.objects.get(first=first_name,middle=middle_name,last=last_name)
+##                paper.authors.add(auth)
+##            except:
+##                auth=Author.objects.create(first=first_name,middle=middle_name,last=last_name)
+##                paper.authors.add(auth)
+##    paper.author_list=str(temp)
+##    for affiliation in i[-1]:
+##        try:
+##            aff=Affiliation.objects.get(name=affiliation)
+##            paper.affiliations.add(aff)
+##        except:
+##            aff=Affiliation.objects.create(name=affiliation)
+##            paper.affiliations.add(aff)
+##    for t in i[-2]:
+##        try:
+##            tag=Tag.objects.get(name=t)
+##            paper.tags.add(tag)
+##        except:
+##            tag=Tag.objects.create(name=t)
+##            paper.tags.add(tag)
+##    paper.save()
+##
 
 
 
