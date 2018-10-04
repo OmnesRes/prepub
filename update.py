@@ -134,9 +134,8 @@ error=False
 try:
     X=True
     for index in range(1,131):
-        print X
         if X==True:
-            print 'index',index
+##            print 'index',index
             r=requests.get("https://peerj.com/search/?q=&t=&type=preprints&subject=&topic=&uid=&sort=&journal=&page="+str(index))
             templinks=[]
             soup=BeautifulSoup(r.content,'html.parser')
@@ -162,7 +161,7 @@ try:
             for i in soup.find_all("div",{"class":"span7 main-search-item-subjects"}):
                 tags.append(eval(i.text))
             for index2,i in enumerate(templinks):
-                print index2,i
+##                print index2
                 r=requests.get(i)
                 soup=BeautifulSoup(r.content,'html.parser')
                 try:
@@ -171,7 +170,7 @@ try:
                     try:
                         pub_date=soup.find("time", {"itemprop":"datePublished"}).text.strip()
                     except:
-                        pub_date=soup.find("div", {"class":"article-publication-date"}).text.strip()
+                        raise ValueError
                 if (pub_date,i) not in unique:
                     dates.append(pub_date)
                     abstracts.append(soup.find("div", {"class":"abstract"}).text.strip())
@@ -183,7 +182,6 @@ try:
                             pass
                     author_aff.append(temp)
                 else:
-                    print 'test'
                     stop=index*15-(15-index2)
                     X=False
                     break

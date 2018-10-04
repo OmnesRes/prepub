@@ -185,7 +185,7 @@ ax.set_title('New Senior Authors per Month',fontsize=50)
 
 
 ##plt.savefig('figure1.pdf')
-plt.savefig('august_authors.png')
+plt.savefig('september_authors.png')
 plt.show()
 print y[-2]
 
