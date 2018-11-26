@@ -7,7 +7,14 @@ date_dict={"January":1,"February":2,"March":3,"April":4,"May":5,"June":6,
            "Jan":1,"Feb":2,"Mar":3,"Apr":4,"May":5,"Jun":6,
            "Jul":7,"Aug":8,"Sep":9,"Oct":10,"Nov":11,"Dec":12}
 
+reverse_dict={"1":"January","2":"February","3":"March","4":"April","5":"May","6":"June",
+           "7":"July","8":"August","9":"September","10":"October","11":"November","12":"December"}
 
+def reverse_date(date):
+    year=date.split('-')[0]
+    month=date.split('-')[1]
+    day=date.split('-')[-1]
+    return '%s %s, %s.' % (reverse_dict[month],day,year)
 
 def middle_function(name):
     if name=='':
@@ -549,7 +556,10 @@ for attempt in range(3):
     ##        print index2
             r=requests.get('http://biorxiv.org'+i)
             soup=BeautifulSoup(r.content)
-            dates.append(soup.find('li',{'class':"published"}).text.strip('Posted').strip())
+            for l in soup.find_all('meta'):
+                if l.get('name')=='article:published_time':
+                    dates.append(reverse_date(l.get('content')))
+                    break
             try:
                 try:
                     abstracts.append(soup.find('p',{'id':"p-2"}).text.strip())
