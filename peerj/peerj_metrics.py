@@ -7,7 +7,7 @@ links=[]
 views=[]
 downloads=[]
 
-for index in range(1,231):
+for index in range(1,302):
     print index
     r=requests.get("https://peerj.com/preprints-search/?page="+str(index))
     soup=BeautifulSoup(r.content)
@@ -27,8 +27,8 @@ for i,j,k,l in zip(titles,links,views,downloads):
 data.sort(key=lambda x:x[-2],reverse=True)
 
 
-f=open('metrics_200.txt','w')   
-for i in data[:200]:
+f=open('metrics_2018.txt','w')   
+for i in data:
     f.write(str(i))
     f.write('\n')
 f.close()

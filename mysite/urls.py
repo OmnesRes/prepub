@@ -44,4 +44,5 @@ urlpatterns = [
     url(r'^anova/$',views.anova),
     url(r'^anova_2way/$',views.anova_2way),
     url(r'^shame/$',views.shame),
+    url(r'^top_preprints_2018/$',views.top_preprints_2018),
 ]

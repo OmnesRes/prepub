@@ -487,6 +487,9 @@ def anova_2way(request):
 def top_preprints(request):
     return render(request, 'top_preprints.html')
 
+def top_preprints_2018(request):
+    return render(request, 'top_preprints_2018.html')
+
 def terms(request):
     return render(request, 'terms.html')
 
