@@ -8,7 +8,7 @@ date_dict={"January":1,"February":2,"March":3,"April":4,"May":5,"June":6,
 
 def clean_author(pub_author):
     i=pub_author.replace(',','').replace('.','').lower()
-    if i!='':
+    if i.strip()!='':
         if i[:3]=='jr ':
             i=i[3:]
         if i[-3:]==' jr':
@@ -185,7 +185,7 @@ ax.set_title('New Senior Authors per Month',fontsize=50)
 
 
 ##plt.savefig('figure1.pdf')
-plt.savefig('november_authors.png')
+plt.savefig('december_authors.png')
 plt.show()
 print y[-2]
 
