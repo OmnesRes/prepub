@@ -705,7 +705,7 @@ for article in newdata:
     licenses.append([article[4],article[2],article[-2],bio_license,article[0],article[1],article[-1]])
     
 for i in licenses:
-    f.write(u'http://dx.doi.org/10.1101/'+i[0].split('/')[-1].split('.')[0])
+    f.write(u'https://doi.org/10.1101/'+i[0].split('/')[-1].split('.')[0])
     f.write(u'\t')
     temp=i[1].replace(',','').replace('.','').split()
     f.write(unicode(dt(int(temp[2]),date_dict[temp[0]],int(temp[1]))))
